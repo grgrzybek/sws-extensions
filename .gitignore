@@ -1,0 +1,9 @@
+target/
+*.class
+*~
+*.bak
+*.swp
+.settings/
+.doc/
+.project
+.classpath
