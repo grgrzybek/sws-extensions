@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="EchoEndpointRPCService" targetNamespace="http://dispatch2.cxf.ws.springframework.org/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://dispatch2.cxf.ws.springframework.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<xs:schema targetNamespace="http://dispatch2.cxf.ws.springframework.org/" version="1.0" xmlns:tns="http://dispatch2.cxf.ws.springframework.org/"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:complexType name="param1">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="string" type="xs:string" />
+					<xs:element minOccurs="0" name="number" type="xs:long" />
+					<xs:element minOccurs="0" name="param2" type="tns:param2" />
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="list" nillable="true" type="xs:byte" />
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="param3list" nillable="true" type="tns:param3" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="param2">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="bd" type="xs:decimal" />
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="list" nillable="true" type="xs:string" />
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="param3list" nillable="true" type="tns:param3" />
+					<xs:element minOccurs="0" name="number" type="xs:int" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="param3">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="value" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="result1">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="list" nillable="true" type="xs:decimal" />
+					<xs:element minOccurs="0" name="param2" type="tns:param2" />
+					<xs:element minOccurs="0" name="str" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="rpcEnc">
+		<wsdl:part name="arg0" type="tns:param1">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="rpcEncWrapped">
+		<wsdl:part name="arg0" type="tns:param1">
+		</wsdl:part>
+		<wsdl:part name="arg1" type="tns:param2">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="rpcLitWrapped">
+		<wsdl:part name="arg0" type="tns:param1">
+		</wsdl:part>
+		<wsdl:part name="arg1" type="tns:param2">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="rpcLit">
+		<wsdl:part name="arg0" type="tns:param1">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="rpcLitWrappedResponse">
+		<wsdl:part name="return" type="tns:result1">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="rpcEncWrappedResponse">
+		<wsdl:part name="return" type="tns:result1">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="rpcLitResponse">
+		<wsdl:part name="return" type="tns:result1">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="rpcEncResponse">
+		<wsdl:part name="return" type="tns:result1">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="EchoEndpointRPCInterface">
+		<wsdl:operation name="rpcEnc">
+			<wsdl:input message="tns:rpcEnc" name="rpcEnc">
+			</wsdl:input>
+			<wsdl:output message="tns:rpcEncResponse" name="rpcEncResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="rpcLitWrapped">
+			<wsdl:input message="tns:rpcLitWrapped" name="rpcLitWrapped">
+			</wsdl:input>
+			<wsdl:output message="tns:rpcLitWrappedResponse" name="rpcLitWrappedResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="rpcEncWrapped">
+			<wsdl:input message="tns:rpcEncWrapped" name="rpcEncWrapped">
+			</wsdl:input>
+			<wsdl:output message="tns:rpcEncWrappedResponse" name="rpcEncWrappedResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="rpcLit">
+			<wsdl:input message="tns:rpcLit" name="rpcLit">
+			</wsdl:input>
+			<wsdl:output message="tns:rpcLitResponse" name="rpcLitResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="EchoEndpointRPCServiceSoapBinding" type="tns:EchoEndpointRPCInterface">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="rpcEnc">
+			<soap:operation soapAction="" style="rpc" />
+			<wsdl:input name="rpcEnc">
+				<soap:body namespace="http://dispatch2.cxf.ws.springframework.org/" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="rpcEncResponse">
+				<soap:body namespace="http://dispatch2.cxf.ws.springframework.org/" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="rpcLitWrapped">
+			<soap:operation soapAction="" style="rpc" />
+			<wsdl:input name="rpcLitWrapped">
+				<soap:body namespace="http://dispatch2.cxf.ws.springframework.org/" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="rpcLitWrappedResponse">
+				<soap:body namespace="http://dispatch2.cxf.ws.springframework.org/" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="rpcEncWrapped">
+			<soap:operation soapAction="" style="rpc" />
+			<wsdl:input name="rpcEncWrapped">
+				<soap:body namespace="http://dispatch2.cxf.ws.springframework.org/" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="rpcEncWrappedResponse">
+				<soap:body namespace="http://dispatch2.cxf.ws.springframework.org/" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="rpcLit">
+			<soap:operation soapAction="" style="rpc" />
+			<wsdl:input name="rpcLit">
+				<soap:body namespace="http://dispatch2.cxf.ws.springframework.org/" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="rpcLitResponse">
+				<soap:body namespace="http://dispatch2.cxf.ws.springframework.org/" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="EchoEndpointRPCService">
+		<wsdl:port binding="tns:EchoEndpointRPCServiceSoapBinding" name="EchoEndpointRPCPort">
+			<soap:address location="http://localhost:24915/cxf/echoRPC" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

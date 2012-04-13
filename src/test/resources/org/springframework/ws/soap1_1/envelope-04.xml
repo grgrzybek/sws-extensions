@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">
+	<!-- 7. Using SOAP for RPC -->
+	<!--
+		The following is needed to make a RPC call:
+		 - The URI of the target object (protocol binding, e.g. HTTP or JMS is used)
+		 - A method name
+		 - An optional method signature
+		 - The parameters to the method
+		 - Optional header data
+	-->
+	<SOAP-ENV:Body>
+		<!-- calls and responses are carried in SOAP-ENV:Body -->
+		<!-- invocation is modelled as struct -->
+		<ns:methodName xmlns:ns="http://targetNamespace.of.the.endpoint/">
+			<!-- method invocatio is single struct named and typed identically to the method name -->
+			<!-- invocation has an accessor for each [in] or [in/out] parameter -->
+			<!--
+				Each [in] or [in/out] parameter is viewed as an accessor, with a name corresponding to the name of the parameter and type corresponding to the type of the parameter.
+				These appear in the same order as in the method signature.
+			-->
+			<par1>value1</par1>
+			<par2>value2</par2>
+		</ns:methodName>
+		<!-- A method response is modelled as a struct. -->
+		<!--
+			The method response is viewed as a single struct containing an accessor for the return value and each [out] or [in/out] parameter.
+			The first accessor is the return value followed by the parameters in the same order as in the method signature.
+		-->
+		<!--
+			Each parameter accessor has a name corresponding to the name of the parameter and type corresponding to the type of the parameter.
+			The name of the return value accessor is not significant.
+			Likewise, the name of the struct is not significant. However, a convention is to name it after the method name with the string "Response" appended.
+		-->
+		<!-- A method fault is encoded using the SOAP Fault element -->
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

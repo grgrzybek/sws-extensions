@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<soapenv:Fault>
+			<faultcode xmlns:ns1="http://xml.apache.org/axis/">ns1:Client</faultcode>
+			<faultstring>No such operation 'param1'</faultstring>
+			<detail>
+				<ns2:stackTrace xmlns:ns2="http://xml.apache.org/axis/">No such operation 'param1'
+					at org.apache.axis.providers.java.RPCProvider.getOperationDesc(RPCProvider.java:312)
+					at org.apache.axis.providers.java.RPCProvider.processMessage(RPCProvider.java:88)
+					at org.apache.axis.providers.java.JavaProvider.invoke(JavaProvider.java:323)
+					at org.apache.axis.strategies.InvocationStrategy.visit(InvocationStrategy.java:32)
+					at org.apache.axis.SimpleChain.doVisiting(SimpleChain.java:118)
+					at org.apache.axis.SimpleChain.invoke(SimpleChain.java:83)
+					at org.apache.axis.handlers.soap.SOAPService.invoke(SOAPService.java:454)
+					at org.apache.axis.server.AxisServer.invoke(AxisServer.java:281)
+					at org.apache.axis.transport.http.AxisServlet.doPost(AxisServlet.java:699)
+					at javax.servlet.http.HttpServlet.service(HttpServlet.java:755)
+					at org.apache.axis.transport.http.AxisServletBase.service(AxisServletBase.java:327)
+					at javax.servlet.http.HttpServlet.service(HttpServlet.java:848)
+					at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:594)
+					at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:486)
+					at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1065)
+					at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:413)
+					at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:999)
+					at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:117)
+					at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:111)
+					at org.eclipse.jetty.server.Server.handle(Server.java:351)
+					at org.eclipse.jetty.server.AbstractHttpConnection.handleRequest(AbstractHttpConnection.java:454)
+					at org.eclipse.jetty.server.AbstractHttpConnection.content(AbstractHttpConnection.java:900)
+					at org.eclipse.jetty.server.AbstractHttpConnection$RequestHandler.content(AbstractHttpConnection.java:954)
+					at org.eclipse.jetty.http.HttpParser.parseNext(HttpParser.java:857)
+					at org.eclipse.jetty.http.HttpParser.parseAvailable(HttpParser.java:235)
+					at org.eclipse.jetty.server.AsyncHttpConnection.handle(AsyncHttpConnection.java:77)
+					at org.eclipse.jetty.io.nio.SelectChannelEndPoint.handle(SelectChannelEndPoint.java:609)
+					at org.eclipse.jetty.io.nio.SelectChannelEndPoint$1.run(SelectChannelEndPoint.java:45)
+					at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:599)
+					at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:534)
+					at java.lang.Thread.run(Thread.java:662)
+				</ns2:stackTrace>
+				<ns3:hostname xmlns:ns3="http://xml.apache.org/axis/">0460C6</ns3:hostname>
+			</detail>
+		</soapenv:Fault>
+	</soapenv:Body>
+</soapenv:Envelope>

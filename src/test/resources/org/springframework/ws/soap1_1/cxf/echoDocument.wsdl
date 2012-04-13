@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="EchoEndpointDocumentService" targetNamespace="http://dispatch2.cxf.ws.springframework.org/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://dispatch2.cxf.ws.springframework.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://dispatch2.cxf.ws.springframework.org/"
+			xmlns:tns="http://dispatch2.cxf.ws.springframework.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:element name="docEncWrapped" type="tns:docEncWrapped" />
+			<xs:element name="docEncWrappedResponse" type="tns:docEncWrappedResponse" />
+			<xs:element name="docLitWrapped" type="tns:docLitWrapped" />
+			<xs:element name="docLitWrappedResponse" type="tns:docLitWrappedResponse" />
+			<xs:complexType name="docEncWrapped">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="arg0" type="tns:param1" />
+					<xs:element minOccurs="0" name="arg1" type="tns:param2" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="param1">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="string" type="xs:string" />
+					<xs:element minOccurs="0" name="number" type="xs:long" />
+					<xs:element minOccurs="0" name="param2" type="tns:param2" />
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="list" nillable="true" type="xs:byte" />
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="param3list" nillable="true" type="tns:param3" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="param2">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="bd" type="xs:decimal" />
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="list" nillable="true" type="xs:string" />
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="param3list" nillable="true" type="tns:param3" />
+					<xs:element minOccurs="0" name="number" type="xs:int" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="param3">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="value" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="docEncWrappedResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="return" type="tns:result1" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="result1">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="list" nillable="true" type="xs:decimal" />
+					<xs:element minOccurs="0" name="param2" type="tns:param2" />
+					<xs:element minOccurs="0" name="str" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="docLitWrapped">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="arg0" type="tns:param1" />
+					<xs:element minOccurs="0" name="arg1" type="tns:param2" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="docLitWrappedResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="return" type="tns:result1" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="docEncBare" nillable="true" type="tns:param1" />
+			<xs:element name="docEncBareResponse" nillable="true" type="tns:result1" />
+			<xs:element name="docLitBare" nillable="true" type="tns:param1" />
+			<xs:element name="docLitBareResponse" nillable="true" type="tns:result1" />
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="docLitWrapped">
+		<wsdl:part element="tns:docLitWrapped" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="docEncWrappedResponse">
+		<wsdl:part element="tns:docEncWrappedResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="docLitBareResponse">
+		<wsdl:part element="tns:docLitBareResponse" name="docLitBareResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="docLitWrappedResponse">
+		<wsdl:part element="tns:docLitWrappedResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="docEncWrapped">
+		<wsdl:part element="tns:docEncWrapped" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="docEncBareResponse">
+		<wsdl:part element="tns:docEncBareResponse" name="docEncBareResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="docLitBare">
+		<wsdl:part element="tns:docLitBare" name="docLitBare">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="docEncBare">
+		<wsdl:part element="tns:docEncBare" name="docEncBare">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="EchoEndpointDocumentInterface">
+		<wsdl:operation name="docEncWrapped">
+			<wsdl:input message="tns:docEncWrapped" name="docEncWrapped">
+			</wsdl:input>
+			<wsdl:output message="tns:docEncWrappedResponse" name="docEncWrappedResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="docEncBare">
+			<wsdl:input message="tns:docEncBare" name="docEncBare">
+			</wsdl:input>
+			<wsdl:output message="tns:docEncBareResponse" name="docEncBareResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="docLitWrapped">
+			<wsdl:input message="tns:docLitWrapped" name="docLitWrapped">
+			</wsdl:input>
+			<wsdl:output message="tns:docLitWrappedResponse" name="docLitWrappedResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="docLitBare">
+			<wsdl:input message="tns:docLitBare" name="docLitBare">
+			</wsdl:input>
+			<wsdl:output message="tns:docLitBareResponse" name="docLitBareResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="EchoEndpointDocumentServiceSoapBinding" type="tns:EchoEndpointDocumentInterface">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="docEncBare">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="docEncBare">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="docEncBareResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="docEncWrapped">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="docEncWrapped">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="docEncWrappedResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="docLitWrapped">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="docLitWrapped">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="docLitWrappedResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="docLitBare">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="docLitBare">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="docLitBareResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="EchoEndpointDocumentService">
+		<wsdl:port binding="tns:EchoEndpointDocumentServiceSoapBinding" name="EchoEndpointDocumentPort">
+			<soap:address location="http://localhost:24915/cxf/echoDocument" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

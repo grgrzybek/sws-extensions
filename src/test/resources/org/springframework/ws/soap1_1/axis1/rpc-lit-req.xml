@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<rpcLit xmlns="http://dispatch2.axis1.ws.springframework.org/">
+			<param xmlns="">
+				<list>
+					<item>36</item>
+					<item>-102</item>
+				</list>
+				<number>37</number>
+				<param2>
+					<bd>37.98</bd>
+					<list>
+						<item>str1</item>
+						<item>str2</item>
+						<item>str3</item>
+					</list>
+					<number>44</number>
+					<param3list>
+						<item>
+							<value>value</value>
+						</item>
+						<item>
+							<value>value</value>
+						</item>
+						<item>
+							<value>value</value>
+						</item>
+					</param3list>
+				</param2>
+				<param3list>
+					<item>
+						<value>value</value>
+					</item>
+					<item>
+						<value>value</value>
+					</item>
+					<item>
+						<value>value</value>
+					</item>
+				</param3list>
+				<string>str (String)</string>
+			</param>
+			<param2 xmlns="">
+				<bd>37.98</bd>
+				<list>
+					<item>str1</item>
+					<item>str2</item>
+					<item>str3</item>
+				</list>
+				<number>44</number>
+				<param3list>
+					<item>
+						<value>value</value>
+					</item>
+					<item>
+						<value>value</value>
+					</item>
+					<item>
+						<value>value</value>
+					</item>
+				</param3list>
+			</param2>
+		</rpcLit>
+	</soapenv:Body>
+</soapenv:Envelope>

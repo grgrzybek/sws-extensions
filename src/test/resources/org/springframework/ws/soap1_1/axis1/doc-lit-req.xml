@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<param xmlns="http://dispatch2.axis1.ws.springframework.org/">
+			<ns1:list xmlns:ns1="http://dispatch2.axis1.ws.springframework.org/p1/">
+				<item>36</item>
+				<item>-102</item>
+			</ns1:list>
+			<ns2:number xmlns:ns2="http://dispatch2.axis1.ws.springframework.org/p1/">37</ns2:number>
+			<ns3:param2 xmlns:ns3="http://dispatch2.axis1.ws.springframework.org/p1/">
+				<ns4:bd xmlns:ns4="http://dispatch2.axis1.ws.springframework.org/p2/">37.98</ns4:bd>
+				<ns5:list xmlns:ns5="http://dispatch2.axis1.ws.springframework.org/p2/">
+					<item>str1</item>
+					<item>str2</item>
+					<item>str3</item>
+				</ns5:list>
+				<ns6:number xmlns:ns6="http://dispatch2.axis1.ws.springframework.org/p2/">44</ns6:number>
+				<ns7:param3list xmlns:ns7="http://dispatch2.axis1.ws.springframework.org/p2/">
+					<item>
+						<ns8:value xmlns:ns8="http://dispatch2.axis1.ws.springframework.org/p3/">value</ns8:value>
+					</item>
+					<item>
+						<ns9:value xmlns:ns9="http://dispatch2.axis1.ws.springframework.org/p3/">value</ns9:value>
+					</item>
+					<item>
+						<ns10:value xmlns:ns10="http://dispatch2.axis1.ws.springframework.org/p3/">value</ns10:value>
+					</item>
+				</ns7:param3list>
+			</ns3:param2>
+			<ns11:param3list xmlns:ns11="http://dispatch2.axis1.ws.springframework.org/p1/">
+				<item>
+					<ns12:value xmlns:ns12="http://dispatch2.axis1.ws.springframework.org/p3/">value</ns12:value>
+				</item>
+				<item>
+					<ns13:value xmlns:ns13="http://dispatch2.axis1.ws.springframework.org/p3/">value</ns13:value>
+				</item>
+				<item>
+					<ns14:value xmlns:ns14="http://dispatch2.axis1.ws.springframework.org/p3/">value</ns14:value>
+				</item>
+			</ns11:param3list>
+			<ns15:string xmlns:ns15="http://dispatch2.axis1.ws.springframework.org/p1/" xsi:nil="true" />
+		</param>
+		<param2 xmlns="http://dispatch2.axis1.ws.springframework.org/">
+			<ns16:bd xmlns:ns16="http://dispatch2.axis1.ws.springframework.org/p2/">37.98</ns16:bd>
+			<ns17:list xmlns:ns17="http://dispatch2.axis1.ws.springframework.org/p2/">
+				<item>str1</item>
+				<item>str2</item>
+				<item>str3</item>
+			</ns17:list>
+			<ns18:number xmlns:ns18="http://dispatch2.axis1.ws.springframework.org/p2/">44</ns18:number>
+			<ns19:param3list xmlns:ns19="http://dispatch2.axis1.ws.springframework.org/p2/">
+				<item>
+					<ns20:value xmlns:ns20="http://dispatch2.axis1.ws.springframework.org/p3/">value</ns20:value>
+				</item>
+				<item>
+					<ns21:value xmlns:ns21="http://dispatch2.axis1.ws.springframework.org/p3/">value</ns21:value>
+				</item>
+				<item>
+					<ns22:value xmlns:ns22="http://dispatch2.axis1.ws.springframework.org/p3/">value</ns22:value>
+				</item>
+			</ns19:param3list>
+		</param2>
+	</soapenv:Body>
+</soapenv:Envelope>

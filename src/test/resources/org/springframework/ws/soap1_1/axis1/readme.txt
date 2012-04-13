@@ -1,0 +1,1 @@
+Here are different SOAP Envelopes produced by Axis1-generated client stubs and server skeletons.

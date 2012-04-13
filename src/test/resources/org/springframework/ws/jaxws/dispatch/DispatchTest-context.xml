@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="org.springframework.ws.jaxws.dispatch.endpoints">
+		<context:include-filter type="annotation" expression="javax.jws.WebService" />
+	</context:component-scan>
+
+	<bean id="messageFactory" class="org.springframework.ws.soap.axiom.AxiomSoapMessageFactory" />
+
+	<bean class="org.springframework.ws.jaxws.server.endpoint.mapping.JaxWsEndpointMapping" />
+
+	<bean id="jaxWsWebParamProcessor" class="org.springframework.ws.jaxws.server.endpoint.adapter.method.JaxWsPayloadMethodProcessor" />
+	<bean class="org.springframework.ws.server.endpoint.adapter.DefaultMethodEndpointAdapter">
+		<property name="methodArgumentResolvers">
+			<list>
+				<ref local="jaxWsWebParamProcessor" />
+			</list>
+		</property>
+		<property name="methodReturnValueHandlers">
+			<list>
+				<ref local="jaxWsWebParamProcessor" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

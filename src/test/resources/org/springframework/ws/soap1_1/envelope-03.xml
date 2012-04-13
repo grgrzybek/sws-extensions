@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">
+	<SOAP-ENV:Body>
+		<SOAP-ENV:Fault xmlns:test="urn:test:1">
+			<faultcode>SOAP-ENV:Server</faultcode>
+			<faultstring></faultstring>
+			<faultactor></faultactor>
+			<detail>
+				<test:info1>"detail" MUST be present if the contents of the Body element could not be successfully processed.</test:info1>
+				<test:info2>"detail" MUST NOT be used to carry information about error information belonging to header entries.</test:info2>
+				<test:info3>Detailed error information belonging to header entries MUST be carried within header entries.</test:info3>
+				<test:info4>The absence of the detail element in the Fault element indicates that the fault is not related to processing of the Body element.</test:info4>
+				<test:info5>A detail entry is identified by its fully qualified element name, which consists of the namespace URI and the local name. Immediate child elements of the detail element MAY be namespace-qualified.</test:info5>
+				<test:info6 SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">The SOAP encodingStyle attribute MAY be used to indicate the encoding style used for the detail entries.</test:info6>
+			</detail>
+		</SOAP-ENV:Fault>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

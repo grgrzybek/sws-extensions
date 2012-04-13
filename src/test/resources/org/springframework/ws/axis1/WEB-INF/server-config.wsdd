@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<deployment
+	xmlns="http://xml.apache.org/axis/wsdd/"
+	xmlns:java="http://xml.apache.org/axis/wsdd/providers/java"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xml.apache.org/axis/wsdd/ server-config.xsd">
+
+	<globalConfiguration>
+		<parameter name="axis.development.system" value="true" />
+		<parameter name="axis.enableListQuery" value="true" />
+		<!--parameter name="sendXsiTypes" value="true" />
+		<parameter name="sendMultiRefs" value="true" />
+		<parameter name="sendXMLDeclaration" value="true" />
+		<parameter name="axis.sendMinimizedElements" value="true" /-->
+	</globalConfiguration>
+
+	<handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper">
+	</handler>
+
+	<transport name="http">
+		<requestFlow>
+			<handler type="URLMapper" />
+		</requestFlow>
+	</transport>
+
+	<!--
+		java:RPC - org.apache.axis.deployment.wsdd.providers.WSDDJavaRPCProvider (handlerClass = org.apache.axis.providers.java.RPCProvider)
+		java:MSG - org.apache.axis.deployment.wsdd.providers.WSDDJavaMsgProvider (handlerClass = org.apache.axis.providers.java.MsgProvider)
+		Handler - org.apache.axis.deployment.wsdd.providers.WSDDHandlerProvider (requires ./parameter[@name='handlerClass'])
+		java:EJB - org.apache.axis.deployment.wsdd.providers.WSDDJavaEJBProvider (handlerClass = org.apache.axis.providers.java.EJBProvider)
+		java:COM - org.apache.axis.deployment.wsdd.providers.WSDDComProvider (handlerClass = org.apache.axis.providers.ComProvider)
+		java:BSF - org.apache.axis.deployment.wsdd.providers.WSDDBsfProvider (handlerClass = org.apache.axis.providers.BSFProvider)
+		java:CORBA - org.apache.axis.deployment.wsdd.providers.WSDDJavaCORBAProvider (handlerClass = org.apache.axis.providers.java.CORBAProvider)
+		java:RMI - org.apache.axis.deployment.wsdd.providers.WSDDJavaRMIProvider (handlerClass = org.apache.axis.providers.java.RMIProvider)
+	-->
+	<service style="rpc" use="encoded" name="EchoEndpointRPCEncoded">
+		<namespace>http://dispatch2.axis1.ws.springframework.org/</namespace>
+		<parameter name="className" value="org.springframework.ws.axis1.dispatch2.EchoEndpointRPC" />
+		<parameter name="allowedMethods" value="rpcEnc" />
+		<parameter name="scope" value="Application" />
+		<parameter name="wsdlTargetNamespace" value="http://dispatch2.axis1.ws.springframework.org/" />
+		<beanMapping qname="ns:param-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param1" />
+		<beanMapping qname="ns:param-2" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p2/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param2" />
+		<beanMapping qname="ns:param-3" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p3/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param3" />
+		<beanMapping qname="ns:result-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/r1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Result1" />
+	</service>
+	<service style="rpc" use="literal" name="EchoEndpointRPCLiteral">
+		<namespace>http://dispatch2.axis1.ws.springframework.org/</namespace>
+		<parameter name="className" value="org.springframework.ws.axis1.dispatch2.EchoEndpointRPC" />
+		<parameter name="allowedMethods" value="rpcLit" />
+		<parameter name="scope" value="Application" />
+		<parameter name="wsdlTargetNamespace" value="http://dispatch2.axis1.ws.springframework.org/" />
+		<beanMapping qname="ns:param-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param1" />
+		<beanMapping qname="ns:param-2" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p2/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param2" />
+		<beanMapping qname="ns:param-3" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p3/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param3" />
+		<beanMapping qname="ns:result-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/r1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Result1" />
+	</service>
+	<service style="wrapped" use="encoded" name="EchoEndpointWrappedEncoded">
+		<namespace>http://dispatch2.axis1.ws.springframework.org/</namespace>
+		<parameter name="className" value="org.springframework.ws.axis1.dispatch2.EchoEndpointWrapped" />
+		<parameter name="allowedMethods" value="wrappedEnc" />
+		<parameter name="scope" value="Application" />
+		<parameter name="wsdlTargetNamespace" value="http://dispatch2.axis1.ws.springframework.org/" />
+		<beanMapping qname="ns:param-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param1" />
+		<beanMapping qname="ns:param-2" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p2/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param2" />
+		<beanMapping qname="ns:param-3" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p3/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param3" />
+		<beanMapping qname="ns:result-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/r1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Result1" />
+	</service>
+	<service style="wrapped" use="literal" name="EchoEndpointWrappedLiteral">
+		<namespace>http://dispatch2.axis1.ws.springframework.org/</namespace>
+		<parameter name="className" value="org.springframework.ws.axis1.dispatch2.EchoEndpointWrapped" />
+		<parameter name="allowedMethods" value="wrappedLit" />
+		<parameter name="scope" value="Application" />
+		<parameter name="wsdlTargetNamespace" value="http://dispatch2.axis1.ws.springframework.org/" />
+		<beanMapping qname="ns:param-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param1" />
+		<beanMapping qname="ns:param-2" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p2/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param2" />
+		<beanMapping qname="ns:param-3" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p3/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param3" />
+		<beanMapping qname="ns:result-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/r1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Result1" />
+	</service>
+	<service style="document" use="encoded" name="EchoEndpointDocumentEncoded">
+		<namespace>http://dispatch2.axis1.ws.springframework.org/</namespace>
+		<parameter name="className" value="org.springframework.ws.axis1.dispatch2.EchoEndpointDocument" />
+		<parameter name="allowedMethods" value="docEnc" />
+		<parameter name="scope" value="Application" />
+		<parameter name="wsdlTargetNamespace" value="http://dispatch2.axis1.ws.springframework.org/" />
+		<beanMapping qname="ns:param-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param1" />
+		<beanMapping qname="ns:param-2" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p2/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param2" />
+		<beanMapping qname="ns:param-3" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p3/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param3" />
+		<beanMapping qname="ns:result-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/r1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Result1" />
+	</service>
+	<service style="document" use="literal" name="EchoEndpointDocumentLiteral">
+		<namespace>http://dispatch2.axis1.ws.springframework.org/</namespace>
+		<parameter name="className" value="org.springframework.ws.axis1.dispatch2.EchoEndpointDocument" />
+		<parameter name="allowedMethods" value="docLit" />
+		<parameter name="scope" value="Application" />
+		<parameter name="wsdlTargetNamespace" value="http://dispatch2.axis1.ws.springframework.org/" />
+		<beanMapping qname="ns:param-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param1" />
+		<beanMapping qname="ns:param-2" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p2/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param2" />
+		<beanMapping qname="ns:param-3" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/p3/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Param3" />
+		<beanMapping qname="ns:result-1" xmlns:ns="http://dispatch2.axis1.ws.springframework.org/r1/" languageSpecificType="java:org.springframework.ws.axis1.dispatch2.model.Result1" />
+	</service>
+	<service style="document" use="literal" name="EchoEndpointMessage">
+		<namespace>http://dispatch2.axis1.ws.springframework.org/</namespace>
+		<parameter name="className" value="org.springframework.ws.axis1.dispatch2.EchoEndpointMessage" />
+		<parameter name="allowedMethods" value="method" />
+		<parameter name="scope" value="Application" />
+		<parameter name="wsdlTargetNamespace" value="http://dispatch2.axis1.ws.springframework.org/" />
+	</service>
+
+</deployment>

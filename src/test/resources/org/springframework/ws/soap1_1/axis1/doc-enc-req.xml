@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<param1 href="#id0" />
+		<param2 href="#id1" />
+		<multiRef id="id0" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns1:param-1"
+			xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://dispatch2.axis1.ws.springframework.org/p1/">
+			<list soapenc:arrayType="soapenc:byte[2]" xsi:type="soapenc:Array">
+				<list href="#id2" />
+				<list href="#id3" />
+			</list>
+			<number href="#id4" />
+			<param2 href="#id5" />
+			<param3list soapenc:arrayType="ns2:param-3[3]" xsi:type="soapenc:Array" xmlns:ns2="http://dispatch2.axis1.ws.springframework.org/p3/">
+				<param3list href="#id6" />
+				<param3list href="#id7" />
+				<param3list href="#id8" />
+			</param3list>
+			<string xsi:type="soapenc:string">str (String)</string>
+		</multiRef>
+		<multiRef id="id1" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns3:param-2"
+			xmlns:ns3="http://dispatch2.axis1.ws.springframework.org/p2/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<bd href="#id9" />
+			<list soapenc:arrayType="soapenc:string[3]" xsi:type="soapenc:Array">
+				<list xsi:type="soapenc:string">str1</list>
+				<list xsi:type="soapenc:string">str2</list>
+				<list xsi:type="soapenc:string">str3</list>
+			</list>
+			<number href="#id10" />
+			<param3list soapenc:arrayType="ns4:param-3[3]" xsi:type="soapenc:Array" xmlns:ns4="http://dispatch2.axis1.ws.springframework.org/p3/">
+				<param3list href="#id11" />
+				<param3list href="#id12" />
+				<param3list href="#id13" />
+			</param3list>
+		</multiRef>
+		<multiRef id="id12" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns5:param-3"
+			xmlns:ns5="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<value xsi:type="soapenc:string">value</value>
+		</multiRef>
+		<multiRef id="id4" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="soapenc:long"
+			xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">37</multiRef>
+		<multiRef id="id9" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="soapenc:decimal"
+			xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">37.98</multiRef>
+		<multiRef id="id5" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns6:param-2"
+			xmlns:ns6="http://dispatch2.axis1.ws.springframework.org/p2/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<bd href="#id14" />
+			<list soapenc:arrayType="soapenc:string[3]" xsi:type="soapenc:Array">
+				<list xsi:type="soapenc:string">str1</list>
+				<list xsi:type="soapenc:string">str2</list>
+				<list xsi:type="soapenc:string">str3</list>
+			</list>
+			<number href="#id10" />
+			<param3list soapenc:arrayType="ns7:param-3[3]" xsi:type="soapenc:Array" xmlns:ns7="http://dispatch2.axis1.ws.springframework.org/p3/">
+				<param3list href="#id15" />
+				<param3list href="#id16" />
+				<param3list href="#id17" />
+			</param3list>
+		</multiRef>
+		<multiRef id="id13" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns8:param-3"
+			xmlns:ns8="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<value xsi:type="soapenc:string">value</value>
+		</multiRef>
+		<multiRef id="id11" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns9:param-3"
+			xmlns:ns9="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<value xsi:type="soapenc:string">value</value>
+		</multiRef>
+		<multiRef id="id8" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns10:param-3"
+			xmlns:ns10="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<value xsi:type="soapenc:string">value</value>
+		</multiRef>
+		<multiRef id="id6" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns11:param-3"
+			xmlns:ns11="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<value xsi:type="soapenc:string">value</value>
+		</multiRef>
+		<multiRef id="id7" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns12:param-3"
+			xmlns:ns12="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<value xsi:type="soapenc:string">value</value>
+		</multiRef>
+		<multiRef id="id10" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="soapenc:int"
+			xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">44</multiRef>
+		<multiRef id="id3" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="soapenc:byte"
+			xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">-102</multiRef>
+		<multiRef id="id2" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="soapenc:byte"
+			xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">36</multiRef>
+		<multiRef id="id14" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="soapenc:decimal"
+			xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">37.98</multiRef>
+		<multiRef id="id15" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns13:param-3"
+			xmlns:ns13="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<value xsi:type="soapenc:string">value</value>
+		</multiRef>
+		<multiRef id="id17" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns14:param-3"
+			xmlns:ns14="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<value xsi:type="soapenc:string">value</value>
+		</multiRef>
+		<multiRef id="id16" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns15:param-3"
+			xmlns:ns15="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<value xsi:type="soapenc:string">value</value>
+		</multiRef>
+	</soapenv:Body>
+</soapenv:Envelope>

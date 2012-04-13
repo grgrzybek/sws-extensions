@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://dispatch2.axis1.ws.springframework.org/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://dispatch2.axis1.ws.springframework.org/" xmlns:intf="http://dispatch2.axis1.ws.springframework.org/" xmlns:tns1="http://dispatch2.axis1.ws.springframework.org/p1/" xmlns:tns2="http://dispatch2.axis1.ws.springframework.org/p2/" xmlns:tns3="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns:tns4="http://dispatch2.axis1.ws.springframework.org/r1/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://dispatch2.axis1.ws.springframework.org/" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/r1/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p1/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p3/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p2/"/>
+   <complexType name="ArrayOf_xsd_byte">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:byte"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOf_xsd_string">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOf_tns3_param-3">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns3:param-3"/>
+    </sequence>
+   </complexType>
+   <element name="param" type="tns1:param-1"/>
+   <element name="param2" type="tns2:param-2"/>
+   <complexType name="ArrayOf_xsd_decimal">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:decimal"/>
+    </sequence>
+   </complexType>
+   <element name="docLitReturn" type="tns4:result-1"/>
+  </schema>
+  <schema elementFormDefault="qualified" targetNamespace="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/r1/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p1/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p2/"/>
+   <complexType name="param-3">
+    <sequence>
+     <element name="value" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema elementFormDefault="qualified" targetNamespace="http://dispatch2.axis1.ws.springframework.org/p2/" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/r1/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p1/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p3/"/>
+   <complexType name="param-2">
+    <sequence>
+     <element name="bd" nillable="true" type="xsd:decimal"/>
+     <element name="list" nillable="true" type="impl:ArrayOf_xsd_string"/>
+     <element name="number" nillable="true" type="xsd:int"/>
+     <element name="param3list" nillable="true" type="impl:ArrayOf_tns3_param-3"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema elementFormDefault="qualified" targetNamespace="http://dispatch2.axis1.ws.springframework.org/p1/" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/r1/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p3/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p2/"/>
+   <complexType name="param-1">
+    <sequence>
+     <element name="list" nillable="true" type="impl:ArrayOf_xsd_byte"/>
+     <element name="number" nillable="true" type="xsd:long"/>
+     <element name="param2" nillable="true" type="tns2:param-2"/>
+     <element name="param3list" nillable="true" type="impl:ArrayOf_tns3_param-3"/>
+     <element name="string" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema elementFormDefault="qualified" targetNamespace="http://dispatch2.axis1.ws.springframework.org/r1/" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p1/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p3/"/>
+   <import namespace="http://dispatch2.axis1.ws.springframework.org/p2/"/>
+   <complexType name="result-1">
+    <sequence>
+     <element name="list" nillable="true" type="impl:ArrayOf_xsd_decimal"/>
+     <element name="param2" nillable="true" type="tns2:param-2"/>
+     <element name="str" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="docLitResponse">
+
+      <wsdl:part element="impl:docLitReturn" name="docLitReturn">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="docLitRequest">
+
+      <wsdl:part element="impl:param" name="param">
+
+      </wsdl:part>
+
+      <wsdl:part element="impl:param2" name="param2">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="EchoEndpointDocument">
+
+      <wsdl:operation name="docLit" parameterOrder="param param2">
+
+         <wsdl:input message="impl:docLitRequest" name="docLitRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:docLitResponse" name="docLitResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="EchoEndpointDocumentLiteralSoapBinding" type="impl:EchoEndpointDocument">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="docLit">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="docLitRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="docLitResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="EchoEndpointDocumentService">
+
+      <wsdl:port binding="impl:EchoEndpointDocumentLiteralSoapBinding" name="EchoEndpointDocumentLiteral">
+
+         <wsdlsoap:address location="http://localhost:29078/axis1/EchoEndpointDocumentLiteral"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

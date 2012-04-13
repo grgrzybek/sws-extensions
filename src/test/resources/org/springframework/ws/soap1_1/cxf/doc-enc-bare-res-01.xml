@@ -1,0 +1,25 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<ns2:docEncBareResponse xmlns:ns2="http://dispatch2.cxf.ws.springframework.org/">
+			<list>890.123123</list>
+			<list>0.12</list>
+			<param2>
+				<bd>37.98</bd>
+				<list>str1</list>
+				<list>str2</list>
+				<list>str3</list>
+				<param3list>
+					<value>value</value>
+				</param3list>
+				<param3list>
+					<value>value</value>
+				</param3list>
+				<param3list>
+					<value>value</value>
+				</param3list>
+				<number>44</number>
+			</param2>
+			<str>part of result</str>
+		</ns2:docEncBareResponse>
+	</soap:Body>
+</soap:Envelope>

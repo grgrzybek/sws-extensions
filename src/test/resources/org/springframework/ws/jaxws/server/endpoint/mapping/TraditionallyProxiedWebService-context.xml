@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="beanTarget" class="org.springframework.ws.jaxws.jsr181.implbean.ServiceImplementationBean" />
+	<bean id="bean" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="beanTarget" />
+		<property name="interceptorNames">
+			<list>
+				<value>interceptor</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="interceptor" class="org.springframework.ws.jaxws.jsr181.implbean.MethodInterceptor1" />
+	<bean class="org.springframework.ws.jaxws.server.endpoint.mapping.JaxWsEndpointMapping" />
+
+</beans>

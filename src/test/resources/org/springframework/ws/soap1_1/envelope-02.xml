@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<SOAP-ENV:Envelope
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"
+	xmlns:test="urn:test:1" test:description="Additional attributes MUST be namespace-qualified">
+	<SOAP-ENV:Header>
+		<test:info1>All Header children MUST be namespace-qualified</test:info1>
+		<test:info2 SOAP-ENV:encodingStyle="urn:test:2">The SOAP encodingStyle attribute MAY be used to indicate the encoding style used for the header entries.</test:info2>
+		<test:info3 SOAP-ENV:mustUnderstand="1">The recipient of a SOAP message MUST ignore all SOAP Header attributes that are not applied to an immediate child element of the SOAP Header element.</test:info3>
+		<test:info4 SOAP-ENV:actor="http://schemas.xmlsoap.org/soap/actor/next">The special URI "http://schemas.xmlsoap.org/soap/actor/next" indicates that the header element is intended for the very first SOAP application that processes the message.</test:info4>
+		<test:info5>Omitting the SOAP actor attribute indicates that the recipient is the ultimate destination of the SOAP message.</test:info5>
+		<test:info6 SOAP-ENV:mustUnderstand="1">The SOAP mustUnderstand global attribute can be used to indicate whether a header entry is mandatory or optional for the recipient to process.</test:info6>
+	</SOAP-ENV:Header>
+	<SOAP-ENV:Body SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+		<info>Immediate child elements of the SOAP Body element MAY be namespace-qualified</info>
+		<test:info1 SOAP-ENV:encodingStyle="">SOAP 1.1 (not WS-I Basic Profile) allows many SOAP-ENV:Body children</test:info1>
+		<test:info2 SOAP-ENV:encodingStyle="urn:test:2 urn:test:3">SOAP-ENV:encodingStyle may indicate an encoding of any element. It looks that it's XSD-qualified attribute.</test:info2>
+		<test:info3>A body entry is identified by its fully qualified element name, which consists of the namespace URI and the local name.</test:info3>
+		<test:info4>A body entry is semantically equivalent to a header entry intended for the default actor and with a SOAP mustUnderstand attribute with a value of "1". The default actor is indicated by not using the actor attribute</test:info4>
+	</SOAP-ENV:Body>
+	<test:info>SOAP 1.1 Specification allows additional namespace-qualified elements AFTER SOAP-ENV:Body</test:info>
+</SOAP-ENV:Envelope>

@@ -1,0 +1,2 @@
+http\://www.springframework.org/schema/web-services/jax-ws-2.1.xsd=/org/springframework/ws/jaxws/config/jax-ws-2.1.xsd
+http\://www.springframework.org/schema/web-services/jax-ws.xsd=/org/springframework/ws/jaxws/config/jax-ws-2.1.xsd

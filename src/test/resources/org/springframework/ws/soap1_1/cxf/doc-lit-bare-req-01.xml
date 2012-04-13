@@ -1,0 +1,35 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<ns2:docLitBare xmlns:ns2="http://dispatch2.cxf.ws.springframework.org/">
+			<string>str (String)</string>
+			<number>37</number>
+			<param2>
+				<bd>37.98</bd>
+				<list>str1</list>
+				<list>str2</list>
+				<list>str3</list>
+				<param3list>
+					<value>value</value>
+				</param3list>
+				<param3list>
+					<value>value</value>
+				</param3list>
+				<param3list>
+					<value>value</value>
+				</param3list>
+				<number>44</number>
+			</param2>
+			<list>36</list>
+			<list>-102</list>
+			<param3list>
+				<value>value</value>
+			</param3list>
+			<param3list>
+				<value>value</value>
+			</param3list>
+			<param3list>
+				<value>value</value>
+			</param3list>
+		</ns2:docLitBare>
+	</soap:Body>
+</soap:Envelope>

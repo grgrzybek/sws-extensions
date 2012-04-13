@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://dispatch2.axis1.ws.springframework.org/" xmlns:apachesoap="http://xml.apache.org/xml-soap"
+	xmlns:impl="http://dispatch2.axis1.ws.springframework.org/" xmlns:intf="http://dispatch2.axis1.ws.springframework.org/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:tns1="http://dispatch2.axis1.ws.springframework.org/p1/" xmlns:tns2="http://dispatch2.axis1.ws.springframework.org/p2/" xmlns:tns3="http://dispatch2.axis1.ws.springframework.org/p3/"
+	xmlns:tns4="http://dispatch2.axis1.ws.springframework.org/r1/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+	<wsdl:types>
+		<schema targetNamespace="http://dispatch2.axis1.ws.springframework.org/" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/r1/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p1/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p3/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p2/" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="ArrayOf_soapenc_byte">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:byte[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="ArrayOf_soapenc_string">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:string[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="ArrayOf_tns3_param-3">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="tns3:param-3[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="ArrayOf_soapenc_decimal">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:decimal[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+		</schema>
+		<schema targetNamespace="http://dispatch2.axis1.ws.springframework.org/p3/" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/r1/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p1/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p2/" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="param-3">
+				<sequence>
+					<element name="value" nillable="true" type="soapenc:string" />
+				</sequence>
+			</complexType>
+		</schema>
+		<schema targetNamespace="http://dispatch2.axis1.ws.springframework.org/p2/" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/r1/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p1/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p3/" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="param-2">
+				<sequence>
+					<element name="bd" nillable="true" type="soapenc:decimal" />
+					<element name="list" nillable="true" type="impl:ArrayOf_soapenc_string" />
+					<element name="number" nillable="true" type="soapenc:int" />
+					<element name="param3list" nillable="true" type="impl:ArrayOf_tns3_param-3" />
+				</sequence>
+			</complexType>
+		</schema>
+		<schema targetNamespace="http://dispatch2.axis1.ws.springframework.org/p1/" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/r1/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p3/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p2/" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="param-1">
+				<sequence>
+					<element name="list" nillable="true" type="impl:ArrayOf_soapenc_byte" />
+					<element name="number" nillable="true" type="soapenc:long" />
+					<element name="param2" nillable="true" type="tns2:param-2" />
+					<element name="param3list" nillable="true" type="impl:ArrayOf_tns3_param-3" />
+					<element name="string" nillable="true" type="soapenc:string" />
+				</sequence>
+			</complexType>
+		</schema>
+		<schema targetNamespace="http://dispatch2.axis1.ws.springframework.org/r1/" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p1/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p3/" />
+			<import namespace="http://dispatch2.axis1.ws.springframework.org/p2/" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="result-1">
+				<sequence>
+					<element name="list" nillable="true" type="impl:ArrayOf_soapenc_decimal" />
+					<element name="param2" nillable="true" type="tns2:param-2" />
+					<element name="str" nillable="true" type="soapenc:string" />
+				</sequence>
+			</complexType>
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="rpcEncRequest">
+		<wsdl:part name="param1" type="tns1:param-1">
+		</wsdl:part>
+		<wsdl:part name="param2" type="tns2:param-2">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="rpcEncResponse">
+		<wsdl:part name="rpcEncReturn" type="tns4:result-1">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="EchoEndpointRPC">
+		<wsdl:operation name="rpcEnc" parameterOrder="param1 param2">
+			<wsdl:input message="impl:rpcEncRequest" name="rpcEncRequest">
+			</wsdl:input>
+			<wsdl:output message="impl:rpcEncResponse" name="rpcEncResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="EchoEndpointRPCEncodedSoapBinding" type="impl:EchoEndpointRPC">
+		<wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="rpcEnc">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="rpcEncRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://dispatch2.axis1.ws.springframework.org/" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="rpcEncResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://dispatch2.axis1.ws.springframework.org/" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="EchoEndpointRPCService">
+		<wsdl:port binding="impl:EchoEndpointRPCEncodedSoapBinding" name="EchoEndpointRPCEncoded">
+			<wsdlsoap:address location="http://localhost:42259/axis1/EchoEndpointRPCEncoded" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

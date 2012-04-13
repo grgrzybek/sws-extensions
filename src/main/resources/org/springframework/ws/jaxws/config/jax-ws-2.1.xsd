@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema targetNamespace="http://www.springframework.org/schema/web-services/jax-ws"
+	xmlns="http://www.springframework.org/schema/web-services/jax-ws"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:tool="http://www.springframework.org/schema/tool"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+
+	<xsd:import namespace="http://www.springframework.org/schema/beans" schemaLocation="http://www.springframework.org/schema/beans/spring-beans-3.0.xsd" />
+	<xsd:import namespace="http://www.springframework.org/schema/tool" schemaLocation="http://www.springframework.org/schema/tool/spring-tool-3.0.xsd" />
+
+	<xsd:annotation>
+		<xsd:documentation>
+			Defines the configuration elements for Spring Web Services JAX-WS integration.
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:element name="annotation-driven">
+		<xsd:complexType>
+			<xsd:attribute name="base-package" type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>

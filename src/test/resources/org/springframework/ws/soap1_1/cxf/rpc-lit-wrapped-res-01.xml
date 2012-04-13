@@ -1,0 +1,27 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<ns1:rpcLitWrappedResponse xmlns:ns1="http://dispatch2.cxf.ws.springframework.org/">
+			<return>
+				<list>890.123123</list>
+				<list>0.12</list>
+				<param2>
+					<bd>37.98</bd>
+					<list>str1</list>
+					<list>str2</list>
+					<list>str3</list>
+					<param3list>
+						<value>value</value>
+					</param3list>
+					<param3list>
+						<value>value</value>
+					</param3list>
+					<param3list>
+						<value>value</value>
+					</param3list>
+					<number>44</number>
+				</param2>
+				<str>part of result</str>
+			</return>
+		</ns1:rpcLitWrappedResponse>
+	</soap:Body>
+</soap:Envelope>
