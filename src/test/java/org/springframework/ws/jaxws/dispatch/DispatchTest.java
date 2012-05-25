@@ -54,28 +54,28 @@ public class DispatchTest extends SwsIntegrationTests {
 			public void perform(int port) {
 				WebServiceTemplate wst = new WebServiceTemplate();
 				wst.setMessageFactory(new AxiomSoapMessageFactory());
-				String result = wst.sendSourceAndReceive("http://localhost:" + port + "/sws/ws", new StreamSource(new StringReader("<method xmlns=\"http://endpoints.dispatch.jaxws.ws.springframework.org/\">hello</method>")),
-						new SourceExtractor<String>() {
-							@Override
-							public String extractData(Source source) throws IOException, TransformerException {
-								XMLStreamReader reader = StaxUtils.getXMLStreamReader(source);
-								String result = null;
-								try {
-									while (reader.hasNext()) {
-										int ev = reader.next();
-										if (ev == XMLStreamConstants.CHARACTERS && StringUtils.hasText(reader.getText())) {
-											result = reader.getText();
-											break;
-										}
-									}
-									reader.close();
+				String result = wst.sendSourceAndReceive("http://localhost:" + port + "/sws/ws", new StreamSource(new StringReader(
+						"<method xmlns=\"http://endpoints.dispatch.jaxws.ws.springframework.org/\">hello</method>")), new SourceExtractor<String>() {
+					@Override
+					public String extractData(Source source) throws IOException, TransformerException {
+						XMLStreamReader reader = StaxUtils.getXMLStreamReader(source);
+						String result = null;
+						try {
+							while (reader.hasNext()) {
+								int ev = reader.next();
+								if (ev == XMLStreamConstants.CHARACTERS && StringUtils.hasText(reader.getText())) {
+									result = reader.getText();
+									break;
 								}
-								catch (XMLStreamException e) {
-									throw new RuntimeException(e.getMessage(), e);
-								}
-								return result;
 							}
-						});
+							reader.close();
+						}
+						catch (XMLStreamException e) {
+							throw new RuntimeException(e.getMessage(), e);
+						}
+						return result;
+					}
+				});
 				assertThat(result, equalTo("((hello))"));
 			}
 

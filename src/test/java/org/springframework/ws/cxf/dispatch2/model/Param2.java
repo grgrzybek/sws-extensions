@@ -30,12 +30,7 @@ import org.springframework.ws.axis1.dispatch2.model.Param3;
  *
  * @author Grzegorz Grzybek
  */
-@XmlType(propOrder = {
-		"bd",
-		"list",
-		"param3list",
-		"number"
-})
+@XmlType(propOrder = { "bd", "list", "param3list", "number" })
 public class Param2 {
 
 	private BigDecimal bd = new BigDecimal("37.98");

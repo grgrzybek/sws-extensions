@@ -33,13 +33,13 @@ public interface EchoEndpointRPCInterface {
 
 	@SOAPBinding(parameterStyle = ParameterStyle.BARE, style = Style.RPC, use = Use.LITERAL)
 	public String echo3c(@WebParam String param);
-	
+
 	@SOAPBinding(parameterStyle = ParameterStyle.WRAPPED, style = Style.RPC, use = Use.LITERAL)
 	public String echo3d(@WebParam String param1, @WebParam String param2);
-	
+
 	@SOAPBinding(parameterStyle = ParameterStyle.BARE, style = Style.RPC, use = Use.ENCODED)
 	public String echo3g(@WebParam String param);
-	
+
 	@SOAPBinding(parameterStyle = ParameterStyle.WRAPPED, style = Style.RPC, use = Use.ENCODED)
 	public String echo3h(@WebParam String param1, @WebParam String param2);
 

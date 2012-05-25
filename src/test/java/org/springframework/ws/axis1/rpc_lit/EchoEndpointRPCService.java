@@ -8,9 +8,9 @@
 package org.springframework.ws.axis1.rpc_lit;
 
 public interface EchoEndpointRPCService extends javax.xml.rpc.Service {
-    public java.lang.String getEchoEndpointRPCLiteralAddress();
+	public java.lang.String getEchoEndpointRPCLiteralAddress();
 
-    public org.springframework.ws.axis1.rpc_lit.EchoEndpointRPC getEchoEndpointRPCLiteral() throws javax.xml.rpc.ServiceException;
+	public org.springframework.ws.axis1.rpc_lit.EchoEndpointRPC getEchoEndpointRPCLiteral() throws javax.xml.rpc.ServiceException;
 
-    public org.springframework.ws.axis1.rpc_lit.EchoEndpointRPC getEchoEndpointRPCLiteral(java.net.URL portAddress) throws javax.xml.rpc.ServiceException;
+	public org.springframework.ws.axis1.rpc_lit.EchoEndpointRPC getEchoEndpointRPCLiteral(java.net.URL portAddress) throws javax.xml.rpc.ServiceException;
 }

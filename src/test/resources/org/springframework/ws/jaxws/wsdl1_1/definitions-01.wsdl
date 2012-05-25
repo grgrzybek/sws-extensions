@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions name="definitions-01" targetNamespace="urn:test:1"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="urn:test:1">
+
+	<!-- WS-I: R2001 A DESCRIPTION MUST only use the WSDL "import" statement to import another WSDL description. -->
+	<!--import location="" namespace="" /-->	
+
+	<types>
+		<!-- data type definitions used to describe the messages exchanged -->
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:test:1">
+			<xs:element name="param1" type="xs:string" />
+		</xs:schema>
+	</types>
+
+	<!--
+		JAX-WS: The value of a wsdl:message element's name attribute is not significant but by convention it is normally
+		equal to the corresponding operation name for input messages and the operation name concatenated with
+		"Response" for output messages. Naming of fault messages is described in section section 3.7.
+	-->
+	<message name="TestRequest">
+		<!-- an abstract definition of the data being transmitted. A message consists of logical parts, each of which is associated with a definition within some type system -->
+		<!-- WS-I R2735, R2755 - An ENVELOPE described with an rpc-literal binding MUST place the part accessor elements for parameters and return value in no namespace. -->
+		<!-- The message name attribute provides a unique name among all messages defined within the enclosing WSDL document -->
+		<!-- WS-I R2206 A wsdl:message in a DESCRIPTION containing a wsdl:part that uses the element attribute MUST refer, in that attribute, to a global element declaration. -->
+		<part name="param" element="tns:param1">
+			<!-- R2207 A wsdl:message in a DESCRIPTION MAY contain wsdl:parts that use the elements attribute provided those wsdl:parts are not referred to by a wsoap11:body in an rpc-literal binding. -->
+			<!-- The part name attribute provides a unique name among all the parts of the enclosing message -->
+		</part>
+	</message>
+	<message name="TestResponse">
+		<part name="result" element="tns:param1">
+		</part>
+	</message>
+	<message name="TestFault1">
+		<part name="fault" element="tns:param1">
+		</part>
+	</message>
+
+	<portType name="Test01PortType">
+		<!-- set of abstract operations. Each operation refers to an input message and output messages -->
+		<!-- R2301 The order of the elements in the soap11:Body of an ENVELOPE MUST be the same as that of the wsdl:parts in the wsdl:message that describes it for each of the wsdl:part elements bound to the envelope's corresponding wsoap11:body element. -->
+		<!-- R2302 A DESCRIPTION MAY use the parameterOrder attribute of an wsdl:operation element to indicate the return value and method signatures as a hint to code generators. -->
+		<!-- R2304 A wsdl:portType in a DESCRIPTION MUST have operations with distinct values for their name attributes. -->
+		<!-- R2305 A wsdl:operation element child of a wsdl:portType element in a DESCRIPTION MUST be constructed so that the parameterOrder attribute, if present, omits at most 1 wsdl:part from the output message. -->
+		<operation name="test" parameterOrder="">
+			<input message="tns:TestRequest" name="testRequest">
+				<!-- The name attribute of the input and output elements provides a unique name among all input and output elements within the enclosing port type -->
+				<!--
+					In order to avoid having to name each input and output element within an operation, WSDL provides some default values based on the operation name.
+					If the name attribute is not specified on a one-way or notification message, it defaults to the name of the operation.
+					If the name attribute is not specified on the input or output messages of a request-response or solicit-response operation, the name defaults to the name of the operation with "Request"/"Solicit" or "Response" appended, respectively.
+				-->
+			</input>
+			<output message="tns:TestResponse" name="testResponse"></output>
+			<fault name="testFault1" message="tns:TestFault1">
+				<!-- Each fault element must be named to allow a binding to specify the concrete format of the fault message. The name of the fault element is unique within the set of faults defined for the operation. -->
+			</fault>
+		</operation>
+	</portType>
+
+	<binding name="Test01Soap11Binding" type="tns:Test01PortType">
+		<!-- In WSDL 1.1, the wsdl:binding element supplies the concrete protocol and data format specifications for the operations and messages defined by a particular wsdl:portType. -->
+		<!-- R2401 A wsdl:binding element in a DESCRIPTION MUST use the SOAP Binding as defined in WSDL 1.1, Section 3. -->
+		<!-- R2701 The wsdl:binding element in a DESCRIPTION MUST be constructed so that its wsoap11:binding child element specifies the transport attribute. -->
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<!-- concrete protocol and data format specifications for the operations and messages defined by a particular portType -->
+		<operation name="test">
+			<soap:operation style="document" />
+			<!-- An operation element within a binding specifies binding information for the operation with the same name within the binding's portType -->
+			<input name="testRequest">
+				<!-- R2201 A document-literal binding in a DESCRIPTION MUST, in each of its wsoap11:body element(s), have at most one part listed in the parts attribute, if the parts attribute is specified. -->
+				<!-- R2210 If a document-literal binding in a DESCRIPTION does not specify the parts attribute on a wsoap11:body element, the corresponding abstract wsdl:message MUST define zero or one wsdl:parts. -->
+				<!-- R2202 A wsdl:binding in a DESCRIPTION MAY contain wsoap11:body element(s) that specify that zero parts form the soap11:Body. -->
+				<!-- R2203 An rpc-literal binding in a DESCRIPTION MUST refer, in its wsoap11:body element(s), only to wsdl:part element(s) that have been defined using the type attribute. -->
+				<!-- R2204 A document-literal binding in a DESCRIPTION MUST refer, in each of its wsoap11:body element(s), only to wsdl:part element(s) that have been defined using the element attribute. -->
+				<!-- R2712 A document-literal binding MUST be serialized as an ENVELOPE with a soap11:Body whose child element is an instance of the global element declaration referenced by the corresponding wsdl:message part. -->
+				<!-- R2716 A document-literal binding in a DESCRIPTION MUST NOT have the namespace attribute specified on contained wsoap11:body, wsoap11:header, wsoap11:headerfault and wsoap11:fault elements. -->
+				<!-- R2717 An rpc-literal binding in a DESCRIPTION MUST have the namespace attribute specified, the value of which MUST be an absolute URI, on contained wsoap11:body elements. -->
+				<!-- In a document-literal SOAP binding, the serialized element child of the soap11:Body gets its namespace from the targetNamespace of the schema that defines the element. Use of the namespace attribute of the wsoap11:body element would override the element's namespace. -->
+				<!-- Conversely, in a rpc-literal SOAP binding, the serialized child element of the soap11:Body element consists of a wrapper element, whose namespace is the value of the namespace attribute of the wsoap11:body element and whose local name is either the name of the operation or the name of the operation suffixed with "Response" -->
+				<!-- R2735 An ENVELOPE described with an rpc-literal binding MUST place the part accessor elements for parameters and return value in no namespace. -->
+				<!-- R2755 The part accessor elements in a MESSAGE described with an rpc-literal binding MUST have a local name of the same value as the name attribute of the corresponding wsdl:part element. -->
+				<!-- R2737 An ENVELOPE described with an rpc-literal binding MUST namespace qualify the descendents of part accessor elements for the parameters and the return value, as defined by the schema in which the part accessor types are defined. -->
+				<soap:body parts="param" use="literal" namespace="urn:test:x" />
+				<!-- R2208 A binding in a DESCRIPTION MAY contain wsoap11:header element(s) that refer to wsdl:parts in the same wsdl:message that are referred to by its wsoap11:body element(s). -->
+				<!-- R2726 An rpc-literal binding in a DESCRIPTION MUST NOT have the namespace attribute specified on contained wsoap11:header, wsoap11:headerfault and wsoap11:fault elements. -->
+				<soap:header use="literal" part="param" message="tns:TestRequest" />
+				<!--
+					Since operation names are not required to be unique (for example, in the case of overloading of method names), the name attribute in the operation binding element might not be enough to uniquely identify an operation.
+					In that case, the correct operation should be identified by providing the name attributes of the corresponding wsdl:input and wsdl:output elements.
+				-->
+			</input>
+			<output name="testResponse">
+				<!-- R2729 An ENVELOPE described with an rpc-literal binding that is a response MUST have a wrapper element whose name is the corresponding wsdl:operation name suffixed with the string "Response". -->
+				<soap:body parts="result" use="literal" />
+			</output>
+			<fault name="testFault1">
+				<!-- R2205 A wsdl:binding in a DESCRIPTION MUST refer, in each of its wsoap11:header, wsoap11:headerfault and wsoap11:fault elements, only to wsdl:part element(s) that have been defined using the element attribute. -->
+				<soap:fault name="testFault1" use="literal" />
+			</fault>
+		</operation>
+	</binding>
+
+	<binding name="Test01Soap12Binding" type="tns:Test01PortType">
+		<soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="test">
+			<soap12:operation style="document" />
+			<input name="testRequest">
+				<soap12:body parts="param" use="literal" />
+			</input>
+			<output name="testResponse">
+			</output>
+			<fault name="testFault1">
+			</fault>
+		</operation>
+	</binding>
+
+	<binding name="Test01HttpBinding" type="tns:Test01PortType">
+		<http:binding verb="GET" />
+		<operation name="test">
+			<http:operation location="http://localhost" />
+			<input name="testRequest">
+				<http:urlReplacement />
+			</input>
+			<output name="testResponse">
+				<mime:content type="" />
+			</output>
+			<fault name="testFault1">
+			</fault>
+		</operation>
+	</binding>
+
+	<service name="Test01Service">
+		<!-- used to aggregate a set of related ports -->
+		<port name="Test01Soap11Binding_http" binding="tns:Test01Soap11Binding">
+			<soap:address location="http://localhost" />
+			<!-- an address for a binding, thus defining a single communication endpoint -->
+		</port>
+		<!--port name="Test01Soap12Binding_http" binding="tns:Test01Soap12Binding">
+			<soap12:address location="http://localhost" />
+		</port>
+		<port name="Test01HttpBinding_http" binding="tns:Test01HttpBinding">
+			<http:address location="http://localhost" />
+		</port-->
+	</service>
+
+</definitions>

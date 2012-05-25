@@ -8,5 +8,6 @@
 package org.springframework.ws.axis1.doc_enc;
 
 public interface EchoEndpointDocument extends java.rmi.Remote {
-    public org.springframework.ws.axis1.doc_enc.Result1 docEnc(org.springframework.ws.axis1.doc_enc.Param1 param1, org.springframework.ws.axis1.doc_enc.Param2 param2) throws java.rmi.RemoteException;
+	public org.springframework.ws.axis1.doc_enc.Result1 docEnc(org.springframework.ws.axis1.doc_enc.Param1 param1,
+			org.springframework.ws.axis1.doc_enc.Param2 param2) throws java.rmi.RemoteException;
 }

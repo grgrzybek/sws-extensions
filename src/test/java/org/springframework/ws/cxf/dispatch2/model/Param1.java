@@ -31,23 +31,17 @@ import org.springframework.ws.axis1.dispatch2.model.Param3;
  *
  * @author Grzegorz Grzybek
  */
-@XmlType(propOrder = {
-		"string",
-		"number",
-		"param2",
-		"list",
-		"param3list"
-})
+@XmlType(propOrder = { "string", "number", "param2", "list", "param3list" })
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Param1 {
 
 	private String string = "str (String)";
 
 	private Long number = 37L;
-	
+
 	private Param2 param2 = new Param2();
 
-	private List<Byte> list = new LinkedList<Byte>(Arrays.asList((byte)0x24, (byte)0x9A));
+	private List<Byte> list = new LinkedList<Byte>(Arrays.asList((byte) 0x24, (byte) 0x9A));
 
 	private List<Param3> param3list = new LinkedList<Param3>(Arrays.asList(new Param3(), new Param3(), new Param3()));
 

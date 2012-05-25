@@ -7,9 +7,11 @@
 
 package org.springframework.ws.axis1.wrapped_enc;
 
-public class EchoEndpointWrappedEncodedSoapBindingImpl implements org.springframework.ws.axis1.wrapped_enc.EchoEndpointWrapped{
-    public org.springframework.ws.axis1.wrapped_enc.WrappedEncResponse wrappedEnc(org.springframework.ws.axis1.wrapped_enc.WrappedEnc parameters) throws java.rmi.RemoteException {
-        return null;
-    }
+public class EchoEndpointWrappedEncodedSoapBindingImpl implements org.springframework.ws.axis1.wrapped_enc.EchoEndpointWrapped {
+	@Override
+	public org.springframework.ws.axis1.wrapped_enc.WrappedEncResponse wrappedEnc(org.springframework.ws.axis1.wrapped_enc.WrappedEnc parameters)
+			throws java.rmi.RemoteException {
+		return null;
+	}
 
 }

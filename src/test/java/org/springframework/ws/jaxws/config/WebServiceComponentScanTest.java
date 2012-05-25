@@ -24,9 +24,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ws.jaxws.config.endpoints.ServiceImplementationBean;
 
-import static org.junit.Assert.*;
-
 import static org.hamcrest.CoreMatchers.*;
+
+import static org.junit.Assert.*;
 
 /**
  * <p></p>

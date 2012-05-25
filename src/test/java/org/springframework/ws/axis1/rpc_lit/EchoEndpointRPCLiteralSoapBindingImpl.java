@@ -7,9 +7,11 @@
 
 package org.springframework.ws.axis1.rpc_lit;
 
-public class EchoEndpointRPCLiteralSoapBindingImpl implements org.springframework.ws.axis1.rpc_lit.EchoEndpointRPC{
-    public org.springframework.ws.axis1.rpc_lit.Result1 rpcLit(org.springframework.ws.axis1.rpc_lit.Param1 param, org.springframework.ws.axis1.rpc_lit.Param2 param2) throws java.rmi.RemoteException {
-        return null;
-    }
+public class EchoEndpointRPCLiteralSoapBindingImpl implements org.springframework.ws.axis1.rpc_lit.EchoEndpointRPC {
+	@Override
+	public org.springframework.ws.axis1.rpc_lit.Result1 rpcLit(org.springframework.ws.axis1.rpc_lit.Param1 param,
+			org.springframework.ws.axis1.rpc_lit.Param2 param2) throws java.rmi.RemoteException {
+		return null;
+	}
 
 }

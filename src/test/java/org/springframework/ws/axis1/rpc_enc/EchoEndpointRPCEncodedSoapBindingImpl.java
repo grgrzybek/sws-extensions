@@ -7,9 +7,11 @@
 
 package org.springframework.ws.axis1.rpc_enc;
 
-public class EchoEndpointRPCEncodedSoapBindingImpl implements org.springframework.ws.axis1.rpc_enc.EchoEndpointRPC{
-    public org.springframework.ws.axis1.rpc_enc.Result1 rpcEnc(org.springframework.ws.axis1.rpc_enc.Param1 param1, org.springframework.ws.axis1.rpc_enc.Param2 param2) throws java.rmi.RemoteException {
-        return null;
-    }
+public class EchoEndpointRPCEncodedSoapBindingImpl implements org.springframework.ws.axis1.rpc_enc.EchoEndpointRPC {
+	@Override
+	public org.springframework.ws.axis1.rpc_enc.Result1 rpcEnc(org.springframework.ws.axis1.rpc_enc.Param1 param1,
+			org.springframework.ws.axis1.rpc_enc.Param2 param2) throws java.rmi.RemoteException {
+		return null;
+	}
 
 }

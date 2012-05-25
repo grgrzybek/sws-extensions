@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions name="definitions-01" targetNamespace="urn:services:1"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="urn:services:1"
+	xmlns:types="urn:types:1"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:wsoap11="http://schemas.xmlsoap.org/wsdl/soap/">
+
+	<types>
+		<xs:schema targetNamespace="urn:types:1">
+			<xs:element name="arg1" type="xs:string" />
+			<xs:element name="response" type="xs:string" />
+		</xs:schema>
+	</types>
+
+	<message name="helloRequest">
+		<part name="request" element="types:arg1" />
+	</message>
+	<message name="helloResponse">
+		<part name="response" element="types:response" />
+	</message>
+
+	<portType name="Port01">
+		<operation name="hello">
+			<input message="tns:helloRequest" name="helloRequest" />
+			<output message="tns:helloResponse" name="helloResponse" />
+		</operation>
+	</portType>
+
+	<binding name="Port02SoapBinding" type="tns:Port02">
+		<wsoap11:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="hello">
+			<input name="helloRequest">
+				<wsoap11:body use="literal" />
+			</input>
+			<output name="helloResponse">
+				<wsoap11:body use="literal" />
+			</output>
+		</operation>
+	</binding>
+
+	<service name="Port02Service">
+		<port name="Port02" binding="tns:Port02SoapBinding">
+			<wsoap11:address location="http://localhost" />
+		</port>
+	</service>
+
+</definitions>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="definitions-02" targetNamespace="urn:test:2" xmlns:tns="urn:test:2">
+
+	<message name="helloRequest">
+		<part name="arg1" type="xs:string" />
+	</message>
+	<message name="helloResponse">
+		<part name="result" type="xs:string" />
+	</message>
+
+	<portType name="Port02">
+		<operation name="hello">
+			<input message="tns:helloRequest" name="helloRequest" />
+			<output message="tns:helloResponse" name="helloResponse" />
+		</operation>
+	</portType>
+
+	<binding name="Port02SoapBinding" type="tns:Port02">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="hello">
+			<input name="helloRequest">
+				<soap:body use="literal" namespace="urn:test:2" />
+			</input>
+			<output name="helloResponse">
+				<soap:body use="literal" namespace="urn:test:2" />
+			</output>
+		</operation>
+	</binding>
+
+	<service name="Port02Service">
+		<port name="Port02" binding="tns:Port02SoapBinding">
+			<soap:address location="http://localhost" />
+		</port>
+	</service>
+
+</definitions>

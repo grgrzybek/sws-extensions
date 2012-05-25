@@ -43,12 +43,12 @@ public class DispatchTest extends CxfIntegrationTests {
 
 		}, EchoEndpointDocumentInterface.class);
 	}
-	
+
 	@Test
 	public void rpcStyleDispatch() throws Exception {
-		
+
 		super.isolatedCxfTest("DispatchTest", new CxfIntegrationTests.Callback<EchoEndpointRPCInterface>() {
-			
+
 			@Override
 			public void perform(EchoEndpointRPCInterface service) {
 				service.rpcLitBare(new Param1());
@@ -56,7 +56,7 @@ public class DispatchTest extends CxfIntegrationTests {
 				service.rpcEncBare(new Param1());
 				service.rpcEncWrapped(new Param1(), new Param2());
 			}
-			
+
 		}, EchoEndpointRPCInterface.class);
 	}
 

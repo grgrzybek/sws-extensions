@@ -49,16 +49,13 @@ public class FreePortScanner {
 	 */
 	public static int getFreePort(int minPort, int maxPort) {
 		Assert.isTrue(minPort > 0, "'minPort' must be larger than 0");
-		Assert.isTrue(maxPort > minPort,
-				"'maxPort' must be larger than minPort");
+		Assert.isTrue(maxPort > minPort, "'maxPort' must be larger than minPort");
 		int portRange = maxPort - minPort;
 		int candidatePort;
 		int searchCounter = 0;
 		do {
 			if (++searchCounter > portRange) {
-				throw new IllegalStateException(String.format(
-						"There were no ports available in the range %d to %d",
-						minPort, maxPort));
+				throw new IllegalStateException(String.format("There were no ports available in the range %d to %d", minPort, maxPort));
 			}
 			candidatePort = getRandomPort(minPort, portRange);
 		} while (!isPortAvailable(candidatePort));
@@ -76,8 +73,7 @@ public class FreePortScanner {
 			serverSocket = new ServerSocket();
 		}
 		catch (IOException ex) {
-			throw new IllegalStateException("Unable to create ServerSocket.",
-					ex);
+			throw new IllegalStateException("Unable to create ServerSocket.", ex);
 		}
 
 		try {

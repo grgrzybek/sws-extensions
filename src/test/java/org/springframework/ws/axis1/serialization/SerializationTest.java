@@ -42,14 +42,17 @@ public class SerializationTest {
 		SerializationContext sc = new SerializationContext(pw);
 		sc.setDoMultiRefs(true);
 		sc.setPretty(true);
-		sc.getTypeMapping().register(Param1.class, new QName("urn:test:1", "param1"), new BeanSerializerFactory(Param1.class, new QName("urn:test:1", "param1")), new BeanDeserializerFactory(Param1.class, new QName("urn:test:1", "param1")));
-		sc.getTypeMapping().register(Param2.class, new QName("urn:test:1", "param2"), new BeanSerializerFactory(Param2.class, new QName("urn:test:1", "param2")), new BeanDeserializerFactory(Param2.class, new QName("urn:test:1", "param2")));
-		sc.getTypeMapping().register(Param3.class, new QName("urn:test:1", "param3"), new BeanSerializerFactory(Param3.class, new QName("urn:test:1", "param3")), new BeanDeserializerFactory(Param3.class, new QName("urn:test:1", "param3")));
+		sc.getTypeMapping().register(Param1.class, new QName("urn:test:1", "param1"), new BeanSerializerFactory(Param1.class, new QName("urn:test:1", "param1")),
+				new BeanDeserializerFactory(Param1.class, new QName("urn:test:1", "param1")));
+		sc.getTypeMapping().register(Param2.class, new QName("urn:test:1", "param2"), new BeanSerializerFactory(Param2.class, new QName("urn:test:1", "param2")),
+				new BeanDeserializerFactory(Param2.class, new QName("urn:test:1", "param2")));
+		sc.getTypeMapping().register(Param3.class, new QName("urn:test:1", "param3"), new BeanSerializerFactory(Param3.class, new QName("urn:test:1", "param3")),
+				new BeanDeserializerFactory(Param3.class, new QName("urn:test:1", "param3")));
 		sc.serialize(new QName("urn:test:1", "param1"), null, p1);
 		sc.outputMultiRefs();
 		pw.flush();
 	}
-	
+
 	@Test
 	public void serializeSimple() throws Exception {
 		PrintWriter pw = new PrintWriter(System.out);

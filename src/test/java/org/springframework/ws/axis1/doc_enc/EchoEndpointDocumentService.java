@@ -8,9 +8,10 @@
 package org.springframework.ws.axis1.doc_enc;
 
 public interface EchoEndpointDocumentService extends javax.xml.rpc.Service {
-    public java.lang.String getEchoEndpointDocumentEncodedAddress();
+	public java.lang.String getEchoEndpointDocumentEncodedAddress();
 
-    public org.springframework.ws.axis1.doc_enc.EchoEndpointDocument getEchoEndpointDocumentEncoded() throws javax.xml.rpc.ServiceException;
+	public org.springframework.ws.axis1.doc_enc.EchoEndpointDocument getEchoEndpointDocumentEncoded() throws javax.xml.rpc.ServiceException;
 
-    public org.springframework.ws.axis1.doc_enc.EchoEndpointDocument getEchoEndpointDocumentEncoded(java.net.URL portAddress) throws javax.xml.rpc.ServiceException;
+	public org.springframework.ws.axis1.doc_enc.EchoEndpointDocument getEchoEndpointDocumentEncoded(java.net.URL portAddress)
+			throws javax.xml.rpc.ServiceException;
 }

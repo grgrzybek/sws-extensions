@@ -8,5 +8,6 @@
 package org.springframework.ws.axis1.rpc_lit;
 
 public interface EchoEndpointRPC extends java.rmi.Remote {
-    public org.springframework.ws.axis1.rpc_lit.Result1 rpcLit(org.springframework.ws.axis1.rpc_lit.Param1 param, org.springframework.ws.axis1.rpc_lit.Param2 param2) throws java.rmi.RemoteException;
+	public org.springframework.ws.axis1.rpc_lit.Result1 rpcLit(org.springframework.ws.axis1.rpc_lit.Param1 param,
+			org.springframework.ws.axis1.rpc_lit.Param2 param2) throws java.rmi.RemoteException;
 }

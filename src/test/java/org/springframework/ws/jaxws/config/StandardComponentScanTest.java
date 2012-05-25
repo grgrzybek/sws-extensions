@@ -24,9 +24,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ws.jaxws.config.endpoints.ServiceImplementationBean;
 
-import static org.junit.Assert.*;
-
 import static org.hamcrest.CoreMatchers.*;
+
+import static org.junit.Assert.*;
 
 /**
  * <p></p>
@@ -39,6 +39,7 @@ public class StandardComponentScanTest {
 
 	@Autowired
 	private ApplicationContext context;
+
 	@Autowired
 	private ServiceImplementationBean endpoint;
 
@@ -48,7 +49,7 @@ public class StandardComponentScanTest {
 		assertNotNull(endpoint);
 		assertThat(endpoint.method(), equalTo("hello"));
 	}
-	
+
 	@Test
 	public void autowireWebService() {
 		assertNotNull(this.endpoint);

@@ -8,9 +8,10 @@
 package org.springframework.ws.axis1.wrapped_enc;
 
 public interface EchoEndpointWrappedService extends javax.xml.rpc.Service {
-    public java.lang.String getEchoEndpointWrappedEncodedAddress();
+	public java.lang.String getEchoEndpointWrappedEncodedAddress();
 
-    public org.springframework.ws.axis1.wrapped_enc.EchoEndpointWrapped getEchoEndpointWrappedEncoded() throws javax.xml.rpc.ServiceException;
+	public org.springframework.ws.axis1.wrapped_enc.EchoEndpointWrapped getEchoEndpointWrappedEncoded() throws javax.xml.rpc.ServiceException;
 
-    public org.springframework.ws.axis1.wrapped_enc.EchoEndpointWrapped getEchoEndpointWrappedEncoded(java.net.URL portAddress) throws javax.xml.rpc.ServiceException;
+	public org.springframework.ws.axis1.wrapped_enc.EchoEndpointWrapped getEchoEndpointWrappedEncoded(java.net.URL portAddress)
+			throws javax.xml.rpc.ServiceException;
 }

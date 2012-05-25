@@ -37,13 +37,13 @@ public interface EchoEndpointRPCInterface {
 
 	@SOAPBinding(parameterStyle = ParameterStyle.BARE, style = Style.RPC, use = Use.LITERAL)
 	public Result1 rpcLitBare(@WebParam Param1 param);
-	
+
 	@SOAPBinding(parameterStyle = ParameterStyle.WRAPPED, style = Style.RPC, use = Use.LITERAL)
 	public Result1 rpcLitWrapped(@WebParam Param1 param1, @WebParam Param2 param2);
-	
+
 	@SOAPBinding(parameterStyle = ParameterStyle.BARE, style = Style.RPC, use = Use.ENCODED)
 	public Result1 rpcEncBare(@WebParam Param1 param);
-	
+
 	@SOAPBinding(parameterStyle = ParameterStyle.WRAPPED, style = Style.RPC, use = Use.ENCODED)
 	public Result1 rpcEncWrapped(@WebParam Param1 param1, @WebParam Param2 param2);
 

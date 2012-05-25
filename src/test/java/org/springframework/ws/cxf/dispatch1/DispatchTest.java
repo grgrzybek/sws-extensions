@@ -48,12 +48,12 @@ public class DispatchTest extends CxfIntegrationTests {
 
 		}, EchoEndpointDocumentInterface.class);
 	}
-	
+
 	@Test
 	public void rpcStyleDispatch() throws Exception {
-		
+
 		super.isolatedCxfTest("DispatchTest", new CxfIntegrationTests.Callback<EchoEndpointRPCInterface>() {
-			
+
 			@Override
 			public void perform(EchoEndpointRPCInterface service) {
 				assertThat(service.echo3c("test3c"), is("[test3c]"));
@@ -61,7 +61,7 @@ public class DispatchTest extends CxfIntegrationTests {
 				assertThat(service.echo3g("test3g"), is("[test3g]"));
 				assertThat(service.echo3h("t3h1", "t3h2"), is("t3h1t3h2"));
 			}
-			
+
 		}, EchoEndpointRPCInterface.class);
 	}
 

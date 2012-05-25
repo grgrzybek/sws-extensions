@@ -8,5 +8,6 @@
 package org.springframework.ws.axis1.wrapped_lit;
 
 public interface EchoEndpointWrapped extends java.rmi.Remote {
-    public org.springframework.ws.axis1.wrapped_lit.Result1 wrappedLit(org.springframework.ws.axis1.wrapped_lit.Param1 param, org.springframework.ws.axis1.wrapped_lit.Param2 param2) throws java.rmi.RemoteException;
+	public org.springframework.ws.axis1.wrapped_lit.Result1 wrappedLit(org.springframework.ws.axis1.wrapped_lit.Param1 param,
+			org.springframework.ws.axis1.wrapped_lit.Param2 param2) throws java.rmi.RemoteException;
 }

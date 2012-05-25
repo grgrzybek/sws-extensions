@@ -41,7 +41,7 @@ import static org.junit.Assert.*;
 public class AxiomTest {
 
 	private static Resource[] axis1SoapRequestResources;
-	
+
 	@BeforeClass
 	public static void before() {
 		axis1SoapRequestResources = new Resource[6];
@@ -52,7 +52,7 @@ public class AxiomTest {
 		axis1SoapRequestResources[4] = new ClassPathResource("org/springframework/ws/soap1_1/axis1/wrapped-enc-req.xml");
 		axis1SoapRequestResources[5] = new ClassPathResource("org/springframework/ws/soap1_1/axis1/wrapped-lit-req.xml");
 	}
-	
+
 	@Test
 	public void readXml() throws Exception {
 		StAXOMBuilder builder = new StAXOMBuilder(new ClassPathResource("org/springframework/ws/soap1_1/axis1/doc-enc-req.xml").getInputStream());
@@ -62,7 +62,7 @@ public class AxiomTest {
 	@Test
 	public void createWebServiceMessages() throws Exception {
 		AxiomSoapMessageFactory factory = new AxiomSoapMessageFactory();
-		for (Resource res: axis1SoapRequestResources) {
+		for (Resource res : axis1SoapRequestResources) {
 			WebServiceMessage msg = factory.createWebServiceMessage(new MockTransportInputStream("text/xml", res));
 			assertNotNull(msg);
 		}
@@ -76,8 +76,9 @@ public class AxiomTest {
 	private static class MockTransportInputStream extends TransportInputStream {
 
 		private String contentType;
+
 		private Resource resource;
-		
+
 		/**
 		 * @param contentType
 		 * @param resource

@@ -16,7 +16,6 @@
 
 package org.springframework.ws.axis1.dispatch2.model;
 
-
 /**
  * <p></p>
  *
@@ -27,10 +26,10 @@ public class Param1 {
 	private String string = "str (String)";
 
 	private Long number = 37L;
-	
+
 	private Param2 param2 = new Param2();
 
-	private Byte[] list = new Byte[] { (byte)0x24, (byte)0x9A };
+	private Byte[] list = new Byte[] { (byte) 0x24, (byte) 0x9A };
 
 	private Param3[] param3list = new Param3[] { new Param3(), new Param3(), new Param3() };
 
