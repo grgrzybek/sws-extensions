@@ -111,7 +111,8 @@ public class JaxWsEndpointMapping extends AbstractAnnotationMethodEndpointMappin
 		catch (NoSuchMethodException e) {
 		}
 
-		// this annotation will be used to determine JWS-compliant endpoint characteristic
+		// this annotation will be used to determine JWS-compliant endpoint
+		// characteristic
 		/*WebService webService = */AnnotationUtils.findAnnotation(serviceImplementationBeanClass, WebService.class);
 		// this annotation configures particular operation of portType (interface)
 		/*WebMethod webMethod = */AnnotationUtils.findAnnotation(method, WebMethod.class);

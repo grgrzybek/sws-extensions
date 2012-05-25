@@ -40,8 +40,7 @@ public class JaxWsEndpointAdapter implements EndpointAdapter {
 	 * @see org.springframework.ws.server.EndpointAdapter#invoke(org.springframework.ws.context.MessageContext, java.lang.Object)
 	 */
 	@Override
-	public void invoke(MessageContext messageContext, Object endpoint)
-			throws Exception {
+	public void invoke(MessageContext messageContext, Object endpoint) throws Exception {
 	}
 
 }

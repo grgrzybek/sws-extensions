@@ -64,10 +64,15 @@ public class JaxWsPayloadMethodProcessor implements MethodArgumentResolver, Meth
 	 */
 	@Override
 	public Object resolveArgument(MessageContext messageContext, MethodParameter parameter) throws Exception {
-		// it's not as easy as in o.s.w.s.e.a.method.MarshallingPayloadMethodProcessor.resolveArgument(MessageContext, MethodParameter)
-		// here we're invoked several times (according to method's parameter count)
+		// it's not as easy as in
+		// o.s.w.s.e.a.method.MarshallingPayloadMethodProcessor.resolveArgument(MessageContext,
+		// MethodParameter)
+		// here we're invoked several times (according to method's parameter
+		// count)
 		// maybe we could do it once and store result in messageContext?
-		// here's the place to perform something similar to Axis1's deserialization (DeserializationContext) of StAX events (or SAX source).
+		// here's the place to perform something similar to Axis1's
+		// deserialization (DeserializationContext) of StAX events (or SAX
+		// source).
 		String val = null;
 		if (StaxUtils.isStaxSource(messageContext.getRequest().getPayloadSource())) {
 			XMLStreamReader reader = StaxUtils.getXMLStreamReader(messageContext.getRequest().getPayloadSource());
@@ -105,12 +110,13 @@ public class JaxWsPayloadMethodProcessor implements MethodArgumentResolver, Meth
 			streamingResponse.setStreamingPayload(new StreamingPayload() {
 				@Override
 				public void writeTo(XMLStreamWriter streamWriter) throws XMLStreamException {
-					streamWriter.writeStartElement("x", returnType.getMethod().getName() + "Result", NamespaceUtils.packageNameToNamespace(returnType.getDeclaringClass().getPackage()));
+					streamWriter.writeStartElement("x", returnType.getMethod().getName() + "Result",
+							NamespaceUtils.packageNameToNamespace(returnType.getDeclaringClass().getPackage()));
 					streamWriter.writeNamespace("x", NamespaceUtils.packageNameToNamespace(returnType.getDeclaringClass().getPackage()));
-					streamWriter.writeCharacters((String)returnValue);
+					streamWriter.writeCharacters((String) returnValue);
 					streamWriter.writeEndElement();
 				}
-				
+
 				@Override
 				public QName getName() {
 					return new QName(NamespaceUtils.packageNameToNamespace(returnType.getDeclaringClass().getPackage()), returnType.getMethod().getName() + "Result");
