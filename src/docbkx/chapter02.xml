@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="chapter01" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0">
+	<title>Chapter 01</title>
+	<para>
+	asd
+	</para>
+	<section>
+		<title>asd</title>
+		<para>asd</para>
+	</section>
+</chapter>

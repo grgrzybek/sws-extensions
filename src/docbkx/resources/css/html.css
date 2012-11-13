@@ -1,0 +1,53 @@
+
+@import url("reset.css");
+
+body {
+	padding: 0px; margin: 15px;
+	border: 1px solid #D0D0D0;
+	box-shadow: 4px 4px 10px #A0A0A0;
+	font-size: 1em;
+	font-family: "Cambria",serif;
+}
+
+hr { height: 1px; background-color: #D0D0D0; border-width: 0px; }
+
+.epigraph { margin: 1em 0px; }
+.epigraph p, .attribution { text-align: right; }
+.attribution { font-style: italic; margin: 0.3em 0em; font-size: 0.95em; }
+
+div.book, div.preface, div.part, div.chapter { padding: 10px; }
+
+.releaseinfo { margin: 1em 0em; font-weight: bold; }
+.legalnotice { font-family: "Verdana",sans-serif; font-size: 0.8em; font-style: italic; }
+
+.navfooter { padding-bottom: 5px; margin: 0px 15px 5px 15px; }
+
+h1, h2, h3, h4, h5, h6, dt { font-family: "Verdana",sans-serif; }
+h1 { font-size: 2em; margin: 0.6em 0em; font-weight: 500; }
+h2 { font-size: 1.8em; margin: 0.4em 0em; }
+h3 { font-size: 1.4em; margin: 0.3em 0em; }
+h4 { font-size: 1.3em; margin: 0.2em 0em; }
+h5 { font-size: 1.2em; margin: 0.1em 0em; }
+h6 { font-size: 1em; }
+dt { font-size: 0.9em; }
+
+dl { margin: 3px 10px; }
+dd { margin-left: 10px; }
+
+.navfooter td { padding: 4px; font-size: 0.9em; font-family: "Verdana",sans-serif; }
+.navfooter a { font-family: "Verdana",sans-serif; }
+
+p { margin: 10px; line-height: 1.2em; }
+
+code.interfacename {
+	background-color: #F0F0F0;
+	border: 1px solid #D0D0D0;
+	border-radius: 5px 5px 5px 5px;
+	font-family: "Consolas", monospace;
+	padding: 0 4px;
+}
+code.literal { font-style: italic; font-weight: bold; }
+
+em { font-style: italic; }
+
+ul { list-style: disc outside; margin-left: 40px; }

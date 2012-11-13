@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0">
+
+	<info>
+		<title xml:lang="en">Spring Web Services - practical, next-generation JAX-WS integration</title>
+		<title xml:lang="pl">Spring Web Services - praktyczna integracja z JAX-WS</title>
+
+		<releaseinfo><?eval ${project.version}?></releaseinfo>
+
+		<authorgroup>
+			<author>
+				<personname>
+					<firstname>Grzegorz</firstname>
+					<surname>Grzybek</surname>
+				</personname>
+			</author>
+		</authorgroup>
+
+		<legalnotice>
+			<para>
+				Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and
+				further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.
+			</para>
+		</legalnotice>
+	</info>
+
+	<toc />
+
+	<xi:include href="preface.xml" />
+
+	<part>
+		<title>Introduction</title>
+		<xi:include href="chapter01.xml" />
+	</part>
+	<part>
+		<title>Reference</title>
+		<xi:include href="chapter02.xml" />
+	</part>
+	<part>
+		<title>Other Resources</title>
+		<xi:include href="chapter03.xml" />
+	</part>
+
+</book>
