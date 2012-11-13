@@ -21,7 +21,7 @@
 		<part name="response" element="types:response" />
 	</message>
 
-	<portType name="Port01">
+	<portType name="Port02">
 		<operation name="hello">
 			<input message="tns:helloRequest" name="helloRequest" />
 			<output message="tns:helloResponse" name="helloResponse" />

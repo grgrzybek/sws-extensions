@@ -24,16 +24,21 @@ import java.io.Writer;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.springframework.oxm.MarshallingFailureException;
+import org.springframework.oxm.UnmarshallingFailureException;
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.support.AbstractMarshaller;
 import org.w3c.dom.Node;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * <p>Marshaller which handles SOAP 1.1 and SOAP 1.2 specific encodings during XML (de)serialization.</p>
@@ -94,8 +99,14 @@ public class SoapEncodingMarshaller extends AbstractMarshaller {
 	 */
 	@Override
 	protected void marshalSaxHandlers(Object graph, ContentHandler contentHandler, LexicalHandler lexicalHandler) throws XmlMappingException {
-		// TODO Auto-generated method stub
-
+		try {
+			contentHandler.startElement("", "hello", "hello", new AttributesImpl());
+			contentHandler.characters(((String)((Object[])graph)[0]).toCharArray(), 0, ((String)((Object[])graph)[0]).toCharArray().length);
+			contentHandler.endElement("", "hello", "hello");
+		}
+		catch (SAXException e) {
+			throw new MarshallingFailureException(e.getMessage(), e);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -130,8 +141,13 @@ public class SoapEncodingMarshaller extends AbstractMarshaller {
 	 */
 	@Override
 	protected Object unmarshalXmlStreamReader(XMLStreamReader streamReader) throws XmlMappingException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			streamReader.next();
+			return streamReader.getElementText();
+		}
+		catch (XMLStreamException e) {
+			throw new UnmarshallingFailureException(e.getMessage(), e);
+		}
 	}
 
 	/* (non-Javadoc)

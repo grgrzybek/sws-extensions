@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
  * <li>RPC - the message sent represents method invocation with (Q)Name and arguments</li>
  * <li>Document - the message sent represents single or (which is very ugly) multiple documents. This style has
  * (without special care) problems with proper endpoint mapping.</li>
- * <li>"Wrapped" - it's a variation of "document" style, where there's only one "document" and its top-level elements
- * maps to endpoint's (port type's) operation.</li>
+ * <li>"Wrapped" - it's a variation of "document" style, where there's only one "document" which maps to operation and its direct children
+ * map to operation arguments.</li>
  * </ul></p>
  * <p>This interface describes concepts related to web service's <b>style</b> and doesn't say anything about <b>use</b> (encoded, literal).
  * The latter concepts are handled by (un)marshalling/e(de)ncoding mechanisms elsewhere.</p>

@@ -17,13 +17,13 @@
 	</portType>
 
 	<binding name="Port02SoapBinding" type="tns:Port02">
-		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
 		<operation name="hello">
 			<input name="helloRequest">
-				<soap:body use="literal" namespace="urn:test:2" />
+				<soap:body use="literal" />
 			</input>
 			<output name="helloResponse">
-				<soap:body use="literal" namespace="urn:test:2" />
+				<soap:body use="literal" />
 			</output>
 		</operation>
 	</binding>

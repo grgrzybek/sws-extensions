@@ -21,10 +21,17 @@ import javax.xml.ws.Service;
 import org.junit.Test;
 import org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean;
 import org.springframework.ws.jaxws.matrix.Port01;
+import org.springframework.ws.jaxws.soapenc.SoapEncodingMarshaller;
+import org.springframework.ws.soap.axiom.AxiomSoapMessageFactory;
+import org.springframework.ws.test.client.MockWebServiceServer;
+import org.springframework.xml.transform.StringSource;
 
 import static org.hamcrest.CoreMatchers.*;
 
 import static org.junit.Assert.*;
+
+import static org.springframework.ws.test.client.RequestMatchers.*;
+import static org.springframework.ws.test.client.ResponseCreators.*;
 
 /**
  * <p></p>
@@ -66,4 +73,36 @@ public class JwsTemplateTest {
 		assertNotNull(service2);
 	}
 
+	@Test
+	public void simpliestMessage() throws Exception {
+		JwsTemplate<Port01> jws = new JwsTemplate<Port01>(Port01.class, new AxiomSoapMessageFactory());
+		jws.setDefaultUri("http://localhost");
+		SoapEncodingMarshaller marshaller = new SoapEncodingMarshaller();
+		jws.setMarshaller(marshaller);
+		jws.setUnmarshaller(marshaller);
+		jws.afterPropertiesSet();
+		MockWebServiceServer server = MockWebServiceServer.createServer(jws);
+
+		String request = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\">\n" + 
+				"	<SOAP-ENV:Body>\n" +
+				"		<hello xmlns=\"\">\n" +
+				"			Hello!\n" +
+				"		</hello>\n" + 
+				"	</SOAP-ENV:Body>\n" + 
+				"</SOAP-ENV:Envelope>";
+		String response = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\">\n" + 
+				"	<SOAP-ENV:Body>\n" + 
+				"		<helloResponse xmlns=\"\">\n" +
+				"			Hello!\n" +
+				"		</helloResponse>\n" + 
+				"	</SOAP-ENV:Body>\n" + 
+				"</SOAP-ENV:Envelope>";
+		server.expect(soapEnvelope(new StringSource(request))).andRespond(withSoapEnvelope(new StringSource(response)));
+
+		Port01 proxy = jws.getObject();
+		String result = proxy.hello("Hello!");
+		assertThat(result.trim(), equalTo("Hello!"));
+
+		server.verify();
+	}
 }

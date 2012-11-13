@@ -12,6 +12,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p1/" />
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p3/" />
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p2/" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
 			<element name="wrappedEnc">
 				<complexType>
 					<sequence>
@@ -61,6 +62,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/r1/" />
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p1/" />
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p2/" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
 			<complexType name="param-3">
 				<sequence>
 					<element name="value" nillable="true" type="soapenc:string" />
@@ -72,6 +74,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/r1/" />
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p1/" />
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p3/" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
 			<complexType name="param-2">
 				<sequence>
 					<element name="bd" nillable="true" type="soapenc:decimal" />
@@ -86,6 +89,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/r1/" />
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p3/" />
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p2/" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
 			<complexType name="param-1">
 				<sequence>
 					<element name="list" nillable="true" type="impl:ArrayOf_soapenc_byte" />
@@ -101,6 +105,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p1/" />
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p3/" />
 			<import namespace="http://dispatch2.axis1.ws.springframework.org/p2/" />
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
 			<complexType name="result-1">
 				<sequence>
 					<element name="list" nillable="true" type="impl:ArrayOf_soapenc_decimal" />

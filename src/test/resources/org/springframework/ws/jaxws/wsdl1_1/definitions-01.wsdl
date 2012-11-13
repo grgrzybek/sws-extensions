@@ -49,7 +49,7 @@
 		<!-- R2302 A DESCRIPTION MAY use the parameterOrder attribute of an wsdl:operation element to indicate the return value and method signatures as a hint to code generators. -->
 		<!-- R2304 A wsdl:portType in a DESCRIPTION MUST have operations with distinct values for their name attributes. -->
 		<!-- R2305 A wsdl:operation element child of a wsdl:portType element in a DESCRIPTION MUST be constructed so that the parameterOrder attribute, if present, omits at most 1 wsdl:part from the output message. -->
-		<operation name="test" parameterOrder="">
+		<operation name="test" parameterOrder="testRequest">
 			<input message="tns:TestRequest" name="testRequest">
 				<!-- The name attribute of the input and output elements provides a unique name among all input and output elements within the enclosing port type -->
 				<!--

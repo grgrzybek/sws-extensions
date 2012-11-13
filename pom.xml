@@ -11,15 +11,20 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<springframework.version>3.1.1.RELEASE</springframework.version>
-		<springws.version>2.1.0.RC1</springws.version>
+		<springframework.version>3.1.3.RELEASE</springframework.version>
+		<springws.version>2.1.1.RELEASE</springws.version>
+		<cxf.version>2.7.0</cxf.version>
 	</properties>
+
+	<prerequisites>
+		<maven>3.0.4</maven>
+	</prerequisites>
 
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>2.5.1</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -84,26 +89,32 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.10</version>
+			<version>4.11-beta-1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-core</artifactId>
-			<version>1.3.RC2</version>
+			<version>1.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.0</version>
+			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<version>7.6.3.v20120416</version>
+			<version>7.6.8.v20121106</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.jetty.orbit</groupId>
+					<artifactId>javax.servlet</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>xmlunit</groupId>
@@ -123,7 +134,7 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-api</artifactId>
-			<version>2.6.0</version>
+			<version>${cxf.version}</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -135,7 +146,7 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-core</artifactId>
-			<version>2.6.0</version>
+			<version>${cxf.version}</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -147,7 +158,7 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
-			<version>2.6.0</version>
+			<version>${cxf.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -276,12 +287,12 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>1.6.12</version>
+			<version>1.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.6.12</version>
+			<version>1.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
@@ -304,12 +315,12 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.2.6</version>
+			<version>2.2.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
-			<version>2.2.5-2</version>
+			<version>2.2.6</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml</groupId>
@@ -329,7 +340,7 @@
 		<dependency>
 			<groupId>org.apache.ws.xmlschema</groupId>
 			<artifactId>xmlschema-core</artifactId>
-			<version>2.0.2</version>
+			<version>2.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ws.commons.axiom</groupId>
@@ -384,7 +395,7 @@
 		<dependency>
 			<groupId>org.codehaus.woodstox</groupId>
 			<artifactId>woodstox-core-asl</artifactId>
-			<version>4.1.3</version>
+			<version>4.1.4</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.xml.stream</groupId>
@@ -392,6 +403,74 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- Marshalling -->
+
+		<!-- Castor + dependencies -->
+		<dependency>
+			<groupId>org.codehaus.castor</groupId>
+			<artifactId>castor-xml</artifactId>
+			<version>1.3.2</version>
+			<optional>true</optional>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>stax</groupId>
+					<artifactId>stax</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- JIBX + dependencies -->
+		<!-- JIBX Not Supported - requires special compilation steps, which is very undesired -->
+		<!--
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-run</artifactId>
+			<version>1.2.4.5</version>
+			<optional>true</optional>
+			<exclusions>
+				<exclusion>
+					<groupId>xpp3</groupId>
+					<artifactId>xpp3</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3_min</artifactId>
+			<version>1.1.4c</version>
+			<optional>true</optional>
+		</dependency>
+		-->
+		<!-- XmlBeans + dependencies -->
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+			<version>2.6.0</version>
+			<optional>true</optional>
+			<exclusions>
+				<exclusion>
+					<groupId>stax</groupId>
+					<artifactId>stax-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- XStream + dependencies -->
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.3</version>
+			<optional>true</optional>
+			<exclusions>
+				<exclusion>
+					<groupId>xmlpull</groupId>
+					<artifactId>xmlpull</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency> 
 
 		<!-- javax.servlet -->
 
@@ -407,28 +486,28 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.4</version>
+			<version>1.7.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.6.4</version>
+			<version>1.7.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
-			<version>1.6.4</version>
+			<version>1.7.2</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-			<version>1.0.3</version>
+			<version>1.0.7</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.0.3</version>
+			<version>1.0.7</version>
 			<scope>test</scope>
 		</dependency>
 
