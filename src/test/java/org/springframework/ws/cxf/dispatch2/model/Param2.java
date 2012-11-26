@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.springframework.ws.axis1.dispatch2.model.Param3;
+import org.springframework.ws.axis1.case2.codefirst.Param3;
 
 /**
  * <p></p>
