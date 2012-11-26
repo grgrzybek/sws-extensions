@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<ns1:twoParams soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://codefirst.case1.axis1.ws.springframework.org">
+			<param1 xsi:type="xsd:string">param1</param1>
+			<param2 xsi:type="xsd:string">param2</param2>
+		</ns1:twoParams>
+	</soapenv:Body>
+</soapenv:Envelope>

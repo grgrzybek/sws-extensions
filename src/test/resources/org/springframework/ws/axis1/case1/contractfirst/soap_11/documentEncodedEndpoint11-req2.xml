@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<param1 xsi:type="xsd:string">param1</param1>
+		<param2 xsi:type="xsd:string">param2</param2>
+	</soapenv:Body>
+</soapenv:Envelope>

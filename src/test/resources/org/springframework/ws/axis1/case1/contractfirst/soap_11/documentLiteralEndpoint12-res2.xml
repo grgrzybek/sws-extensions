@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<twoParamsReturn xmlns="http://codefirst.case1.axis1.ws.springframework.org">[param1|null]</twoParamsReturn>
+	</soapenv:Body>
+</soapenv:Envelope>

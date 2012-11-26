@@ -1,0 +1,53 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+	<globalConfiguration>
+		<parameter name="axis.development.system" value="true" />
+		<parameter name="axis.enableListQuery" value="true" />
+		<!--parameter name="sendXsiTypes" value="true" />
+		<parameter name="sendMultiRefs" value="true" />
+		<parameter name="sendXMLDeclaration" value="true" />
+		<parameter name="axis.sendMinimizedElements" value="true" /-->
+		<requestFlow>
+			<handler type="log" />
+		</requestFlow>
+		<responseFlow>
+			<handler type="log" />
+		</responseFlow>
+	</globalConfiguration>
+
+	<handler name="log" type="java:org.apache.axis.handlers.LogHandler">
+		<parameter name="LogHandler.fileName" value="target/axis1.log" />
+	</handler>
+
+	<transport name="http" pivot="java:org.apache.axis.transport.http.HTTPSender" />
+
+  <!-- Services from EchoEndpointService WSDL service -->
+
+  <service name="myservice" provider="java:RPC" style="rpc" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+      <parameter name="wsdlServicePort" value="myservice"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint"/>
+      <parameter name="wsdlPortType" value="EchoEndpoint"/>
+      <parameter name="typeMappingVersion" value="1.1"/><!-- change -->
+      <operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="param2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="twoParams oneParam"/>
+
+  </service>
+</deployment>
