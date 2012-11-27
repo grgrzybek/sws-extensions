@@ -101,18 +101,6 @@ public class Case1Test extends Axis1IntegrationTests {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-//		wsdl2java("DOCUMENT", "LITERAL", "1.1");
-//		wsdl2java("DOCUMENT", "LITERAL", "1.2");
-//		wsdl2java("DOCUMENT", "ENCODED", "1.1");
-//		wsdl2java("DOCUMENT", "ENCODED", "1.2");
-//		wsdl2java("RPC", "LITERAL", "1.1");
-//		wsdl2java("RPC", "LITERAL", "1.2");
-//		wsdl2java("RPC", "ENCODED", "1.1");
-//		wsdl2java("RPC", "ENCODED", "1.2");
-//		wsdl2java("WRAPPED", "LITERAL", "1.1");
-//		wsdl2java("WRAPPED", "LITERAL", "1.2");
-//		wsdl2java("WRAPPED", "ENCODED", "1.1");
-//		wsdl2java("WRAPPED", "ENCODED", "1.2");
 //		java2wsdl("DOCUMENT", "LITERAL", "1.1");
 //		java2wsdl("DOCUMENT", "LITERAL", "1.2");
 //		java2wsdl("DOCUMENT", "ENCODED", "1.1");
@@ -125,6 +113,18 @@ public class Case1Test extends Axis1IntegrationTests {
 //		java2wsdl("WRAPPED", "LITERAL", "1.2");
 //		java2wsdl("WRAPPED", "ENCODED", "1.1");
 //		java2wsdl("WRAPPED", "ENCODED", "1.2");
+//		wsdl2java("DOCUMENT", "LITERAL", "1.1");
+//		wsdl2java("DOCUMENT", "LITERAL", "1.2");
+//		wsdl2java("DOCUMENT", "ENCODED", "1.1");
+//		wsdl2java("DOCUMENT", "ENCODED", "1.2");
+//		wsdl2java("RPC", "LITERAL", "1.1");
+//		wsdl2java("RPC", "LITERAL", "1.2");
+//		wsdl2java("RPC", "ENCODED", "1.1");
+//		wsdl2java("RPC", "ENCODED", "1.2");
+//		wsdl2java("WRAPPED", "LITERAL", "1.1");
+//		wsdl2java("WRAPPED", "LITERAL", "1.2");
+//		wsdl2java("WRAPPED", "ENCODED", "1.1");
+//		wsdl2java("WRAPPED", "ENCODED", "1.2");
 	}
 
 	/**

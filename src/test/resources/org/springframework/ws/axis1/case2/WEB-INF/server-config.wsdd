@@ -1,0 +1,2149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.apache.org/axis/wsdd/ server-config.xsd">
+
+	<globalConfiguration>
+		<parameter name="axis.development.system" value="true" />
+		<parameter name="axis.enableListQuery" value="true" />
+		<!--parameter name="sendXsiTypes" value="true" />
+		<parameter name="sendMultiRefs" value="true" />
+		<parameter name="sendXMLDeclaration" value="true" />
+		<parameter name="axis.sendMinimizedElements" value="true" /-->
+	</globalConfiguration>
+
+	<handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper" />
+
+	<transport name="http">
+		<requestFlow>
+			<handler type="URLMapper" />
+		</requestFlow>
+	</transport>
+
+	<!-- the following services are copied from deploy.wsdd files generated using WSDL2Java, not Java2WSDL. WSDL2Java generated proper packages and class names (almost) -->
+	<!-- Java2WSDL's input was one endpoint class and 4 bean classes. The output was different depending on -y/-u/-T switches used -->
+	<!-- So WSDL2Java was able to generate different deploy.wsdd and *_Helper.java classes on the basis of different WSDLs -->
+
+	<service name="EchoEndpointDocumentEncoded11" provider="java:RPC" style="document" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointDocumentEncoded11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arraysplain.EchoEndpointDocumentEncoded11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointDocumentEncoded11w" provider="java:RPC" style="document" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointDocumentEncoded11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arrayswrapped.EchoEndpointDocumentEncoded11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arrayswrapped.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_11_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointDocumentEncoded12" provider="java:RPC" style="document" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointDocumentEncoded12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arraysplain.EchoEndpointDocumentEncoded12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_byte"
+				type="java:java.lang.Byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointDocumentEncoded12w" provider="java:RPC" style="document" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointDocumentEncoded12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arrayswrapped.EchoEndpointDocumentEncoded12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_byte"
+				type="java:java.lang.Byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arrayswrapped.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_encoded_12_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointDocumentLiteral11" provider="java:RPC" style="document" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointDocumentLiteral11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arraysplain.EchoEndpointDocumentLiteral11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="retNS:echoReturn" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:param" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="pns:param2" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointDocumentLiteral11w" provider="java:RPC" style="document" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointDocumentLiteral11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arrayswrapped.EchoEndpointDocumentLiteral11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="retNS:echoReturn" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:param" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="pns:param2" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arrayswrapped.ArrayOf_xsd_byte"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arrayswrapped.ArrayOfParam3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arrayswrapped.ArrayOf_xsd_string"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arrayswrapped.ArrayOf_xsd_anyType"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_11_arrayswrapped.ArrayOf_xsd_decimal"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointDocumentLiteral12" provider="java:RPC" style="document" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointDocumentLiteral12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arraysplain.EchoEndpointDocumentLiteral12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="retNS:echoReturn" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:param" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="pns:param2" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointDocumentLiteral12w" provider="java:RPC" style="document" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointDocumentLiteral12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.EchoEndpointDocumentLiteral12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="retNS:echoReturn" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:param" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="pns:param2" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_byte"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOfParam3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_string"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_anyType"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_decimal"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointRpcEncoded11" provider="java:RPC" style="rpc" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaUnqualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointRpcEncoded11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arraysplain.EchoEndpointRpcEncoded11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointRpcEncoded11w" provider="java:RPC" style="rpc" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaUnqualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointRpcEncoded11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arrayswrapped.EchoEndpointRpcEncoded11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arrayswrapped.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointRpcEncoded12" provider="java:RPC" style="rpc" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaUnqualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointRpcEncoded12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arraysplain.EchoEndpointRpcEncoded12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_byte"
+				type="java:java.lang.Byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointRpcEncoded12w" provider="java:RPC" style="rpc" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaUnqualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointRpcEncoded12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arrayswrapped.EchoEndpointRpcEncoded12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_byte"
+				type="java:java.lang.Byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arrayswrapped.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_12_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointRpcLiteral11" provider="java:RPC" style="rpc" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaUnqualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointRpcLiteral11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arraysplain.EchoEndpointRpcLiteral11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointRpcLiteral11w" provider="java:RPC" style="rpc" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaUnqualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointRpcLiteral11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arrayswrapped.EchoEndpointRpcLiteral11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arrayswrapped.ArrayOf_xsd_byte"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arrayswrapped.ArrayOfParam3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arrayswrapped.ArrayOf_xsd_string"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arrayswrapped.ArrayOf_xsd_anyType"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_11_arrayswrapped.ArrayOf_xsd_decimal"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointRpcLiteral12" provider="java:RPC" style="rpc" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaUnqualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointRpcLiteral12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arraysplain.EchoEndpointRpcLiteral12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointRpcLiteral12w" provider="java:RPC" style="rpc" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaUnqualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointRpcLiteral12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswrapped.EchoEndpointRpcLiteral12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="echoReturn" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="param" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="param2" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswrapped.ArrayOf_xsd_byte"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswrapped.ArrayOfParam3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswrapped.ArrayOf_xsd_string"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswrapped.ArrayOf_xsd_anyType"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswrapped.ArrayOf_xsd_decimal"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointWrappedEncoded11" provider="java:RPC" style="document" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointWrappedEncoded11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arraysplain.EchoEndpointWrappedEncoded11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="retNS:echoResponse" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:>echoResponse" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:echo" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:>echo" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echo"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arraysplain.Echo"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echoResponse"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arraysplain.EchoResponse"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointWrappedEncoded11w" provider="java:RPC" style="document" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointWrappedEncoded11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arrayswrapped.EchoEndpointWrappedEncoded11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="retNS:echoResponse" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:>echoResponse" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:echo" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:>echo" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echo"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arrayswrapped.Echo"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arrayswrapped.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echoResponse"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_11_arrayswrapped.EchoResponse"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointWrappedEncoded12" provider="java:RPC" style="document" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointWrappedEncoded12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.EchoEndpointWrappedEncoded12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="retNS:echoResponse" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:>echoResponse" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:echo" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:>echo" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echo"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.Echo"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_byte"
+				type="java:java.lang.Byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echoResponse"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.EchoResponse"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointWrappedEncoded12w" provider="java:RPC" style="document" use="encoded">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointWrappedEncoded12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arrayswrapped.EchoEndpointWrappedEncoded12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="echo" returnQName="retNS:echoResponse" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:>echoResponse" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:echo" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:>echo" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echo"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arrayswrapped.Echo"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_byte"
+				type="java:java.lang.Byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_soapenc_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://schemas.xmlsoap.org/soap/encoding/"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arrayswrapped.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echoResponse"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arrayswrapped.EchoResponse"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+			/>
+	</service>
+	<service name="EchoEndpointWrappedLiteral11" provider="java:RPC" style="wrapped" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointWrappedLiteral11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arraysplain.EchoEndpointWrappedLiteral11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="retNS:echoReturn" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:param" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="pns:param2" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echo"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arraysplain.Echo"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echoResponse"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arraysplain.EchoResponse"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointWrappedLiteral11w" provider="java:RPC" style="wrapped" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointWrappedLiteral11"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.EchoEndpointWrappedLiteral11SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="retNS:echoReturn" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:param" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="pns:param2" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echo"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.Echo"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.ArrayOf_xsd_byte"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.ArrayOfParam3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.ArrayOf_xsd_string"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echoResponse"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.EchoResponse"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.ArrayOf_xsd_anyType"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_11_arrayswrapped.ArrayOf_xsd_decimal"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointWrappedLiteral12" provider="java:RPC" style="wrapped" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointWrappedLiteral12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arraysplain.EchoEndpointWrappedLiteral12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="retNS:echoReturn" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:param" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="pns:param2" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echo"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arraysplain.Echo"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:byte[]"
+				innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arraysplain.Param3[]"
+				innerType="cmp-ns:Param3" xmlns:cmp-ns="http://codefirst.case2.axis1.ws.springframework.org"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:java.lang.String[]"
+				innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arraysplain.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arraysplain.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arraysplain.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arraysplain.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echoResponse"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arraysplain.EchoResponse"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:java.lang.Object[]"
+				innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+			<arrayMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:java.math.BigDecimal[]"
+				innerType="cmp-ns:decimal" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+				encodingStyle=""
+			/>
+	</service>
+	<service name="EchoEndpointWrappedLiteral12w" provider="java:RPC" style="wrapped" use="literal">
+			<parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
+			<parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+			<parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+			<parameter name="wsdlServicePort" value="EchoEndpointWrappedLiteral12"/>
+			<parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.EchoEndpointWrappedLiteral12SoapBindingImpl"/>
+			<parameter name="wsdlPortType" value="EchoEndpoint"/>
+			<parameter name="typeMappingVersion" value="1.2"/>
+			<operation name="echo" qname="operNS:echo" xmlns:operNS="http://codefirst.case2.axis1.ws.springframework.org" returnQName="retNS:echoReturn" xmlns:retNS="http://codefirst.case2.axis1.ws.springframework.org" returnType="rtns:Result1" xmlns:rtns="http://codefirst.case2.axis1.ws.springframework.org" soapAction="echo" >
+				<parameter qname="pns:param" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param1" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+				<parameter qname="pns:param2" xmlns:pns="http://codefirst.case2.axis1.ws.springframework.org" type="tns:Param2" xmlns:tns="http://codefirst.case2.axis1.ws.springframework.org"/>
+			</operation>
+			<parameter name="allowedMethods" value="echo"/>
+
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echo"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.Echo"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_byte"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.ArrayOf_xsd_byte"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOfParam3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.ArrayOfParam3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_string"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.ArrayOf_xsd_string"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param2"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.Param2"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.Param1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Param3"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.Param3"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:Result1"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.Result1"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:>echoResponse"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.EchoResponse"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_anyType"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.ArrayOf_xsd_anyType"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+			<typeMapping
+				xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
+				qname="ns:ArrayOf_xsd_decimal"
+				type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.ArrayOf_xsd_decimal"
+				serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+				deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+				encodingStyle=""
+			/>
+	</service> 
+	
+</deployment>

@@ -81,7 +81,7 @@ public class Axis1IntegrationTests {
 		servlet.setInitParameter("axis.servicesPath", "/axis1/");
 		this.jettyContext.addServlet(servlet, servletMapping);
 		try {
-			String base = Axis1IntegrationTests.class.getPackage().getName().replace('.', '/');
+			String base = this.getClass().getPackage().getName().replace('.', '/');
 			this.jettyContext.setBaseResource(new FileResource(new File("src/test/resources/" + base).toURI().toURL()));
 			this.jetty.start();
 		}
