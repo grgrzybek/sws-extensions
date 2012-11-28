@@ -21,39 +21,39 @@ public class EchoEndpointServiceLocator extends org.apache.axis.client.Service i
         super(wsdlLoc, sName);
     }
 
-    // Use to get a proxy class for myservice
-    private java.lang.String myservice_address = "http://axis1.org/ws/services/myservice";
+    // Use to get a proxy class for EchoEndpointWrappedLiteral12
+    private java.lang.String EchoEndpointWrappedLiteral12_address = "http://axis1.org/ws/services/EchoEndpointWrappedLiteral12";
 
-    public java.lang.String getmyserviceAddress() {
-        return myservice_address;
+    public java.lang.String getEchoEndpointWrappedLiteral12Address() {
+        return EchoEndpointWrappedLiteral12_address;
     }
 
     // The WSDD service name defaults to the port name.
-    private java.lang.String myserviceWSDDServiceName = "myservice";
+    private java.lang.String EchoEndpointWrappedLiteral12WSDDServiceName = "EchoEndpointWrappedLiteral12";
 
-    public java.lang.String getmyserviceWSDDServiceName() {
-        return myserviceWSDDServiceName;
+    public java.lang.String getEchoEndpointWrappedLiteral12WSDDServiceName() {
+        return EchoEndpointWrappedLiteral12WSDDServiceName;
     }
 
-    public void setmyserviceWSDDServiceName(java.lang.String name) {
-        myserviceWSDDServiceName = name;
+    public void setEchoEndpointWrappedLiteral12WSDDServiceName(java.lang.String name) {
+        EchoEndpointWrappedLiteral12WSDDServiceName = name;
     }
 
-    public org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.EchoEndpoint getmyservice() throws javax.xml.rpc.ServiceException {
+    public org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.EchoEndpoint getEchoEndpointWrappedLiteral12() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
-            endpoint = new java.net.URL(myservice_address);
+            endpoint = new java.net.URL(EchoEndpointWrappedLiteral12_address);
         }
         catch (java.net.MalformedURLException e) {
             throw new javax.xml.rpc.ServiceException(e);
         }
-        return getmyservice(endpoint);
+        return getEchoEndpointWrappedLiteral12(endpoint);
     }
 
-    public org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.EchoEndpoint getmyservice(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.EchoEndpoint getEchoEndpointWrappedLiteral12(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.MyserviceSoapBindingStub _stub = new org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.MyserviceSoapBindingStub(portAddress, this);
-            _stub.setPortName(getmyserviceWSDDServiceName());
+            org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.EchoEndpointWrappedLiteral12SoapBindingStub _stub = new org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.EchoEndpointWrappedLiteral12SoapBindingStub(portAddress, this);
+            _stub.setPortName(getEchoEndpointWrappedLiteral12WSDDServiceName());
             return _stub;
         }
         catch (org.apache.axis.AxisFault e) {
@@ -61,8 +61,8 @@ public class EchoEndpointServiceLocator extends org.apache.axis.client.Service i
         }
     }
 
-    public void setmyserviceEndpointAddress(java.lang.String address) {
-        myservice_address = address;
+    public void setEchoEndpointWrappedLiteral12EndpointAddress(java.lang.String address) {
+        EchoEndpointWrappedLiteral12_address = address;
     }
 
     /**
@@ -73,8 +73,8 @@ public class EchoEndpointServiceLocator extends org.apache.axis.client.Service i
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
             if (org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.EchoEndpoint.class.isAssignableFrom(serviceEndpointInterface)) {
-                org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.MyserviceSoapBindingStub _stub = new org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.MyserviceSoapBindingStub(new java.net.URL(myservice_address), this);
-                _stub.setPortName(getmyserviceWSDDServiceName());
+                org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.EchoEndpointWrappedLiteral12SoapBindingStub _stub = new org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.EchoEndpointWrappedLiteral12SoapBindingStub(new java.net.URL(EchoEndpointWrappedLiteral12_address), this);
+                _stub.setPortName(getEchoEndpointWrappedLiteral12WSDDServiceName());
                 return _stub;
             }
         }
@@ -94,8 +94,8 @@ public class EchoEndpointServiceLocator extends org.apache.axis.client.Service i
             return getPort(serviceEndpointInterface);
         }
         java.lang.String inputPortName = portName.getLocalPart();
-        if ("myservice".equals(inputPortName)) {
-            return getmyservice();
+        if ("EchoEndpointWrappedLiteral12".equals(inputPortName)) {
+            return getEchoEndpointWrappedLiteral12();
         }
         else  {
             java.rmi.Remote _stub = getPort(serviceEndpointInterface);
@@ -113,7 +113,7 @@ public class EchoEndpointServiceLocator extends org.apache.axis.client.Service i
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://codefirst.case1.axis1.ws.springframework.org", "myservice"));
+            ports.add(new javax.xml.namespace.QName("http://codefirst.case1.axis1.ws.springframework.org", "EchoEndpointWrappedLiteral12"));
         }
         return ports.iterator();
     }
@@ -123,8 +123,8 @@ public class EchoEndpointServiceLocator extends org.apache.axis.client.Service i
     */
     public void setEndpointAddress(java.lang.String portName, java.lang.String address) throws javax.xml.rpc.ServiceException {
         
-if ("myservice".equals(portName)) {
-            setmyserviceEndpointAddress(address);
+if ("EchoEndpointWrappedLiteral12".equals(portName)) {
+            setEchoEndpointWrappedLiteral12EndpointAddress(address);
         }
         else 
 { // Unknown Port Name

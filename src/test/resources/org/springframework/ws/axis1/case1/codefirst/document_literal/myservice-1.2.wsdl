@@ -76,7 +76,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:portType>
 
-   <wsdl:binding name="myserviceSoapBinding" type="impl:EchoEndpoint">
+   <wsdl:binding name="EchoEndpointDocumentLiteral12SoapBinding" type="impl:EchoEndpoint">
 
       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
 
@@ -120,9 +120,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    <wsdl:service name="EchoEndpointService">
 
-      <wsdl:port binding="impl:myserviceSoapBinding" name="myservice">
+      <wsdl:port binding="impl:EchoEndpointDocumentLiteral12SoapBinding" name="EchoEndpointDocumentLiteral12">
 
-         <wsdlsoap:address location="http://axis1.org/ws/services/myservice"/>
+         <wsdlsoap:address location="http://axis1.org/ws/services/EchoEndpointDocumentLiteral12"/>
 
       </wsdl:port>
 

@@ -12,11 +12,11 @@
 
   <!-- Services from EchoEndpointService WSDL service -->
 
-  <service name="myservice" provider="java:RPC" style="document" use="encoded">
+  <service name="EchoEndpointDocumentEncoded11" provider="java:RPC" style="document" use="encoded">
       <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
       <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
-      <parameter name="wsdlServicePort" value="myservice"/>
-      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.document_encoded_11.MyserviceSoapBindingImpl"/>
+      <parameter name="wsdlServicePort" value="EchoEndpointDocumentEncoded11"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.document_encoded_11.EchoEndpointDocumentEncoded11SoapBindingImpl"/>
       <parameter name="wsdlPortType" value="EchoEndpoint"/>
       <parameter name="typeMappingVersion" value="1.2"/>
       <operation name="oneParam" qname="oneParam" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam" >

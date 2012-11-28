@@ -5,8 +5,8 @@
 	<globalConfiguration>
 		<parameter name="axis.development.system" value="true" />
 		<parameter name="axis.enableListQuery" value="true" />
-		<!--parameter name="sendXsiTypes" value="true" />
-		<parameter name="sendMultiRefs" value="true" />
+		<parameter name="sendXsiTypes" value="false" />
+		<!--parameter name="sendMultiRefs" value="true" />
 		<parameter name="sendXMLDeclaration" value="true" />
 		<parameter name="axis.sendMinimizedElements" value="true" /-->
 	</globalConfiguration>
@@ -29,216 +29,224 @@
 		java:CORBA - org.apache.axis.deployment.wsdd.providers.WSDDJavaCORBAProvider (handlerClass = org.apache.axis.providers.java.CORBAProvider)
 		java:RMI - org.apache.axis.deployment.wsdd.providers.WSDDJavaRMIProvider (handlerClass = org.apache.axis.providers.java.RMIProvider)
 	-->
-	<service name="EchoEndpointDocumentEncoded11" provider="java:RPC" style="document" use="encoded">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.1" /><!-- change from 1.2 -->
-		<operation name="oneParam" qname="oneParam" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<operation name="twoParams" qname="twoParams" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-			<parameter qname="param2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-	</service>
-	<service name="EchoEndpointDocumentEncoded12" provider="java:RPC" style="document" use="encoded">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<operation name="oneParam" qname="oneParam" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://schemas.xmlsoap.org/soap/encoding/" soapAction="oneParam">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/" />
-		</operation>
-		<operation name="twoParams" qname="twoParams" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://schemas.xmlsoap.org/soap/encoding/" soapAction="twoParams">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/" />
-			<parameter qname="param2" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-	</service>
-	<service name="EchoEndpointDocumentLiteral11" provider="java:RPC" style="document" use="literal">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="schemaQualified" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.1" /><!-- change from 1.2 -->
-		<operation name="oneParam" qname="oneParam" returnQName="retNS:oneParamReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam">
-			<parameter qname="pns:param1" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<operation name="twoParams" qname="twoParams" returnQName="retNS:twoParamsReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams">
-			<parameter qname="pns:param2" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-			<parameter qname="pns:param3" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-	</service>
-	<service name="EchoEndpointDocumentLiteral12" provider="java:RPC" style="document" use="literal">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="schemaQualified" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<operation name="oneParam" qname="oneParam" returnQName="retNS:oneParamReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam">
-			<parameter qname="pns:param1" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<operation name="twoParams" qname="twoParams" returnQName="retNS:twoParamsReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams">
-			<parameter qname="pns:param2" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-			<parameter qname="pns:param3" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-	</service>
-	<service name="EchoEndpointRPCEncoded11" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.1" /><!-- change from 1.2 -->
-		<operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-			<parameter qname="param2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-	</service>
-	<service name="EchoEndpointRPCEncoded12" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://schemas.xmlsoap.org/soap/encoding/" soapAction="oneParam">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/" />
-		</operation>
-		<operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://schemas.xmlsoap.org/soap/encoding/" soapAction="twoParams">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/" />
-			<parameter qname="param2" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-	</service>
-	<service name="EchoEndpointRPCLiteral11" provider="java:RPC" style="rpc" use="literal">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.1" /><!-- change from 1.2 -->
-		<operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-			<parameter qname="param2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-	</service>
-	<service name="EchoEndpointRPCLiteral12" provider="java:RPC" style="rpc" use="literal">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams">
-			<parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-			<parameter qname="param2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-	</service>
-	<!-- this can't be deployed: -->
-	<!-- change from style="document" -->
-	<!-- changed package in the value of type attribute -->
-	<!-- change from 1.2 -->
-	<!--service name="EchoEndpointWrappedEncoded11" provider="java:RPC" style="wrapped" use="encoded">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="schemaQualified" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.1" />
-		<operation name="oneParam" qname="oneParam" returnQName="retNS:oneParamResponse" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:>oneParamResponse" xmlns:rtns="http://codefirst.case1.axis1.ws.springframework.org" soapAction="oneParam">
-			<parameter qname="pns:oneParam" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:>oneParam" xmlns:tns="http://codefirst.case1.axis1.ws.springframework.org" />
-		</operation>
-		<operation name="twoParams" qname="twoParams" returnQName="retNS:twoParamsResponse" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:>twoParamsResponse" xmlns:rtns="http://codefirst.case1.axis1.ws.springframework.org" soapAction="twoParams">
-			<parameter qname="pns:twoParams" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:>twoParams" xmlns:tns="http://codefirst.case1.axis1.ws.springframework.org" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-		<typeMapping xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org" qname="ns:>twoParamsResponse" type="java:org.springframework.ws.axis1.case1.codefirst.wrapped_encoded_11.TwoParamsResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-		<typeMapping xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org" qname="ns:>oneParam" type="java:org.springframework.ws.axis1.case1.codefirst.wrapped_encoded_11.OneParam" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-		<typeMapping xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org" qname="ns:>oneParamResponse" type="java:org.springframework.ws.axis1.case1.codefirst.wrapped_encoded_11.OneParamResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-		<typeMapping xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org" qname="ns:>twoParams" type="java:org.springframework.ws.axis1.case1.codefirst.wrapped_encoded_11.TwoParams" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-	</service-->
-	<!-- this can't be deployed: -->
-	<!-- change from style="document" -->
-	<!-- changed package in the value of type attribute -->
-	<!--service name="EchoEndpointWrappedEncoded12" provider="java:RPC" style="wrapped" use="encoded">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="schemaQualified" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<operation name="oneParam" qname="oneParam" returnQName="retNS:oneParamResponse" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:>oneParamResponse" xmlns:rtns="http://codefirst.case1.axis1.ws.springframework.org" soapAction="oneParam">
-			<parameter qname="pns:oneParam" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:>oneParam" xmlns:tns="http://codefirst.case1.axis1.ws.springframework.org" />
-		</operation>
-		<operation name="twoParams" qname="twoParams" returnQName="retNS:twoParamsResponse" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:>twoParamsResponse" xmlns:rtns="http://codefirst.case1.axis1.ws.springframework.org" soapAction="twoParams">
-			<parameter qname="pns:twoParams" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:>twoParams" xmlns:tns="http://codefirst.case1.axis1.ws.springframework.org" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-		<typeMapping xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org" qname="ns:>twoParamsResponse" type="java:org.springframework.ws.axis1.case1.codefirst.wrapped_encoded_12.TwoParamsResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-		<typeMapping xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org" qname="ns:>oneParam" type="java:org.springframework.ws.axis1.case1.codefirst.wrapped_encoded_12.OneParam" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-		<typeMapping xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org" qname="ns:>oneParamResponse" type="java:org.springframework.ws.axis1.case1.codefirst.wrapped_encoded_12.OneParamResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-		<typeMapping xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org" qname="ns:>twoParams" type="java:org.springframework.ws.axis1.case1.codefirst.wrapped_encoded_12.TwoParams" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-	</service-->
-	<service name="EchoEndpointWrappedLiteral11" provider="java:RPC" style="wrapped" use="literal">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="schemaQualified" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.1" /><!-- change from 1.2 -->
-		<operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="retNS:oneParamReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam">
-			<parameter qname="pns:param1" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="retNS:twoParamsReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams">
-			<parameter qname="pns:param1" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-			<parameter qname="pns:param2" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-	</service>
-	<service name="EchoEndpointWrappedLiteral12" provider="java:RPC" style="wrapped" use="literal">
-		<parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServiceElement" value="EchoEndpointService" />
-		<parameter name="schemaQualified" value="http://codefirst.case1.axis1.ws.springframework.org" />
-		<parameter name="wsdlServicePort" value="myservice" />
-		<parameter name="className" value="org.springframework.ws.axis1.case1.codefirst.EchoEndpoint" />
-		<parameter name="wsdlPortType" value="EchoEndpoint" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="retNS:oneParamReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam">
-			<parameter qname="pns:param1" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="retNS:twoParamsReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams">
-			<parameter qname="pns:param1" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-			<parameter qname="pns:param2" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" />
-		</operation>
-		<parameter name="allowedMethods" value="twoParams oneParam" />
-	</service>
+  <service name="EchoEndpointDocumentEncoded11" provider="java:RPC" style="document" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+      <parameter name="wsdlServicePort" value="EchoEndpointDocumentEncoded11"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.document_encoded_11.EchoEndpointDocumentEncoded11SoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EchoEndpoint"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="oneParam" qname="oneParam" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="twoParams" qname="twoParams" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="param2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="twoParams oneParam"/>
+
+  </service>
+  <service name="EchoEndpointDocumentEncoded12" provider="java:RPC" style="document" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+      <parameter name="wsdlServicePort" value="EchoEndpointDocumentEncoded12"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.document_encoded_12.EchoEndpointDocumentEncoded12SoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EchoEndpoint"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="oneParam" qname="oneParam" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://schemas.xmlsoap.org/soap/encoding/" soapAction="oneParam" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </operation>
+      <operation name="twoParams" qname="twoParams" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://schemas.xmlsoap.org/soap/encoding/" soapAction="twoParams" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/"/>
+        <parameter qname="param2" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </operation>
+      <parameter name="allowedMethods" value="twoParams oneParam"/>
+
+  </service>
+  <service name="EchoEndpointDocumentLiteral12" provider="java:RPC" style="document" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+      <parameter name="schemaQualified" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServicePort" value="EchoEndpointDocumentLiteral12"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.document_literal_12.EchoEndpointDocumentLiteral12SoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EchoEndpoint"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="oneParam" qname="oneParam" returnQName="retNS:oneParamReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam" >
+        <parameter qname="pns:param1" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="twoParams" qname="twoParams" returnQName="retNS:twoParamsReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams" >
+        <parameter qname="pns:param2" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:param3" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="twoParams oneParam"/>
+
+  </service>
+  <service name="EchoEndpointRpcEncoded11" provider="java:RPC" style="rpc" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+      <parameter name="wsdlServicePort" value="EchoEndpointRpcEncoded11"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.rpc_encoded_11.EchoEndpointRpcEncoded11SoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EchoEndpoint"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="param2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="twoParams oneParam"/>
+
+  </service>
+  <service name="EchoEndpointRpcEncoded12" provider="java:RPC" style="rpc" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+      <parameter name="wsdlServicePort" value="EchoEndpointRpcEncoded12"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.rpc_encoded_12.EchoEndpointRpcEncoded12SoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EchoEndpoint"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://schemas.xmlsoap.org/soap/encoding/" soapAction="oneParam" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </operation>
+      <operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://schemas.xmlsoap.org/soap/encoding/" soapAction="twoParams" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/"/>
+        <parameter qname="param2" type="tns:string" xmlns:tns="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </operation>
+      <parameter name="allowedMethods" value="twoParams oneParam"/>
+
+  </service>
+  <service name="EchoEndpointRpcLiteral12" provider="java:RPC" style="rpc" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+      <parameter name="wsdlServicePort" value="EchoEndpointRpcLiteral12"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.rpc_literal_12.EchoEndpointRpcLiteral12SoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EchoEndpoint"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="oneParamReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="twoParamsReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams" >
+        <parameter qname="param1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="param2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="twoParams oneParam"/>
+
+  </service>
+  <service name="EchoEndpointWrappedEncoded11" provider="java:RPC" style="document" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+      <parameter name="schemaQualified" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServicePort" value="EchoEndpointWrappedEncoded11"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.wrapped_encoded_11.EchoEndpointWrappedEncoded11SoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EchoEndpoint"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="oneParam" qname="oneParam" returnQName="retNS:oneParamResponse" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:>oneParamResponse" xmlns:rtns="http://codefirst.case1.axis1.ws.springframework.org" soapAction="oneParam" >
+        <parameter qname="pns:oneParam" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:>oneParam" xmlns:tns="http://codefirst.case1.axis1.ws.springframework.org"/>
+      </operation>
+      <operation name="twoParams" qname="twoParams" returnQName="retNS:twoParamsResponse" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:>twoParamsResponse" xmlns:rtns="http://codefirst.case1.axis1.ws.springframework.org" soapAction="twoParams" >
+        <parameter qname="pns:twoParams" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:>twoParams" xmlns:tns="http://codefirst.case1.axis1.ws.springframework.org"/>
+      </operation>
+      <parameter name="allowedMethods" value="twoParams oneParam"/>
+
+      <typeMapping
+        xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org"
+        qname="ns:>twoParamsResponse"
+        type="java:org.springframework.ws.axis1.case1.contractfirst.wrapped_encoded_11.TwoParamsResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org"
+        qname="ns:>oneParam"
+        type="java:org.springframework.ws.axis1.case1.contractfirst.wrapped_encoded_11.OneParam"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org"
+        qname="ns:>oneParamResponse"
+        type="java:org.springframework.ws.axis1.case1.contractfirst.wrapped_encoded_11.OneParamResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org"
+        qname="ns:>twoParams"
+        type="java:org.springframework.ws.axis1.case1.contractfirst.wrapped_encoded_11.TwoParams"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+  </service>
+  <service name="EchoEndpointWrappedEncoded12" provider="java:RPC" style="document" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+      <parameter name="schemaQualified" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServicePort" value="EchoEndpointWrappedEncoded12"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.wrapped_encoded_12.EchoEndpointWrappedEncoded12SoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EchoEndpoint"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="oneParam" qname="oneParam" returnQName="retNS:oneParamResponse" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:>oneParamResponse" xmlns:rtns="http://codefirst.case1.axis1.ws.springframework.org" soapAction="oneParam" >
+        <parameter qname="pns:oneParam" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:>oneParam" xmlns:tns="http://codefirst.case1.axis1.ws.springframework.org"/>
+      </operation>
+      <operation name="twoParams" qname="twoParams" returnQName="retNS:twoParamsResponse" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:>twoParamsResponse" xmlns:rtns="http://codefirst.case1.axis1.ws.springframework.org" soapAction="twoParams" >
+        <parameter qname="pns:twoParams" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:>twoParams" xmlns:tns="http://codefirst.case1.axis1.ws.springframework.org"/>
+      </operation>
+      <parameter name="allowedMethods" value="twoParams oneParam"/>
+
+      <typeMapping
+        xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org"
+        qname="ns:>twoParamsResponse"
+        type="java:org.springframework.ws.axis1.case1.contractfirst.wrapped_encoded_12.TwoParamsResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org"
+        qname="ns:>oneParam"
+        type="java:org.springframework.ws.axis1.case1.contractfirst.wrapped_encoded_12.OneParam"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org"
+        qname="ns:>oneParamResponse"
+        type="java:org.springframework.ws.axis1.case1.contractfirst.wrapped_encoded_12.OneParamResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://codefirst.case1.axis1.ws.springframework.org"
+        qname="ns:>twoParams"
+        type="java:org.springframework.ws.axis1.case1.contractfirst.wrapped_encoded_12.TwoParams"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+  </service>
+  <service name="EchoEndpointWrappedLiteral12" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
+      <parameter name="schemaQualified" value="http://codefirst.case1.axis1.ws.springframework.org"/>
+      <parameter name="wsdlServicePort" value="EchoEndpointWrappedLiteral12"/>
+      <parameter name="className" value="org.springframework.ws.axis1.case1.contractfirst.wrapped_literal_12.EchoEndpointWrappedLiteral12SoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EchoEndpoint"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="oneParam" qname="operNS:oneParam" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="retNS:oneParamReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="oneParam" >
+        <parameter qname="pns:param1" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="twoParams" qname="operNS:twoParams" xmlns:operNS="http://codefirst.case1.axis1.ws.springframework.org" returnQName="retNS:twoParamsReturn" xmlns:retNS="http://codefirst.case1.axis1.ws.springframework.org" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="twoParams" >
+        <parameter qname="pns:param1" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:param2" xmlns:pns="http://codefirst.case1.axis1.ws.springframework.org" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="twoParams oneParam"/>
+
+  </service> 
 
 </deployment>

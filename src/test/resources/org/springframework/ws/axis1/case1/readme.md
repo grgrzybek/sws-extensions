@@ -11,9 +11,14 @@ Information:
 
 * The class is `org.springframework.ws.axis1.case1.codefirst.EchoEndpoint`in `src/test/java`
 * WSDLs and `(un)deploy.wsdd` files are generated to `src/test/resources/org/springframework/ws/axis1/case1/codefirst` using all (*the matrix*) combinations of parameters
-* These WSDLs are used to generate *client stubs* and *server skeletons* in `org.springframework.ws.axis1.case1.contractfirst` packages in `src/test/java`
-* `deploy.wsdd` files, used to configure runtime clients have additional configuration added (LogHandler, sendXsiTypes, sendMultiRefs) 
-* after running the test, generated SOAP messages are stored in `src/test/resources/org/springframework/ws/axis1/case1/contractfirst`
+* For *literal* use, there's no difference between 1.1 and 1.2 type mapping version - they both don't use `soapenc` types
+* For "case 1" there's no difference between *plain* and *wrapped* arrays
+* both for type mapping version = `1.1` and `1.2`, `<parameter name="typeMappingVersion" value="1.2"/>` is generated
+* for WRAPPED/ENCODED, additional classes are generated (wrappers)
+* type mapping version `1.2` (soap encoding) is the default (although org.apache.axis.wsdl.Java2WSDL doc says different)
+* generated WSDLs are used to generate *client stubs* and *server skeletons* in `org.springframework.ws.axis1.case1.contractfirst` packages in `src/test/java`
+* `deploy.wsdd` files, used to configure runtime clients have additional configuration added (LogHandler, sendXsiTypes, sendMultiRefs)
+* after running the test, generated SOAP messages are stored in `src/test/resources/org/springframework/ws/axis1/case1/contractfirst/soap_11`
 
 ### <a id="matrix"></a>The Matrix ###
 
@@ -38,9 +43,3 @@ Our goal is to see how Axis1 generates different kind of artifacts:
 	<tr><td>WRAPPED</td><td>ENCODED</td><td>1.1</td><td></td></tr>
 	<tr><td>WRAPPED</td><td>ENCODED</td><td>1.2</td><td></td></tr>
 </table>
-
-Remarks:
-
-* both for type mapping version = `1.1` and `1.2`, `<parameter name="typeMappingVersion" value="1.2"/>` is generated
-* for WRAPPED/ENCODED, additional classes are generated (wrappers)
-* type mapping version `1.2` (soap encoding) is the default (although org.apache.axis.wsdl.Java2WSDL doc says different)

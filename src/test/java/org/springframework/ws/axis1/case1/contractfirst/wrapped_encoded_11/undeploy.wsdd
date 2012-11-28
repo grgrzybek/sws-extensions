@@ -11,5 +11,5 @@
 
   <!-- Services from EchoEndpointService WSDL service -->
 
-  <service name="myservice"/>
+  <service name="EchoEndpointWrappedEncoded11"/>
 </undeployment>
