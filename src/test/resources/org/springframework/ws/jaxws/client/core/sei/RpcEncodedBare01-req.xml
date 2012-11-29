@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">
+	<SOAP-ENV:Body>
+		<ns:hello xmlns:ns="http://sei.core.client.jaxws.ws.springframework.org/">
+			<arg0>hello</arg0>
+			<arg1>value2</arg1>
+		</ns:hello>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
