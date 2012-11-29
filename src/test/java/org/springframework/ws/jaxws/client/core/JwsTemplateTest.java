@@ -16,11 +16,21 @@
 
 package org.springframework.ws.jaxws.client.core;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.Map;
+
 import javax.xml.ws.Service;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.ws.jaxws.client.core.description.OperationDescription;
 import org.springframework.ws.jaxws.matrix.Port01;
+import org.springframework.ws.jaxws.matrix.Port02;
+import org.springframework.ws.jaxws.matrix.Port03;
 import org.springframework.ws.jaxws.soapenc.SoapEncodingMarshaller;
 import org.springframework.ws.soap.axiom.AxiomSoapMessageFactory;
 import org.springframework.ws.test.client.MockWebServiceServer;
@@ -39,6 +49,39 @@ import static org.springframework.ws.test.client.ResponseCreators.*;
  * @author Grzegorz Grzybek
  */
 public class JwsTemplateTest {
+
+	private static Logger log = LoggerFactory.getLogger(JwsTemplateTest.class.getName());
+
+	@Test(expected = IllegalArgumentException.class)
+	public void noWebServiceAnnotation() throws Exception {
+		JwsTemplate<Serializable> jws = new JwsTemplate<Serializable>(Serializable.class);
+		jws.afterPropertiesSet();
+	}
+	
+	@Test
+	public void webServiceAnnotation() throws Exception {
+		JwsTemplate<Port01> jws = new JwsTemplate<Port01>(Port01.class);
+		jws.afterPropertiesSet();
+		assertThat(((Map<?, ?>)ReflectionTestUtils.getField(jws, "java2ws")).size(), equalTo(1));
+	}
+	
+	@Test
+	public void portWithParentInterface() throws Exception {
+		JwsTemplate<Port02> jws = new JwsTemplate<Port02>(Port02.class);
+		jws.afterPropertiesSet();
+		assertThat(((Map<?, ?>)ReflectionTestUtils.getField(jws, "java2ws")).size(), equalTo(1));
+	}
+	
+	@Test
+	public void portWithThreeMethods() throws Exception {
+		JwsTemplate<Port03> jws = new JwsTemplate<Port03>(Port03.class);
+		jws.afterPropertiesSet();
+		@SuppressWarnings("unchecked")
+		Map<Method, OperationDescription> java2ws = (Map<Method, OperationDescription>)ReflectionTestUtils.getField(jws, "java2ws");
+		assertThat(java2ws.size(), equalTo(3));
+		for (OperationDescription desc: java2ws.values())
+			log.info("Description: {}", desc.toString());
+	}
 
 	/**
 	 * This test shows how proxy for WebService may be created without JAX-WS implementation (using only annotations on Service Endpoint Interface)

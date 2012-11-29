@@ -17,7 +17,11 @@
 package org.springframework.ws.jaxws.client.core;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
 
@@ -25,12 +29,20 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.oxm.XmlMappingException;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.util.ReflectionUtils.MethodCallback;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.WebServiceMessageFactory;
+import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceMessageExtractor;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+import org.springframework.ws.jaxws.client.core.description.OperationDescription;
+import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.ws.support.MarshallingUtils;
 
 /**
@@ -41,25 +53,36 @@ import org.springframework.ws.support.MarshallingUtils;
  * </ul></p>
  * <p>This class may seem to be modelled after client APIs of JAX-WS and JAX-RPC, but it really uses more pragmatic approach.</p>
  * <p>This class must be configured using existing, JWS/JAX-WS annotated interface which will set proper mapping and marshalling configuration.</p>
+ * 
+ * TODO: separate Template concept from FactoryBean creating strongly-typed client Proxy (?)
  *
  * @author Grzegorz Grzybek
  */
 public class JwsTemplate<T> extends WebServiceGatewaySupport implements JwsOperations, FactoryBean<T>, MethodInterceptor {
 
+	/** JSR181 annotated interface */
 	private Class<T> webServiceInterface;
 
+	/** Strongly-typed proxy */
 	private T proxy;
 
 	/**
-	 * @param webServiceInterface
+	 * Mapping of Java invocation metadata to WebService invocation metadata.
+	 * TODO: Maybe a part of client ProxyFactory only?
+	 */
+	private Map<Method, OperationDescription> java2ws = new LinkedHashMap<Method, OperationDescription>();
+
+	/**
+	 * @param webServiceInterface The {@link WebService}-annotated interface, which will be used to determine proper manner of invoking the related web service.
 	 */
 	public JwsTemplate(Class<T> webServiceInterface) {
+		super();
 		this.webServiceInterface = webServiceInterface;
 	}
 
 	/**
-	 * @param webServiceInterface
-	 * @param messageFactory
+	 * @param webServiceInterface The {@link WebService}-annotated interface, which will be used to determine proper manner of invoking the related web service.
+	 * @param messageFactory The message factory of choice. Default is {@link SaajSoapMessageFactory}
 	 */
 	public JwsTemplate(Class<T> webServiceInterface, WebServiceMessageFactory messageFactory) {
 		super(messageFactory);
@@ -70,8 +93,10 @@ public class JwsTemplate<T> extends WebServiceGatewaySupport implements JwsOpera
 	 * @see org.springframework.ws.jaxws.client.core.JwsOperations#invokeRpcOperation(javax.xml.namespace.QName, java.lang.Object[])
 	 */
 	@Override
-	public Object invokeRpcOperation(QName operationName, final Object[] params) {
+	public Object invokeRpcOperation(QName operationName, final Object[] params) throws XmlMappingException, WebServiceClientException {
 		WebServiceMessage request = this.getMessageFactory().createWebServiceMessage();
+
+		// TODO: detect SoapEncodingMarshaller and other marshallers
 		try {
 			MarshallingUtils.marshal(this.getMarshaller(), params, request);
 		}
@@ -96,7 +121,7 @@ public class JwsTemplate<T> extends WebServiceGatewaySupport implements JwsOpera
 	 * @see org.springframework.ws.jaxws.client.core.JwsOperations#invokeDocumentOperation(java.lang.Object[])
 	 */
 	@Override
-	public Object invokeDocumentOperation(Object[] params) {
+	public Object invokeDocumentOperation(Object[] params) throws XmlMappingException, WebServiceClientException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -105,7 +130,7 @@ public class JwsTemplate<T> extends WebServiceGatewaySupport implements JwsOpera
 	 * @see org.springframework.ws.jaxws.client.core.JwsOperations#invokeDocumentWrappedOperation(javax.xml.namespace.QName, java.lang.Object[])
 	 */
 	@Override
-	public Object invokeDocumentWrappedOperation(QName wrapperName, Object[] params) {
+	public Object invokeDocumentWrappedOperation(QName wrapperName, Object[] params) throws XmlMappingException, WebServiceClientException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -140,8 +165,30 @@ public class JwsTemplate<T> extends WebServiceGatewaySupport implements JwsOpera
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void initGateway() throws Exception {
-		// actual initialization of WebService proxy
-		Assert.notNull(this.webServiceInterface, "WebService interface should be set");
+		Assert.notNull(this.webServiceInterface, "Service Endpoint Interface should be set");
+		Assert.isTrue(this.webServiceInterface.isInterface(), "Service Endpoint Interface should be a Java interface");
+
+		WebService webService = AnnotationUtils.findAnnotation(this.webServiceInterface, WebService.class);
+		Assert.isTrue(webService != null, "Service Endpoint Interface should be annotated with @javax.jws.WebService annotation");
+
+		ReflectionUtils.doWithMethods(this.webServiceInterface, new MethodCallback() {
+			@Override
+			public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
+				// a method may or may not be annotated with @javax.jws.WebMethod.
+				// We use the most "specific" (strange term for interface
+				// hierarchy...) method
+				method = ClassUtils.getMostSpecificMethod(method, JwsTemplate.this.webServiceInterface);
+				OperationDescription description = JwsUtils.describeMethod(method);
+				JwsTemplate.this.java2ws.put(method, description);
+			}
+		});
+		// this annotation configures particular operation of portType (interface)
+		// WebMethod webMethod = AnnotationUtils.findAnnotation(method,
+		// WebMethod.class);
+
+		// we discover all @WebMethods and create proper Java -> WebService
+		// mapping
+		// AnnotationUtils.
 
 		ProxyFactory pf = new ProxyFactory();
 		pf.setInterfaces(new Class[] { this.webServiceInterface });

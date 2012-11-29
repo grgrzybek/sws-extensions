@@ -18,6 +18,9 @@ package org.springframework.ws.jaxws.client.core;
 
 import javax.xml.namespace.QName;
 
+import org.springframework.oxm.XmlMappingException;
+import org.springframework.ws.client.WebServiceClientException;
+
 /**
  * <p>Commons operations for Web Services.</p>
  * <p>WS specs distinguish between rpc and document style:<ul>
@@ -41,25 +44,25 @@ public interface JwsOperations {
 	 * @param params
 	 * @return
 	 */
-	public Object invokeRpcOperation(QName operationName, Object[] params);
+	public Object invokeRpcOperation(QName operationName, Object[] params) throws XmlMappingException, WebServiceClientException;
 
 	/**
 	 * <p>In Document-style operations, all arguments are passed as direct children of SOAP Body.</p>
-	 * <p>Of course passing more than one document-style argument is agains common-sense, but SOAP and WSDL allows it</p>
+	 * <p>Of course passing more than one document-style argument is against common-sense, but SOAP and WSDL allows it</p>
 	 * 
 	 * @param params
 	 * @return
 	 */
-	public Object invokeDocumentOperation(Object[] params);
+	public Object invokeDocumentOperation(Object[] params) throws XmlMappingException, WebServiceClientException;
 
 	/**
-	 * <p>Wrapper style is special kind of document style invocation. There's only one body child which represent
-	 * invoked operation and its children are "decomposed" to operation's parameters</p>
+	 * <p>Wrapper style is special kind of document style invocation. There's only one body child which represents
+	 * invoked operation and its children are "unwrapped" as the parameters of the operation.</p>
 	 * 
 	 * @param wrapperElementName
 	 * @param params
 	 * @return
 	 */
-	public Object invokeDocumentWrappedOperation(QName wrapperElementName, Object[] params);
+	public Object invokeDocumentWrappedOperation(QName wrapperElementName, Object[] params) throws XmlMappingException, WebServiceClientException;
 
 }

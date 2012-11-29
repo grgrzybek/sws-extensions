@@ -88,7 +88,7 @@ public class ServiceImplementationBeanDetectionTest {
 		assertThat(result, equalTo("proxied hello"));
 		assertThat("AOPed endpoint should be detected", endpoint, notNullValue());
 		// is the endpoint a CGLIB proxy?
-		assertTrue("Service Implementation Bean should be a CGLIB proxy", ClassUtils.isCglibProxy(ac.getBean((String) endpoint.getBean())));
+		assertTrue("Service Implementation Bean should be a CGLIB proxy", ClassUtils.isCglibProxy(endpoint.getBean()));
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class ServiceImplementationBeanDetectionTest {
 		assertThat(result, equalTo("proxied hello"));
 		assertThat("serviceImplementationBeanMustDefineWebServiceAnnotation", endpoint, notNullValue());
 		// is the endpoint a Java proxy?
-		assertTrue("Service Implementation Bean should be a proxy", Proxy.isProxyClass(ac.getBean((String) endpoint.getBean()).getClass()));
+		assertTrue("Service Implementation Bean should be a proxy", Proxy.isProxyClass(endpoint.getBean().getClass()));
 	}
 
 	/**
