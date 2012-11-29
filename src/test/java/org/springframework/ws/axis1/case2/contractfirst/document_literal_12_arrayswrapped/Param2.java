@@ -10,15 +10,13 @@ package org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arr
 import java.math.BigDecimal;
 
 public class Param2  implements java.io.Serializable {
-	private org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_string list = new ArrayOf_xsd_string(new String[] { "str1", "str2", "str3" });
+    private ArrayOf_xsd_string list = new ArrayOf_xsd_string(new String[] { "str1", "str2", "str3" });
 
-	private org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_anyType param3List = new ArrayOf_xsd_anyType(new Object[] { new Param3(), new Param3() });
+    private ArrayOfParam3 param3Tab = new ArrayOfParam3(new Param3[] { new Param3(), new Param3(), new Param3() });
 
-	private org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOfParam3 param3Tab = new ArrayOfParam3(new Param3[] { new Param3(), new Param3(), new Param3() });
+ 	private BigDecimal bd = new BigDecimal("37.98");
 
-	private BigDecimal bd = new BigDecimal("37.98");
-
-	private Integer number = 44;
+ 	private Integer number = 44;
 
     public Param2() {
     }
@@ -27,12 +25,10 @@ public class Param2  implements java.io.Serializable {
            java.math.BigDecimal bd,
            org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_string list,
            java.lang.Integer number,
-           org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_anyType param3List,
            org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOfParam3 param3Tab) {
            this.bd = bd;
            this.list = list;
            this.number = number;
-           this.param3List = param3List;
            this.param3Tab = param3Tab;
     }
 
@@ -98,26 +94,6 @@ public class Param2  implements java.io.Serializable {
 
 
     /**
-     * Gets the param3List value for this Param2.
-     * 
-     * @return param3List
-     */
-    public org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_anyType getParam3List() {
-        return param3List;
-    }
-
-
-    /**
-     * Sets the param3List value for this Param2.
-     * 
-     * @param param3List
-     */
-    public void setParam3List(org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_anyType param3List) {
-        this.param3List = param3List;
-    }
-
-
-    /**
      * Gets the param3Tab value for this Param2.
      * 
      * @return param3Tab
@@ -157,9 +133,6 @@ public class Param2  implements java.io.Serializable {
             ((this.number==null && other.getNumber()==null) || 
              (this.number!=null &&
               this.number.equals(other.getNumber()))) &&
-            ((this.param3List==null && other.getParam3List()==null) || 
-             (this.param3List!=null &&
-              this.param3List.equals(other.getParam3List()))) &&
             ((this.param3Tab==null && other.getParam3Tab()==null) || 
              (this.param3Tab!=null &&
               this.param3Tab.equals(other.getParam3Tab())));
@@ -182,9 +155,6 @@ public class Param2  implements java.io.Serializable {
         }
         if (getNumber() != null) {
             _hashCode += getNumber().hashCode();
-        }
-        if (getParam3List() != null) {
-            _hashCode += getParam3List().hashCode();
         }
         if (getParam3Tab() != null) {
             _hashCode += getParam3Tab().hashCode();

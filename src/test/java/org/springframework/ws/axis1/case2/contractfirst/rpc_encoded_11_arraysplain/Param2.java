@@ -10,15 +10,13 @@ package org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arrayspl
 import java.math.BigDecimal;
 
 public class Param2  implements java.io.Serializable {
-	private java.lang.Object[] param3List = new Param3[] { new Param3(), new Param3() };
+	private BigDecimal bd = new BigDecimal("37.98");
 
- 	private BigDecimal bd = new BigDecimal("37.98");
+	private String[] list = new String[] { "str1", "str2", "str3" };
 
- 	private String[] list = new String[] { "str1", "str2", "str3" };
+	private Param3[] param3Tab = new Param3[] { new Param3(), new Param3(), new Param3() };
 
- 	private Param3[] param3Tab = new Param3[] { new Param3(), new Param3(), new Param3() };
-
- 	private Integer number = 44;
+	private Integer number = 44;
 
     public Param2() {
     }
@@ -27,12 +25,10 @@ public class Param2  implements java.io.Serializable {
            java.math.BigDecimal bd,
            java.lang.String[] list,
            java.lang.Integer number,
-           java.lang.Object[] param3List,
            org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arraysplain.Param3[] param3Tab) {
            this.bd = bd;
            this.list = list;
            this.number = number;
-           this.param3List = param3List;
            this.param3Tab = param3Tab;
     }
 
@@ -98,26 +94,6 @@ public class Param2  implements java.io.Serializable {
 
 
     /**
-     * Gets the param3List value for this Param2.
-     * 
-     * @return param3List
-     */
-    public java.lang.Object[] getParam3List() {
-        return param3List;
-    }
-
-
-    /**
-     * Sets the param3List value for this Param2.
-     * 
-     * @param param3List
-     */
-    public void setParam3List(java.lang.Object[] param3List) {
-        this.param3List = param3List;
-    }
-
-
-    /**
      * Gets the param3Tab value for this Param2.
      * 
      * @return param3Tab
@@ -157,9 +133,6 @@ public class Param2  implements java.io.Serializable {
             ((this.number==null && other.getNumber()==null) || 
              (this.number!=null &&
               this.number.equals(other.getNumber()))) &&
-            ((this.param3List==null && other.getParam3List()==null) || 
-             (this.param3List!=null &&
-              java.util.Arrays.equals(this.param3List, other.getParam3List()))) &&
             ((this.param3Tab==null && other.getParam3Tab()==null) || 
              (this.param3Tab!=null &&
               java.util.Arrays.equals(this.param3Tab, other.getParam3Tab())));
@@ -190,17 +163,6 @@ public class Param2  implements java.io.Serializable {
         }
         if (getNumber() != null) {
             _hashCode += getNumber().hashCode();
-        }
-        if (getParam3List() != null) {
-            for (int i=0;
-                 i<java.lang.reflect.Array.getLength(getParam3List());
-                 i++) {
-                java.lang.Object obj = java.lang.reflect.Array.get(getParam3List(), i);
-                if (obj != null &&
-                    !obj.getClass().isArray()) {
-                    _hashCode += obj.hashCode();
-                }
-            }
         }
         if (getParam3Tab() != null) {
             for (int i=0;

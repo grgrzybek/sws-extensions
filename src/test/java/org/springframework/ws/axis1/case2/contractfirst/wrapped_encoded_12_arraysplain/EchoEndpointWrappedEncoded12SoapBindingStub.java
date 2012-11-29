@@ -106,15 +106,6 @@ public class EchoEndpointWrappedEncoded12SoapBindingStub extends org.apache.axis
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
-            qName = new javax.xml.namespace.QName("http://codefirst.case2.axis1.ws.springframework.org", "ArrayOf_xsd_anyType");
-            cachedSerQNames.add(qName);
-            cls = java.lang.Object[].class;
-            cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "anyType");
-            qName2 = null;
-            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
-            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
-
             qName = new javax.xml.namespace.QName("http://codefirst.case2.axis1.ws.springframework.org", "ArrayOfParam3");
             cachedSerQNames.add(qName);
             cls = org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.Param3[].class;

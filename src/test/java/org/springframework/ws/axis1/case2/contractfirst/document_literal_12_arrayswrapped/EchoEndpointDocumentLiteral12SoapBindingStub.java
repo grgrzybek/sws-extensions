@@ -67,13 +67,6 @@ public class EchoEndpointDocumentLiteral12SoapBindingStub extends org.apache.axi
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
-            qName = new javax.xml.namespace.QName("http://codefirst.case2.axis1.ws.springframework.org", "ArrayOf_xsd_anyType");
-            cachedSerQNames.add(qName);
-            cls = org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_anyType.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
             qName = new javax.xml.namespace.QName("http://codefirst.case2.axis1.ws.springframework.org", "ArrayOf_xsd_byte");
             cachedSerQNames.add(qName);
             cls = org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_byte.class;

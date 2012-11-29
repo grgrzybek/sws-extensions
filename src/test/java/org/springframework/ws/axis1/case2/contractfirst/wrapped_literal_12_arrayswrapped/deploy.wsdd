@@ -15,7 +15,7 @@
   <service name="EchoEndpointWrappedLiteral12" provider="java:RPC" style="wrapped" use="literal">
       <parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
       <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
-      <parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+      <parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org"/>
       <parameter name="wsdlServicePort" value="EchoEndpointWrappedLiteral12"/>
       <parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.EchoEndpointWrappedLiteral12SoapBindingImpl"/>
       <parameter name="wsdlPortType" value="EchoEndpoint"/>
@@ -26,14 +26,6 @@
       </operation>
       <parameter name="allowedMethods" value="echo"/>
 
-      <typeMapping
-        xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
-        qname="ns:>echo"
-        type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.Echo"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
       <typeMapping
         xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
         qname="ns:ArrayOf_xsd_byte"
@@ -86,22 +78,6 @@
         xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
         qname="ns:Result1"
         type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.Result1"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
-        qname="ns:>echoResponse"
-        type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.EchoResponse"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
-        qname="ns:ArrayOf_xsd_anyType"
-        type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_literal_12_arrayswrapped.ArrayOf_xsd_anyType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""

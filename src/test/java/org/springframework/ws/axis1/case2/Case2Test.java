@@ -62,6 +62,10 @@ public class Case2Test extends Axis1IntegrationTests {
 						for (String use: new String[] { "LITERAL", "ENCODED" }) {
 							for (String tmVersion: new String[] { "1.1", "1.2" }) {
 								for (boolean wrappedArrays: new boolean[] { false, true }) {
+									if ("ENCODED".equals(use) && wrappedArrays)
+										continue;
+									if ("LITERAL".equals(use) && "1.1".equals(tmVersion))
+										continue;
 									try {
 										if ("WRAPPED".equals(style) && "ENCODED".equals(use)) {
 											echoWrappedEncoded(port, style, use, tmVersion, wrappedArrays);
@@ -176,42 +180,28 @@ public class Case2Test extends Axis1IntegrationTests {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-//		java2wsdl("DOCUMENT", "LITERAL", "1.1");
 //		java2wsdl("DOCUMENT", "LITERAL", "1.2");
 //		java2wsdl("DOCUMENT", "ENCODED", "1.1");
 //		java2wsdl("DOCUMENT", "ENCODED", "1.2");
-//		java2wsdl("RPC", "LITERAL", "1.1");
 //		java2wsdl("RPC", "LITERAL", "1.2");
 //		java2wsdl("RPC", "ENCODED", "1.1");
 //		java2wsdl("RPC", "ENCODED", "1.2");
-//		java2wsdl("WRAPPED", "LITERAL", "1.1");
 //		java2wsdl("WRAPPED", "LITERAL", "1.2");
 //		java2wsdl("WRAPPED", "ENCODED", "1.1");
 //		java2wsdl("WRAPPED", "ENCODED", "1.2");
-//		wsdl2java("DOCUMENT", "LITERAL", "1.1", false);
-//		wsdl2java("DOCUMENT", "LITERAL", "1.1", true);
+
 //		wsdl2java("DOCUMENT", "LITERAL", "1.2", false);
 //		wsdl2java("DOCUMENT", "LITERAL", "1.2", true);
 //		wsdl2java("DOCUMENT", "ENCODED", "1.1", false);
-//		wsdl2java("DOCUMENT", "ENCODED", "1.1", true);
 //		wsdl2java("DOCUMENT", "ENCODED", "1.2", false);
-//		wsdl2java("DOCUMENT", "ENCODED", "1.2", true);
-//		wsdl2java("RPC", "LITERAL", "1.1", false);
-//		wsdl2java("RPC", "LITERAL", "1.1", true);
 //		wsdl2java("RPC", "LITERAL", "1.2", false);
 //		wsdl2java("RPC", "LITERAL", "1.2", true);
 //		wsdl2java("RPC", "ENCODED", "1.1", false);
-//		wsdl2java("RPC", "ENCODED", "1.1", true);
 //		wsdl2java("RPC", "ENCODED", "1.2", false);
-//		wsdl2java("RPC", "ENCODED", "1.2", true);
-//		wsdl2java("WRAPPED", "LITERAL", "1.1", false);
-//		wsdl2java("WRAPPED", "LITERAL", "1.1", true);
 //		wsdl2java("WRAPPED", "LITERAL", "1.2", false);
 //		wsdl2java("WRAPPED", "LITERAL", "1.2", true);
 //		wsdl2java("WRAPPED", "ENCODED", "1.1", false);
-//		wsdl2java("WRAPPED", "ENCODED", "1.1", true);
 //		wsdl2java("WRAPPED", "ENCODED", "1.2", false);
-//		wsdl2java("WRAPPED", "ENCODED", "1.2", true);
 	}
 
 	/**

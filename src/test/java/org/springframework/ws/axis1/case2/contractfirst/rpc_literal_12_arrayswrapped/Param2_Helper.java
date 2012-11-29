@@ -33,12 +33,6 @@ public class Param2_Helper {
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("param3List");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "param3List"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://codefirst.case2.axis1.ws.springframework.org", "ArrayOf_xsd_anyType"));
-        elemField.setNillable(true);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("param3Tab");
         elemField.setXmlName(new javax.xml.namespace.QName("", "param3Tab"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://codefirst.case2.axis1.ws.springframework.org", "ArrayOfParam3"));

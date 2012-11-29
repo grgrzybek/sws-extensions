@@ -15,7 +15,7 @@
   <service name="EchoEndpointWrappedEncoded12" provider="java:RPC" style="document" use="encoded">
       <parameter name="wsdlTargetNamespace" value="http://codefirst.case2.axis1.ws.springframework.org"/>
       <parameter name="wsdlServiceElement" value="EchoEndpointService"/>
-      <parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org,http://xml.apache.org/xml-soap"/>
+      <parameter name="schemaQualified" value="http://codefirst.case2.axis1.ws.springframework.org"/>
       <parameter name="wsdlServicePort" value="EchoEndpointWrappedEncoded12"/>
       <parameter name="className" value="org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.EchoEndpointWrappedEncoded12SoapBindingImpl"/>
       <parameter name="wsdlPortType" value="EchoEndpoint"/>
@@ -99,13 +99,6 @@
         type="java:org.springframework.ws.axis1.case2.contractfirst.wrapped_encoded_12_arraysplain.EchoResponse"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
-      />
-      <arrayMapping
-        xmlns:ns="http://codefirst.case2.axis1.ws.springframework.org"
-        qname="ns:ArrayOf_xsd_anyType"
-        type="java:java.lang.Object[]"
-        innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
       />
   </service>

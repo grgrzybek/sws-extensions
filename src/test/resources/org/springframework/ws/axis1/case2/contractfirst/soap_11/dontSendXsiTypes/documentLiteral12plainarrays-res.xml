@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<echoReturn xmlns="http://codefirst.case2.axis1.ws.springframework.org">
+			<list>
+				<item>890.123123</item>
+				<item>0.12</item>
+			</list>
+			<param2>
+				<bd>37.98</bd>
+				<list>
+					<item>str1</item>
+					<item>str2</item>
+					<item>str3</item>
+				</list>
+				<number>44</number>
+				<param3Tab>
+					<item>
+						<lvalue>3</lvalue>
+						<svalue>value</svalue>
+					</item>
+					<item>
+						<lvalue>3</lvalue>
+						<svalue>value</svalue>
+					</item>
+					<item>
+						<lvalue>3</lvalue>
+						<svalue>value</svalue>
+					</item>
+				</param3Tab>
+			</param2>
+			<str>part of result</str>
+		</echoReturn>
+	</soapenv:Body>
+</soapenv:Envelope>

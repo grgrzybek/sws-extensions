@@ -10,11 +10,11 @@ package org.springframework.ws.axis1.case2.contractfirst.rpc_literal_12_arrayswr
 import java.math.BigDecimal;
 
 public class Result1  implements java.io.Serializable {
-	private ArrayOf_xsd_decimal list = new ArrayOf_xsd_decimal(new BigDecimal[] { new BigDecimal("890.123123"), new BigDecimal("0.12") });
+    private ArrayOf_xsd_decimal list = new ArrayOf_xsd_decimal(new BigDecimal[] { new BigDecimal("890.123123"), new BigDecimal("0.12") });
 
-	private Param2 param2 = new Param2();
+ 	private Param2 param2 = new Param2();
 
-	private String str = "part of result";
+ 	private String str = "part of result";
 
     public Result1() {
     }

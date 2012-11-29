@@ -4,7 +4,6 @@
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema targetNamespace="http://codefirst.case2.axis1.ws.springframework.org" xmlns="http://www.w3.org/2001/XMLSchema">
-   <import namespace="http://xml.apache.org/xml-soap"/>
    <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
    <complexType name="ArrayOf_xsd_byte">
     <complexContent>
@@ -17,13 +16,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     <complexContent>
      <restriction base="soapenc:Array">
       <attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:string[]"/>
-     </restriction>
-    </complexContent>
-   </complexType>
-   <complexType name="ArrayOf_xsd_anyType">
-    <complexContent>
-     <restriction base="soapenc:Array">
-      <attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:anyType[]"/>
      </restriction>
     </complexContent>
    </complexType>
@@ -45,7 +37,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="bd" nillable="true" type="xsd:decimal"/>
      <element name="list" nillable="true" type="impl:ArrayOf_xsd_string"/>
      <element name="number" nillable="true" type="xsd:int"/>
-     <element name="param3List" nillable="true" type="impl:ArrayOf_xsd_anyType"/>
      <element name="param3Tab" nillable="true" type="impl:ArrayOfParam3"/>
     </sequence>
    </complexType>
@@ -70,15 +61,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="list" nillable="true" type="impl:ArrayOf_xsd_decimal"/>
      <element name="param2" nillable="true" type="impl:Param2"/>
      <element name="str" nillable="true" type="xsd:string"/>
-    </sequence>
-   </complexType>
-  </schema>
-  <schema targetNamespace="http://xml.apache.org/xml-soap" xmlns="http://www.w3.org/2001/XMLSchema">
-   <import namespace="http://codefirst.case2.axis1.ws.springframework.org"/>
-   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
-   <complexType name="Vector">
-    <sequence>
-     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:anyType"/>
     </sequence>
    </complexType>
   </schema>

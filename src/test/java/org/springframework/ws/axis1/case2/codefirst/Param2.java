@@ -17,9 +17,6 @@
 package org.springframework.ws.axis1.case2.codefirst;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * <p></p>
@@ -33,7 +30,6 @@ public class Param2 {
 	private String[] list = new String[] { "str1", "str2", "str3" };
 
 	private Param3[] param3Tab = new Param3[] { new Param3(), new Param3(), new Param3() };
-	private List<Param3> param3List = new LinkedList<Param3>(Arrays.asList(new Param3[] { new Param3(), new Param3() }));
 
 	private Integer number = 44;
 
@@ -77,20 +73,6 @@ public class Param2 {
 	 */
 	public void setParam3Tab(Param3[] param3Tab) {
 		this.param3Tab = param3Tab;
-	}
-
-	/**
-	 * @return the param3List
-	 */
-	public List<Param3> getParam3List() {
-		return this.param3List;
-	}
-
-	/**
-	 * @param param3List the param3List to set
-	 */
-	public void setParam3List(List<Param3> param3List) {
-		this.param3List = param3List;
 	}
 
 	/**

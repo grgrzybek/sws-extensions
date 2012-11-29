@@ -8,15 +8,15 @@
 package org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped;
 
 public class Param1  implements java.io.Serializable {
-   private org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOf_xsd_byte list = new ArrayOf_xsd_byte(new byte[] { (byte) 0x24, (byte) 0x9A });
+   private ArrayOf_xsd_byte list = new ArrayOf_xsd_byte(new byte[] { (byte) 0x24, (byte) 0x9A });
 
-   private org.springframework.ws.axis1.case2.contractfirst.document_literal_12_arrayswrapped.ArrayOfParam3 param3List = new ArrayOfParam3(new Param3[] { new Param3(), new Param3(), new Param3() });
+   private ArrayOfParam3 param3List = new ArrayOfParam3(new Param3[] { new Param3(), new Param3(), new Param3() });
 
-	private String string = "str (String)";
+ 	private String string = "str (String)";
 
-	private Long number = 37L;
+ 	private Long number = 37L;
 
-	private Param2 param2 = new Param2();
+ 	private Param2 param2 = new Param2();
 
     public Param1() {
     }

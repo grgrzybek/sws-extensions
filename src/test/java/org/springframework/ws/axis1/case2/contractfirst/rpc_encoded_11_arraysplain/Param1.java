@@ -8,15 +8,15 @@
 package org.springframework.ws.axis1.case2.contractfirst.rpc_encoded_11_arraysplain;
 
 public class Param1  implements java.io.Serializable {
-	private String string = "str (String)";
+ 	private String string = "str (String)";
 
-	private Long number = 37L;
+ 	private Long number = 37L;
 
-	private Param2 param2 = new Param2();
+ 	private Param2 param2 = new Param2();
 
-	private byte[] list = new byte[] { (byte) 0x24, (byte) 0x9A };
+ 	private byte[] list = new byte[] { (byte) 0x24, (byte) 0x9A };
 
-	private Param3[] param3List = new Param3[] { new Param3(), new Param3(), new Param3() };
+ 	private Param3[] param3List = new Param3[] { new Param3(), new Param3(), new Param3() };
 
     public Param1() {
     }

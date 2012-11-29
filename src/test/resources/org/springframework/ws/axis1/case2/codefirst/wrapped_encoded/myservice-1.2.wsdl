@@ -4,7 +4,6 @@
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema elementFormDefault="qualified" targetNamespace="http://codefirst.case2.axis1.ws.springframework.org" xmlns="http://www.w3.org/2001/XMLSchema">
-   <import namespace="http://xml.apache.org/xml-soap"/>
    <element name="echo">
     <complexType>
      <sequence>
@@ -27,13 +26,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </restriction>
     </complexContent>
    </complexType>
-   <complexType name="ArrayOf_xsd_anyType">
-    <complexContent>
-     <restriction base="soapenc:Array">
-      <attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:anyType[]"/>
-     </restriction>
-    </complexContent>
-   </complexType>
    <complexType name="Param3">
     <sequence>
      <element name="lvalue" nillable="true" type="soapenc:long"/>
@@ -52,7 +44,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="bd" nillable="true" type="soapenc:decimal"/>
      <element name="list" nillable="true" type="impl:ArrayOf_soapenc_string"/>
      <element name="number" nillable="true" type="soapenc:int"/>
-     <element name="param3List" nillable="true" type="impl:ArrayOf_xsd_anyType"/>
      <element name="param3Tab" nillable="true" type="impl:ArrayOfParam3"/>
     </sequence>
    </complexType>
@@ -84,14 +75,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="list" nillable="true" type="impl:ArrayOf_soapenc_decimal"/>
      <element name="param2" nillable="true" type="impl:Param2"/>
      <element name="str" nillable="true" type="soapenc:string"/>
-    </sequence>
-   </complexType>
-  </schema>
-  <schema elementFormDefault="qualified" targetNamespace="http://xml.apache.org/xml-soap" xmlns="http://www.w3.org/2001/XMLSchema">
-   <import namespace="http://codefirst.case2.axis1.ws.springframework.org"/>
-   <complexType name="Vector">
-    <sequence>
-     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:anyType"/>
     </sequence>
    </complexType>
   </schema>

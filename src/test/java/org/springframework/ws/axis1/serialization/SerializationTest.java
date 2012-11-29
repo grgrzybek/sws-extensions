@@ -24,9 +24,9 @@ import org.apache.axis.encoding.SerializationContext;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 import org.junit.Test;
-import org.springframework.ws.axis1.dispatch2.model.Param1;
-import org.springframework.ws.axis1.dispatch2.model.Param2;
-import org.springframework.ws.axis1.dispatch2.model.Param3;
+import org.springframework.ws.axis1.case2.codefirst.Param1;
+import org.springframework.ws.axis1.case2.codefirst.Param2;
+import org.springframework.ws.axis1.case2.codefirst.Param3;
 
 /**
  * <p></p>
