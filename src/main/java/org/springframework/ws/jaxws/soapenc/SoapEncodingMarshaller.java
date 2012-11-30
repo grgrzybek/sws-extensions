@@ -17,27 +17,25 @@
 package org.springframework.ws.jaxws.soapenc;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
+import java.lang.reflect.Type;
 
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.sax.SAXResult;
 
+import org.springframework.oxm.GenericMarshaller;
+import org.springframework.oxm.GenericUnmarshaller;
 import org.springframework.oxm.MarshallingFailureException;
 import org.springframework.oxm.UnmarshallingFailureException;
 import org.springframework.oxm.XmlMappingException;
-import org.springframework.oxm.support.AbstractMarshaller;
-import org.w3c.dom.Node;
+import org.springframework.oxm.mime.MimeContainer;
+import org.springframework.oxm.mime.MimeMarshaller;
+import org.springframework.oxm.mime.MimeUnmarshaller;
+import org.springframework.util.xml.StaxUtils;
 import org.xml.sax.ContentHandler;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**
@@ -47,7 +45,7 @@ import org.xml.sax.helpers.AttributesImpl;
  *
  * @author Grzegorz Grzybek
  */
-public class SoapEncodingMarshaller extends AbstractMarshaller {
+public class SoapEncodingMarshaller implements MimeMarshaller, MimeUnmarshaller, GenericMarshaller, GenericUnmarshaller {
 
 	/* (non-Javadoc)
 	 * @see org.springframework.oxm.Marshaller#supports(java.lang.Class)
@@ -55,51 +53,16 @@ public class SoapEncodingMarshaller extends AbstractMarshaller {
 	@Override
 	public boolean supports(Class<?> clazz) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#marshalDomNode(java.lang.Object, org.w3c.dom.Node)
+	 * @see org.springframework.oxm.Marshaller#marshal(java.lang.Object, javax.xml.transform.Result)
 	 */
 	@Override
-	protected void marshalDomNode(Object graph, Node node) throws XmlMappingException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#marshalXmlEventWriter(java.lang.Object, javax.xml.stream.XMLEventWriter)
-	 */
-	@Override
-	protected void marshalXmlEventWriter(Object graph, XMLEventWriter eventWriter) throws XmlMappingException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#marshalXmlStreamWriter(java.lang.Object, javax.xml.stream.XMLStreamWriter)
-	 */
-	@Override
-	protected void marshalXmlStreamWriter(Object graph, XMLStreamWriter streamWriter) throws XmlMappingException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#marshalOutputStream(java.lang.Object, java.io.OutputStream)
-	 */
-	@Override
-	protected void marshalOutputStream(Object graph, OutputStream outputStream) throws XmlMappingException, IOException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#marshalSaxHandlers(java.lang.Object, org.xml.sax.ContentHandler, org.xml.sax.ext.LexicalHandler)
-	 */
-	@Override
-	protected void marshalSaxHandlers(Object graph, ContentHandler contentHandler, LexicalHandler lexicalHandler) throws XmlMappingException {
+	public void marshal(Object graph, Result result) throws IOException, XmlMappingException {
 		try {
+			ContentHandler contentHandler = ((SAXResult)result).getHandler();
 			contentHandler.startElement("", "hello", "hello", new AttributesImpl());
 			contentHandler.characters(((String)((Object[])graph)[0]).toCharArray(), 0, ((String)((Object[])graph)[0]).toCharArray().length);
 			contentHandler.endElement("", "hello", "hello");
@@ -110,38 +73,12 @@ public class SoapEncodingMarshaller extends AbstractMarshaller {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#marshalWriter(java.lang.Object, java.io.Writer)
+	 * @see org.springframework.oxm.Unmarshaller#unmarshal(javax.xml.transform.Source)
 	 */
 	@Override
-	protected void marshalWriter(Object graph, Writer writer) throws XmlMappingException, IOException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#unmarshalDomNode(org.w3c.dom.Node)
-	 */
-	@Override
-	protected Object unmarshalDomNode(Node node) throws XmlMappingException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#unmarshalXmlEventReader(javax.xml.stream.XMLEventReader)
-	 */
-	@Override
-	protected Object unmarshalXmlEventReader(XMLEventReader eventReader) throws XmlMappingException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#unmarshalXmlStreamReader(javax.xml.stream.XMLStreamReader)
-	 */
-	@Override
-	protected Object unmarshalXmlStreamReader(XMLStreamReader streamReader) throws XmlMappingException {
+	public Object unmarshal(Source source) throws IOException, XmlMappingException {
 		try {
+			XMLStreamReader streamReader = StaxUtils.getXMLStreamReader(source);
 			streamReader.next();
 			return streamReader.getElementText();
 		}
@@ -151,30 +88,27 @@ public class SoapEncodingMarshaller extends AbstractMarshaller {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#unmarshalInputStream(java.io.InputStream)
+	 * @see org.springframework.oxm.GenericMarshaller#supports(java.lang.reflect.Type)
 	 */
 	@Override
-	protected Object unmarshalInputStream(InputStream inputStream) throws XmlMappingException, IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean supports(Type genericType) {
+		return true;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#unmarshalReader(java.io.Reader)
+	 * @see org.springframework.oxm.mime.MimeUnmarshaller#unmarshal(javax.xml.transform.Source, org.springframework.oxm.mime.MimeContainer)
 	 */
 	@Override
-	protected Object unmarshalReader(Reader reader) throws XmlMappingException, IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public Object unmarshal(Source source, MimeContainer mimeContainer) throws XmlMappingException, IOException {
+		return this.unmarshal(source);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.oxm.support.AbstractMarshaller#unmarshalSaxReader(org.xml.sax.XMLReader, org.xml.sax.InputSource)
+	 * @see org.springframework.oxm.mime.MimeMarshaller#marshal(java.lang.Object, javax.xml.transform.Result, org.springframework.oxm.mime.MimeContainer)
 	 */
 	@Override
-	protected Object unmarshalSaxReader(XMLReader xmlReader, InputSource inputSource) throws XmlMappingException, IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public void marshal(Object graph, Result result, MimeContainer mimeContainer) throws XmlMappingException, IOException {
+		this.marshal(graph, result);
 	}
 
 }

@@ -18,11 +18,16 @@ package org.springframework.ws.axis1.serialization;
 
 import java.io.PrintWriter;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
+import javax.xml.rpc.encoding.XMLType;
 
 import org.apache.axis.encoding.SerializationContext;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
+import org.apache.axis.encoding.ser.BeanSerializer;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
+import org.apache.axis.encoding.ser.SimpleSerializer;
 import org.junit.Test;
 import org.springframework.ws.axis1.case2.codefirst.Param1;
 import org.springframework.ws.axis1.case2.codefirst.Param2;
@@ -61,6 +66,32 @@ public class SerializationTest {
 		sc.setPretty(true);
 		sc.serialize(new QName("urn:test:1", "param1"), null, "hello!");
 		sc.outputMultiRefs();
+		pw.flush();
+	}
+
+	@Test
+	public void serializeString() throws Exception {
+		PrintWriter pw = new PrintWriter(System.out);
+		SerializationContext sc = new SerializationContext(pw);
+		sc.setPretty(true);
+		sc.setDoMultiRefs(true);
+		pw.println("BeanSerializer:");
+		BeanSerializer serializer = new BeanSerializer(String.class, XMLType.XSD_STRING, null);
+		serializer.serialize(new QName("x"), null, "test", sc);
+		pw.println("\nSimpleSerializer:");
+		sc = new SerializationContext(pw);
+		sc.setPretty(true);
+		sc.setDoMultiRefs(true);
+		SimpleSerializer simpleSerializer = new SimpleSerializer(String.class, XMLType.XSD_STRING);
+		simpleSerializer.serialize(new QName("x"), null, "test", sc);
+		pw.flush();
+	}
+
+	@Test
+	public void serializeStringUsingJaxb() throws Exception {
+		PrintWriter pw = new PrintWriter(System.out);
+		JAXBContext context = JAXBContext.newInstance(String.class);
+		context.createMarshaller().marshal(new JAXBElement<String>(XMLType.XSD_STRING, String.class, "test"), pw);
 		pw.flush();
 	}
 
