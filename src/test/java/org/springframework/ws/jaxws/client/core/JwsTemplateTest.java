@@ -31,8 +31,8 @@ import org.springframework.ws.jaxws.client.core.description.OperationDescription
 import org.springframework.ws.jaxws.matrix.Port01;
 import org.springframework.ws.jaxws.matrix.Port02;
 import org.springframework.ws.jaxws.matrix.Port03;
+import org.springframework.ws.jaxws.matrix.Port04;
 import org.springframework.ws.jaxws.soapenc.SoapEncodingMarshaller;
-import org.springframework.ws.soap.axiom.AxiomSoapMessageFactory;
 import org.springframework.ws.test.client.MockWebServiceServer;
 import org.springframework.xml.transform.StringSource;
 
@@ -82,6 +82,12 @@ public class JwsTemplateTest {
 		for (OperationDescription desc: java2ws.values())
 			log.info("Description: {}", desc.toString());
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void portWithTwoMethodsWithSameName() throws Exception {
+		JwsTemplate<Port04> jws = new JwsTemplate<Port04>(Port04.class);
+		jws.afterPropertiesSet();
+	}
 
 	/**
 	 * This test shows how proxy for WebService may be created without JAX-WS implementation (using only annotations on Service Endpoint Interface)
@@ -91,7 +97,7 @@ public class JwsTemplateTest {
 	@Test
 	public void simpliestJwsTemplateCreation() throws Exception {
 		JwsTemplate<Port01> jws = new JwsTemplate<Port01>(Port01.class);
-		jws.setDefaultUri("http://localhost");
+		jws.getWebServiceTemplate().setDefaultUri("http://localhost");
 		jws.afterPropertiesSet();
 
 		Port01 proxy = jws.getObject();
@@ -118,13 +124,12 @@ public class JwsTemplateTest {
 
 	@Test
 	public void simpliestMessage() throws Exception {
-		JwsTemplate<Port01> jws = new JwsTemplate<Port01>(Port01.class, new AxiomSoapMessageFactory());
-		jws.setDefaultUri("http://localhost");
+		JwsTemplate<Port01> jws = new JwsTemplate<Port01>(Port01.class);
+		jws.getWebServiceTemplate().setDefaultUri("http://localhost");
 		SoapEncodingMarshaller marshaller = new SoapEncodingMarshaller();
-		jws.setMarshaller(marshaller);
-		jws.setUnmarshaller(marshaller);
+		jws.setSoapEncodingMarshaller(marshaller);
 		jws.afterPropertiesSet();
-		MockWebServiceServer server = MockWebServiceServer.createServer(jws);
+		MockWebServiceServer server = MockWebServiceServer.createServer(jws.getWebServiceTemplate());
 
 		String request = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\">\n" + 
 				"	<SOAP-ENV:Body>\n" +

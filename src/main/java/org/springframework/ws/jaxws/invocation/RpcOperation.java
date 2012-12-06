@@ -14,20 +14,31 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.jaxws.matrix;
+package org.springframework.ws.jaxws.invocation;
 
-import javax.jws.WebService;
+import javax.xml.namespace.QName;
+
+import org.springframework.ws.jaxws.client.core.description.OperationDescription;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-@WebService
-public interface Port03 {
+public class RpcOperation extends WebServiceInvocationMessage {
 
-	public String hello1(String param);
-	public String hello2(String param1, String param2);
-	public String hello3(String param1, String param2) throws IllegalArgumentException;
+	/**
+	 * @param operationDescription
+	 */
+	public RpcOperation(OperationDescription operationDescription) {
+		super(operationDescription);
+	}
+
+	/**
+	 * @return
+	 */
+	public QName getOperationName() {
+		return this.getOperationDescription().getRootName();
+	}
 
 }

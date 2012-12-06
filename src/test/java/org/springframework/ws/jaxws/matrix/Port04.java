@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.jaxws;
+package org.springframework.ws.jaxws.matrix;
 
-import org.springframework.ws.soap.SoapElement;
+import javax.jws.WebService;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public interface DocumentWrapper extends SoapElement {
+@WebService
+public interface Port04 {
+
+	public String hello1(String param);
+	public String hello1(String param1, String param2);
 
 }

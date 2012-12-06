@@ -21,6 +21,8 @@ import java.lang.reflect.Method;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.ParameterStyle;
+import javax.jws.soap.SOAPBinding.Style;
 import javax.xml.namespace.QName;
 
 import org.springframework.core.annotation.AnnotationUtils;
@@ -68,7 +70,15 @@ public abstract class JwsUtils {
 		if (webMethod != null) {
 			description.setSoapAction(webMethod.action());
 		}
-		
+
+		// some combinations are insane
+		if (description.getStyle() == Style.RPC && description.getParameterStyle() == ParameterStyle.BARE) {
+			throw new IllegalArgumentException(
+					"For RPC style you may only use WRAPPED arguments. If you want to catch entire soap:Body payload, use org.springframework.ws.server.endpoint.adapter.PayloadEndpointAdapter or org.springframework.ws.server.endpoint.adapter.method.AbstractPayloadSourceMethodProcessor.");
+		}
+
+		//TODO: also invalid is DOCUMENT/WRAPPED when there's more than one part mapped to soap:Body - there's no "wrapper"
+
 		return description;
 	}
 

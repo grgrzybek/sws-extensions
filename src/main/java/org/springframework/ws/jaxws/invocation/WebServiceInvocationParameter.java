@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.jaxws.matrix;
-
-import javax.jws.WebService;
+package org.springframework.ws.jaxws.invocation;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-@WebService
-public interface Port03 {
-
-	public String hello1(String param);
-	public String hello2(String param1, String param2);
-	public String hello3(String param1, String param2) throws IllegalArgumentException;
+public class WebServiceInvocationParameter {
 
 }

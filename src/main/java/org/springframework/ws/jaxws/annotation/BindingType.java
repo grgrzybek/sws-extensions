@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.jaxws;
-
-import org.springframework.ws.soap.SoapElement;
+package org.springframework.ws.jaxws.annotation;
 
 /**
- * <p>An abstract parameter of WebService invocation using RPC style operation.</p>
- * <p></p>
+ * <p>Can we use something from Spring-WS? We can always choose JAX-WS' {@code javax.xml.ws.BindingType} but we'd like not to be tied to JAX-WS API (JWS API only)</p>
+ * <p>See also {@code javax.xml.ws.BindingType}</p>
  *
  * @author Grzegorz Grzybek
  */
-public interface RpcParameter extends SoapElement {
+public @interface BindingType {
+
+	/**
+	 * A binding which maps abstract message and invocation into concrete representation
+	 * 
+	 * @return
+	 */
+	WsdlBinding value() default WsdlBinding.SOAP_11;
 
 }

@@ -17,7 +17,8 @@
 package org.springframework.ws.jaxws.soapenc;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -25,34 +26,41 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXResult;
 
-import org.springframework.oxm.GenericMarshaller;
-import org.springframework.oxm.GenericUnmarshaller;
+import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.MarshallingFailureException;
+import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
 import org.springframework.oxm.XmlMappingException;
-import org.springframework.oxm.mime.MimeContainer;
-import org.springframework.oxm.mime.MimeMarshaller;
-import org.springframework.oxm.mime.MimeUnmarshaller;
 import org.springframework.util.xml.StaxUtils;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**
- * <p>Marshaller which handles SOAP 1.1 and SOAP 1.2 specific encodings during XML (de)serialization.</p>
+ * <p>Spring {@link Marshaller}/{@link Unmarshaller} which handles SOAP 1.1 and SOAP 1.2 specific encodings during XML (de)serialization.</p>
  * <p>Although it may be nice to support JAX-RPC concepts, such as {@code javax.xml.rpc.encoding.SerializationContext} or
- * {@code javax.xml.rpc.encoding.TypeMappingRegistry}, we're not trying to implement JAX-RPC specification (at least now).</p>
+ * {@code javax.xml.rpc.encoding.TypeMappingRegistry}, we're not trying to implement JAX-RPC specification (at least for now).</p>
  *
  * @author Grzegorz Grzybek
  */
-public class SoapEncodingMarshaller implements MimeMarshaller, MimeUnmarshaller, GenericMarshaller, GenericUnmarshaller {
+@SuppressWarnings("unused")
+public class SoapEncodingMarshaller implements Marshaller, Unmarshaller {
+
+	/** Default {@link Marshaller} for Soap Encoding URI = {@code ""} or LITERAL encoding */
+	private Marshaller defaultMarshaller;
+	/** Default {@link Unmarshaller} for Soap Encoding URI = {@code ""} or LITERAL encoding */
+	private Unmarshaller defaultUnmarshaller;
+
+	/** Mapping of encoding URIs to {@link Marshaller marshallers} */
+	private Map<String, Marshaller> marshallers = new HashMap<String, Marshaller>();
+	/** Mapping of encoding URIs to {@link Unmarshaller unmarshallers} */
+	private Map<String, Unmarshaller> unmarshallers = new HashMap<String, Unmarshaller>();
 
 	/* (non-Javadoc)
 	 * @see org.springframework.oxm.Marshaller#supports(java.lang.Class)
 	 */
 	@Override
 	public boolean supports(Class<?> clazz) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -85,30 +93,6 @@ public class SoapEncodingMarshaller implements MimeMarshaller, MimeUnmarshaller,
 		catch (XMLStreamException e) {
 			throw new UnmarshallingFailureException(e.getMessage(), e);
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.oxm.GenericMarshaller#supports(java.lang.reflect.Type)
-	 */
-	@Override
-	public boolean supports(Type genericType) {
-		return true;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.oxm.mime.MimeUnmarshaller#unmarshal(javax.xml.transform.Source, org.springframework.oxm.mime.MimeContainer)
-	 */
-	@Override
-	public Object unmarshal(Source source, MimeContainer mimeContainer) throws XmlMappingException, IOException {
-		return this.unmarshal(source);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.oxm.mime.MimeMarshaller#marshal(java.lang.Object, javax.xml.transform.Result, org.springframework.oxm.mime.MimeContainer)
-	 */
-	@Override
-	public void marshal(Object graph, Result result, MimeContainer mimeContainer) throws XmlMappingException, IOException {
-		this.marshal(graph, result);
 	}
 
 }

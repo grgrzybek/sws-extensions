@@ -54,7 +54,7 @@ public class JwsUtilsTest {
 		OperationDescription desc = JwsUtils.describeMethod(ClassUtils.getMethod(Port02.class, "echo"));
 		assertThat(desc.getStyle(), equalTo(Style.RPC));
 		assertThat(desc.getUse(), equalTo(Use.ENCODED));
-		assertThat(desc.getParameterStyle(), equalTo(ParameterStyle.BARE));
+		assertThat(desc.getParameterStyle(), equalTo(ParameterStyle.WRAPPED));
 		assertThat(desc.getSoapAction(), equalTo(""));
 		assertThat(desc.getRootName(), equalTo(new QName("http://description.core.client.jaxws.ws.springframework.org/", "echo")));
 	}
@@ -64,7 +64,7 @@ public class JwsUtilsTest {
 		OperationDescription desc = JwsUtils.describeMethod(ClassUtils.getMethod(Port03.class, "echo"));
 		assertThat(desc.getStyle(), equalTo(Style.RPC));
 		assertThat(desc.getUse(), equalTo(Use.ENCODED));
-		assertThat(desc.getParameterStyle(), equalTo(ParameterStyle.BARE));
+		assertThat(desc.getParameterStyle(), equalTo(ParameterStyle.WRAPPED));
 		assertThat(desc.getSoapAction(), equalTo(""));
 		assertThat(desc.getRootName(), equalTo(new QName("http://description.core.client.jaxws.ws.springframework.org/", "echo")));
 	}
@@ -97,14 +97,14 @@ public class JwsUtilsTest {
 	}
 
 	@WebService
-	@SOAPBinding(style = Style.RPC, use = Use.ENCODED, parameterStyle = ParameterStyle.BARE)
+	@SOAPBinding(style = Style.RPC, use = Use.ENCODED, parameterStyle = ParameterStyle.WRAPPED)
 	private static interface Port02 {
 		public void echo();
 	}
 
 	@WebService
 	private static interface Port03 {
-		@SOAPBinding(style = Style.RPC, use = Use.ENCODED, parameterStyle = ParameterStyle.BARE)
+		@SOAPBinding(style = Style.RPC, use = Use.ENCODED, parameterStyle = ParameterStyle.WRAPPED)
 		public void echo();
 	}
 

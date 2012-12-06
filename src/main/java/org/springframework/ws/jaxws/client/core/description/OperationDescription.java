@@ -59,7 +59,7 @@ public class OperationDescription {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Operation %s (%s/%s/%s)", rootName.toString(), style, use, parameterStyle);
+		return String.format("Operation %s (%s/%s/%s)", this.rootName.toString(), this.style, this.use, this.parameterStyle);
 	}
 
 	/**

@@ -16,10 +16,11 @@
 
 package org.springframework.ws.jaxws.client.core;
 
-import javax.xml.namespace.QName;
-
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.ws.client.WebServiceClientException;
+import org.springframework.ws.jaxws.invocation.DocumentWrapper;
+import org.springframework.ws.jaxws.invocation.RpcOperation;
+import org.springframework.ws.jaxws.invocation.WebServiceInvocationMessage;
 
 /**
  * <p>Commons operations for Web Services.</p>
@@ -40,29 +41,30 @@ public interface JwsOperations {
 	/**
 	 * In RPC-style operations, all arguments are passed as children of single, SOAP Body element which represents invoked operation
 	 * 
-	 * @param operationName
+	 * @param rpcOperation
 	 * @param params
 	 * @return
 	 */
-	public Object invokeRpcOperation(QName operationName, Object[] params) throws XmlMappingException, WebServiceClientException;
+	public Object invokeRpcOperation(RpcOperation rpcOperation, Object[] params) throws XmlMappingException, WebServiceClientException;
 
 	/**
 	 * <p>In Document-style operations, all arguments are passed as direct children of SOAP Body.</p>
 	 * <p>Of course passing more than one document-style argument is against common-sense, but SOAP and WSDL allows it</p>
 	 * 
+	 * @param webServiceInvocation
 	 * @param params
 	 * @return
 	 */
-	public Object invokeDocumentOperation(Object[] params) throws XmlMappingException, WebServiceClientException;
+	public Object invokeDocumentOperation(WebServiceInvocationMessage webServiceInvocation, Object[] params) throws XmlMappingException, WebServiceClientException;
 
 	/**
 	 * <p>Wrapper style is special kind of document style invocation. There's only one body child which represents
 	 * invoked operation and its children are "unwrapped" as the parameters of the operation.</p>
 	 * 
-	 * @param wrapperElementName
+	 * @param documentWrapper
 	 * @param params
 	 * @return
 	 */
-	public Object invokeDocumentWrappedOperation(QName wrapperElementName, Object[] params) throws XmlMappingException, WebServiceClientException;
+	public Object invokeDocumentWrappedOperation(DocumentWrapper documentWrapper, Object[] params) throws XmlMappingException, WebServiceClientException;
 
 }

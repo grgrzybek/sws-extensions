@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.jaxws;
-
-import org.springframework.ws.soap.SoapElement;
+package org.springframework.ws.jaxws.soapenc.context1;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public interface RpcOperation extends SoapElement {
+public class MyClass {
 
 }
