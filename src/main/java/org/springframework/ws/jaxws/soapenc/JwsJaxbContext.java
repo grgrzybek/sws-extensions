@@ -33,6 +33,16 @@ import javax.xml.bind.Validator;
 @SuppressWarnings("deprecation")
 public class JwsJaxbContext extends JAXBContext {
 
+	public static final String PROPERTY_PREFIX = JwsJaxbContext.class.getPackage().getName();
+
+	/**
+	 * <p>If the value of this property is true, we try to be as much JAXB compliant as its ... reasonable. Otherwise we try to be pragmatic.</p>
+	 * <p>This setting affects:<ul>
+	 * <li>package scanning: Do we use ObjectFactory+@XmlRegistry and/or jaxb.index?</li>
+	 * </ul></p>
+	 */
+	public static final String PROPERTY_STRICT_JAXB = PROPERTY_PREFIX + ".strictJaxbCompliance";
+
 	/**
 	 * Mapping of Java classes to JaxbMetadata
 	 */
@@ -43,7 +53,7 @@ public class JwsJaxbContext extends JAXBContext {
 	 * @param properties
 	 */
 	JwsJaxbContext(Class<?>[] classesToBeBound, Map<String, ?> properties) {
-		for (Class<?> cl: classesToBeBound) {
+		for (Class<?> cl : classesToBeBound) {
 			this.class2meta.put(cl, cl);
 		}
 	}
@@ -53,8 +63,7 @@ public class JwsJaxbContext extends JAXBContext {
 	 */
 	@Override
 	public Unmarshaller createUnmarshaller() throws JAXBException {
-		// TODO Auto-generated method stub
-		return null;
+		return new JwsJaxbUnmarshaller(this);
 	}
 
 	/* (non-Javadoc)
@@ -62,8 +71,7 @@ public class JwsJaxbContext extends JAXBContext {
 	 */
 	@Override
 	public Marshaller createMarshaller() throws JAXBException {
-		// TODO Auto-generated method stub
-		return null;
+		return new JwsJaxbMarshaller(this);
 	}
 
 	/* (non-Javadoc)
@@ -71,7 +79,7 @@ public class JwsJaxbContext extends JAXBContext {
 	 */
 	@Override
 	public Validator createValidator() throws JAXBException {
-		throw new UnsupportedOperationException("Not implemented in JwsJaxbContext");
+		throw new UnsupportedOperationException("Not implemented in " + this.getClass().getName());
 	}
 
 }

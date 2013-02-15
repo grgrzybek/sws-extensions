@@ -30,6 +30,7 @@ import org.springframework.ws.soap.SoapMessage;
 public class WebServiceInvocationMessage {
 
 	private SoapMessage soapMessage;
+	@SuppressWarnings("unused")
 	private WebServiceInvocationParameter[] parameters;
 	
 	private OperationDescription operationDescription;

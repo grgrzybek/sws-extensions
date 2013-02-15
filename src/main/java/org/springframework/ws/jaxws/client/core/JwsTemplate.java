@@ -25,7 +25,6 @@ import java.util.Map;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
-import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
 
 import org.aopalliance.intercept.MethodInterceptor;

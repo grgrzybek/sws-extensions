@@ -6,7 +6,6 @@
  * 
  * <p>Axis1 implements SOAP Encoding in the spirit of JAX-RPC - i.e., it is custom marshalling framework, which in JAX-WS was replaced by JAXB2.
  * JAXB2 brought some standard concepts and releaved JAX-WS from its own definition of OXM mapping. JAXB2 has excellent annotations - maybe we could use
- * them in SOAP Encoding Marshallers (just a thought)?</p>
+ * them in SOAP Encoding Marshallers (just a thought...)?</p>
  */
 package org.springframework.ws.jaxws.soapenc;
-

@@ -17,11 +17,12 @@
 package org.springframework.ws.jaxws.soapenc;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 
 import org.junit.Test;
-import org.springframework.ws.jaxws.soapenc.context1.MyClass;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.hamcrest.CoreMatchers.*;
 
@@ -38,21 +39,47 @@ public class JwsJaxbContextTest {
 	public void useDefaultImplementation() throws Exception {
 		JAXBContext context = JAXBContext.newInstance(String.class);
 		assertThat(context.getClass().getName(), equalTo(com.sun.xml.bind.v2.runtime.JAXBContextImpl.class.getName()));
+
+		context = JAXBContext.newInstance(new Class<?>[] { String.class }, new HashMap<String, Object>());
+		assertThat(context.getClass().getName(), equalTo(com.sun.xml.bind.v2.runtime.JAXBContextImpl.class.getName()));
 	}
 
 	@Test
 	public void useJwsImplementation() throws Exception {
-		JAXBContext context = JAXBContext.newInstance(MyClass.class);
+		JAXBContext context = JAXBContext.newInstance(org.springframework.ws.jaxws.soapenc.context1.MyClass.class);
 		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.jaxws.soapenc.JwsJaxbContext"));
 
-		context = JAXBContext.newInstance(MyClass.class.getPackage().getName());
+		context = JAXBContext.newInstance(org.springframework.ws.jaxws.soapenc.context1.MyClass.class.getPackage().getName());
 		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.jaxws.soapenc.JwsJaxbContext"));
 
-		context = JAXBContext.newInstance(MyClass.class.getPackage().getName(), this.getClass().getClassLoader());
+		context = JAXBContext.newInstance(new Class<?>[] { org.springframework.ws.jaxws.soapenc.context1.MyClass.class }, new HashMap<String, Object>());
 		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.jaxws.soapenc.JwsJaxbContext"));
 
-		context = JAXBContext.newInstance(MyClass.class.getPackage().getName(), this.getClass().getClassLoader(), new HashMap<String, Object>());
+		context = JAXBContext.newInstance(org.springframework.ws.jaxws.soapenc.context1.MyClass.class.getPackage().getName(), this.getClass().getClassLoader());
+		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.jaxws.soapenc.JwsJaxbContext"));
+
+		context = JAXBContext.newInstance(org.springframework.ws.jaxws.soapenc.context1.MyClass.class.getPackage().getName(), this.getClass().getClassLoader(),
+				new HashMap<String, Object>());
 		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.jaxws.soapenc.JwsJaxbContext"));
 	}
 
+	@Test
+	public void useBothJwsAndDefaultImplementationInTheSamePackage() throws Exception {
+		// this way we can only get one (default or configured on different levels of properties) implementation - we're using
+		// javax.xml.bind.ContextFinder for this and we can't change its implementation...
+		JAXBContext context = JAXBContext.newInstance(org.springframework.ws.jaxws.soapenc.context2.MyClass.class);
+		assertThat(context.getClass().getName(), equalTo(com.sun.xml.bind.v2.runtime.JAXBContextImpl.class.getName()));
+
+		// but no one will forbid us to call this method :)
+		context = JwsJaxbContextFactory.createContext("org.springframework.ws.jaxws.soapenc.context2", null);
+		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.jaxws.soapenc.JwsJaxbContext"));
+	}
+
+	@Test
+	public void scanClassesOfPackage() throws Exception {
+		JAXBContext context = JAXBContext.newInstance(org.springframework.ws.jaxws.soapenc.context1.MyClass.class.getPackage().getName());
+		@SuppressWarnings("unchecked")
+		Map<Class<?>, Object> mapping = (Map<Class<?>, Object>) ReflectionTestUtils.getField(context, "class2meta");
+		assertThat(mapping.size(), equalTo(1));
+	}
 }
