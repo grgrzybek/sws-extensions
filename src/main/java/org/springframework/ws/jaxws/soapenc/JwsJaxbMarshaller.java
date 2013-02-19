@@ -25,10 +25,13 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.MarshalException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import javax.xml.bind.ValidationEventHandler;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.attachment.AttachmentMarshaller;
 import javax.xml.stream.XMLEventWriter;
@@ -42,17 +45,23 @@ import javax.xml.transform.stax.StAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.ws.jaxws.soapenc.internal.model.WrappedXmlEventsPattern;
+import org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern;
 import org.w3c.dom.Node;
 import org.xml.sax.ContentHandler;
 
 /**
- * <p></p>
+ * <p>Marshaller able to convert objects to XML representations. This marshaller can marshall any object, given the object is:<ul>
+ * <li>a {@link JAXBElement}</li>
+ * <li>an object of class annotated with {@link XmlRootElement} annotations</li>
+ * </ul></p>
  *
  * @author Grzegorz Grzybek
  */
 public class JwsJaxbMarshaller implements Marshaller {
 
-	@SuppressWarnings("unused")
 	private JwsJaxbContext jaxbContext;
 
 	private Map<String, Object> properties;
@@ -93,8 +102,14 @@ public class JwsJaxbMarshaller implements Marshaller {
 	 */
 	@Override
 	public void marshal(Object jaxbElement, Result result) throws JAXBException {
-		// TODO Auto-generated method stub
-
+		try {
+			XMLEventWriter writer = this.xmlOutputFactory.createXMLEventWriter(result);
+			this.marshal(jaxbElement, writer);
+			writer.flush();
+		}
+		catch (XMLStreamException e) {
+			throw new JAXBException(e.getMessage(), e);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -123,12 +138,7 @@ public class JwsJaxbMarshaller implements Marshaller {
 	 */
 	@Override
 	public void marshal(Object jaxbElement, Writer writer) throws JAXBException {
-		try {
-			this.marshal(jaxbElement, this.xmlOutputFactory.createXMLStreamWriter(writer));
-		}
-		catch (XMLStreamException e) {
-			throw new JAXBException(e.getMessage(), e);
-		}
+		this.marshal(jaxbElement, new StreamResult(writer));
 	}
 
 	/* (non-Javadoc)
@@ -148,30 +158,31 @@ public class JwsJaxbMarshaller implements Marshaller {
 	}
 
 	/**
-	 * The main marshall method.
-	 * 
+	/* (non-Javadoc)
 	 * @see javax.xml.bind.Marshaller#marshal(java.lang.Object, javax.xml.stream.XMLStreamWriter)
 	 */
 	@Override
 	public void marshal(Object jaxbElement, XMLStreamWriter writer) throws JAXBException {
-		try {
-			writer.writeStartElement("p", "elem", "urn:test");
-			writer.writeCharacters(jaxbElement.toString());
-			writer.writeEndElement();
-			writer.close();
-		}
-		catch (XMLStreamException e) {
-			throw new JAXBException(e.getMessage(), e);
-		}
+		this.marshal(jaxbElement, new StAXResult(writer));
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * The main marshal method.
+	 * 
 	 * @see javax.xml.bind.Marshaller#marshal(java.lang.Object, javax.xml.stream.XMLEventWriter)
 	 */
 	@Override
 	public void marshal(Object jaxbElement, XMLEventWriter writer) throws JAXBException {
-		
-		this.marshal(jaxbElement, new StAXResult(writer));
+		XmlEventsPattern pattern = this.determineMarshallingPattern(jaxbElement);
+		try {
+			// for convenience we will use PropertyAccessor
+			// DESIGNFLAW: we allow to wrap JAXBElement inside BeanWrapper
+			BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(jaxbElement);
+			pattern.replay(wrapper, writer, (Boolean) this.xmlOutputFactory.getProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES));
+		}
+		catch (XMLStreamException e) {
+			throw new MarshalException(e);
+		}
 	}
 
 	/* Other operations */
@@ -289,6 +300,38 @@ public class JwsJaxbMarshaller implements Marshaller {
 	@Override
 	public Listener getListener() {
 		return this.listener;
+	}
+
+	/* Internal methods */
+
+	/**
+	 * Using the class of the object to be marshalled determines a series of XML Events to be generated in order to marshal given object.
+	 * Used only at the highest level of marshalling and must result in a pattern which {@link XmlEventsPattern#isElement() is an element}.
+	 * 
+	 * @param jaxbElement
+	 * @return
+	 * @throws MarshalException 
+	 */
+	private XmlEventsPattern determineMarshallingPattern(Object jaxbElement) throws MarshalException {
+		Class<?> clz = jaxbElement.getClass();
+		if (jaxbElement instanceof JAXBElement)
+			clz  = ((JAXBElement<?>) jaxbElement).getDeclaredType();
+
+		// pattern (both for root and non-root classes) must be present in class2meta
+		XmlEventsPattern xmlEventsPattern = this.jaxbContext.class2meta.get(clz);
+
+		if (xmlEventsPattern == null)
+			throw new MarshalException("Unable to determine XML Events pattern to marshall object of class " + jaxbElement.getClass().getName());
+
+		if (jaxbElement instanceof JAXBElement) {
+			// we can determine how to marshall the value of the object (pattern) AND what XML element to create (info from JAXBElement)
+			return new WrappedXmlEventsPattern(xmlEventsPattern, ((JAXBElement<?>) jaxbElement).getName());
+		} else if (this.jaxbContext.class2rootPatterns.containsKey(clz)) {
+			// we're marshalling @XmlRootElement
+			return this.jaxbContext.class2rootPatterns.get(clz);
+		}
+
+		throw new MarshalException("Unable to marshall object of class " + clz.getName() + ". Only JAXBElements and @XmlRootElement annotated classes may be marshalled.");
 	}
 
 }

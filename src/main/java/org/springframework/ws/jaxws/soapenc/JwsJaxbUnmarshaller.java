@@ -253,6 +253,7 @@ public class JwsJaxbUnmarshaller implements Unmarshaller {
 	 * @see javax.xml.bind.Unmarshaller#setAdapter(javax.xml.bind.annotation.adapters.XmlAdapter)
 	 */
 	@Override
+	@SuppressWarnings("rawtypes")
 	public void setAdapter(XmlAdapter adapter) {
 		// TODO Auto-generated method stub
 
@@ -262,6 +263,7 @@ public class JwsJaxbUnmarshaller implements Unmarshaller {
 	 * @see javax.xml.bind.Unmarshaller#setAdapter(java.lang.Class, javax.xml.bind.annotation.adapters.XmlAdapter)
 	 */
 	@Override
+	@SuppressWarnings("rawtypes")
 	public <A extends XmlAdapter> void setAdapter(Class<A> type, A adapter) {
 		// TODO Auto-generated method stub
 
@@ -271,6 +273,7 @@ public class JwsJaxbUnmarshaller implements Unmarshaller {
 	 * @see javax.xml.bind.Unmarshaller#getAdapter(java.lang.Class)
 	 */
 	@Override
+	@SuppressWarnings("rawtypes")
 	public <A extends XmlAdapter> A getAdapter(Class<A> type) {
 		// TODO Auto-generated method stub
 		return null;

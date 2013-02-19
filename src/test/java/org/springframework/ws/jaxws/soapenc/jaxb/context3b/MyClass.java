@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.jaxws.soapenc.context2;
+package org.springframework.ws.jaxws.soapenc.jaxb.context3b;
 
 /**
  * <p></p>
