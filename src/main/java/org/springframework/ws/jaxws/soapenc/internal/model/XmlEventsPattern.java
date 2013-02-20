@@ -22,8 +22,6 @@ import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import org.springframework.beans.BeanWrapper;
-
 /**
  * <p>In Object-XML mapping, each object may be converted to a series of {@link XMLEvent XML events}. Some of these events (or of these
  * events' properties) are independent of the objects value (e.g., element QNames or sequence of child elements), some (usually attribute
@@ -50,15 +48,14 @@ public interface XmlEventsPattern {
 	public static final XMLEventFactory XML_EVENTS_FACTORY = XMLEventFactory.newInstance();
 
 	/**
-	 * <p>Converts Java object wrapped in BeanWrapper into series of {@link XMLEvent XML events}.</p>
-	 * <p>
+	 * <p>Converts Java object into series of {@link XMLEvent XML events}.</p>
 	 * 
-	 * @param beanWrapper
+	 * @param object
 	 * @param eventWriter
 	 * @param repairingWriter
 	 * @throws MarshalException
 	 */
-	public void replay(BeanWrapper beanWrapper, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException;
+	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException;
 
 	/**
 	 * <p>Checks whether this pattern may be used to produce XML Element.</p>
@@ -69,10 +66,11 @@ public interface XmlEventsPattern {
 	public boolean isElement();
 
 	/**
-	 * <p>Checks whether this pattern relates to a XML Schema Type derived from xsd:anySimpleType</p>
+	 * <p>Checks whether this pattern relates to a XML Schema Type derived from xsd:anySimpleType and which outputs only objects
+	 * convertible to {@link String}</p>
 	 * 
 	 * @return
 	 */
-	public boolean isSimpleValue();
+	public boolean isSimpleType();
 
 }

@@ -17,29 +17,30 @@
 package org.springframework.ws.jaxws.soapenc.internal.model;
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.ws.jaxws.soapenc.internal.QNames;
 
 /**
- * <p>A pattern which wraps other events with start / end element events.</p>
- *
+ * <p>A pattern which wraps other events with start / end element events. This class knows how to change the wrapping element on
+ * the basis of nested pattern. The main case is to emit {@code xsi:nil="true"} when the marshalled object is {@code null}.</p>
+ * 
+ * <p>Wrapping is the way to decide what XML element to produce while marshalling object which is not JAXBElement or has
+ * no {@link XmlRootElement} annotation. The object replayed by nested pattern is always <i>dereferenced</i> from {@link JAXBElement}.</p>
+ * 
+ * DESIGNFLAW: {@link ElementPattern} is also Wrapped pattern so some code is duplicated here but we can't derive one from another, because {@link ElementPattern} is also {@link PropertyPattern}
+ * 
  * @author Grzegorz Grzybek
  */
 public class WrappedXmlEventsPattern implements XmlEventsPattern {
 
 	private XmlEventsPattern wrappedPattern = null;
 
-	private StartElement startElementEvent = null;
-
-	private XMLEvent endElementEvent = null;
+	private QName elementName;
 
 	/**
 	 * @param wrappedPattern
@@ -47,26 +48,25 @@ public class WrappedXmlEventsPattern implements XmlEventsPattern {
 	 */
 	public WrappedXmlEventsPattern(XmlEventsPattern wrappedPattern, QName rootName) {
 		this.wrappedPattern = wrappedPattern;
-		this.startElementEvent = XML_EVENTS_FACTORY.createStartElement(rootName, null, null);
-		this.endElementEvent = XML_EVENTS_FACTORY.createEndElement(rootName, null);
+		this.elementName = rootName;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(org.springframework.beans.BeanWrapper, javax.xml.stream.XMLEventWriter, boolean)
+	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, boolean)
 	 */
 	@Override
-	public void replay(BeanWrapper beanWrapper, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
-		eventWriter.add(this.startElementEvent);
-		QName qName = this.startElementEvent.getName();
+	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
+		eventWriter.add(XML_EVENTS_FACTORY.createStartElement(this.elementName, null, null));
 
-		Object object = beanWrapper.getWrappedInstance();
-		
 		NamespaceContext nsc = eventWriter.getNamespaceContext();
-		if (!repairingWriter && nsc.getPrefix(qName.getNamespaceURI()) == null) {
-			eventWriter.add(XML_EVENTS_FACTORY.createNamespace(qName.getNamespaceURI()));
+		if (!repairingWriter) {
+			if (nsc.getPrefix(this.elementName.getNamespaceURI()) == null) {
+				eventWriter.add(XML_EVENTS_FACTORY.createNamespace(this.elementName.getNamespaceURI()));
+			}
 		}
 
 		if (object instanceof JAXBElement) {
+			// is it xsi:nil?
 			if (((JAXBElement<?>) object).isNil()) {
 				if (!repairingWriter && nsc.getPrefix(QNames.XSI_NIL.getNamespaceURI()) == null) {
 					eventWriter.add(XML_EVENTS_FACTORY.createNamespace(QNames.XSI_NIL.getPrefix(), QNames.XSI_NIL.getNamespaceURI()));
@@ -74,13 +74,12 @@ public class WrappedXmlEventsPattern implements XmlEventsPattern {
 				eventWriter.add(XML_EVENTS_FACTORY.createAttribute(QNames.XSI_NIL, "true"));
 			}
 			// dereference marshalled value
-			beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(((JAXBElement<?>) object).getValue());
+			object = ((JAXBElement<?>) object).getValue();
 		}
 
-		if (this.wrappedPattern != null)
-			this.wrappedPattern.replay(beanWrapper, eventWriter, repairingWriter);
+		this.wrappedPattern.replay(object, eventWriter, repairingWriter);
 
-		eventWriter.add(this.endElementEvent);
+		eventWriter.add(XML_EVENTS_FACTORY.createEndElement(this.elementName, null));
 	}
 
 	/* (non-Javadoc)
@@ -95,8 +94,16 @@ public class WrappedXmlEventsPattern implements XmlEventsPattern {
 	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isSimpleType()
 	 */
 	@Override
-	public boolean isSimpleValue() {
+	public boolean isSimpleType() {
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.elementName + " wrapping " + this.wrappedPattern.toString();
 	}
 
 }

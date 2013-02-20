@@ -18,26 +18,17 @@ package org.springframework.ws.jaxws.soapenc.internal.model;
 
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.XMLEvent;
 
 import org.springframework.core.convert.ConversionService;
 
 /**
- * <p>ValuePattern generates CHARACTERS {@link XMLEvent}</p>
+ * <p>SimpleType is always a String. Conversion happens up the marshalling process.</p>
  *
  * @author Grzegorz Grzybek
  */
-public class ValuePattern extends PropertyPattern implements SimpleTypePattern {
+public class SimpleType implements SimpleTypePattern {
 
 	private ConversionService conversionService;
-
-	/**
-	 * @param directAccess
-	 * @param fieldName
-	 */
-	public ValuePattern(boolean directAccess, String fieldName) {
-		super(directAccess, fieldName);
-	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.ws.jaxws.soapenc.internal.model.SimpleTypePattern#setConversionService(org.springframework.core.convert.ConversionService)
@@ -65,7 +56,7 @@ public class ValuePattern extends PropertyPattern implements SimpleTypePattern {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isSimpleType()
+	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isSimpleValue()
 	 */
 	@Override
 	public boolean isSimpleType() {
@@ -77,7 +68,7 @@ public class ValuePattern extends PropertyPattern implements SimpleTypePattern {
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " and single CHARACTERS Event";
+		return "Single CHARACTERS Event";
 	}
 
 }

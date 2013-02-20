@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ws.jaxws.soapenc.context1.ClassWithAttributes;
 import org.springframework.ws.jaxws.soapenc.context1.ClassWithComplexContent;
+import org.springframework.ws.jaxws.soapenc.context1.ClassWithSimpleContentAndAttributes;
 import org.springframework.ws.jaxws.soapenc.context1.MyClass;
 
 /**
@@ -70,13 +71,68 @@ public class JwsJaxbMarshallerTest {
 	@Test
 	public void marshallPrimitivesInJAXBElement() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.jaxws.soapenc.context1");
-		log.info("non-null short");
+		
+		log.info("non-null boolean");
 		StringWriter sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<Boolean>(new QName("urn:test", "boolean"), Boolean.class, true), sw);
+		log.info(sw.toString());
+		log.info("null boolean");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<Boolean>(new QName("urn:test", "boolean"), Boolean.class, null), sw);
+		log.info(sw.toString());
+		
+		log.info("non-null byte");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<Byte>(new QName("urn:test", "byte"), Byte.class, (byte) 1), sw);
+		log.info(sw.toString());
+		log.info("null byte");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<Byte>(new QName("urn:test", "byte"), Byte.class, null), sw);
+		log.info(sw.toString());
+
+		log.info("non-null short");
+		sw = new StringWriter();
 		context.createMarshaller().marshal(new JAXBElement<Short>(new QName("urn:test", "short"), Short.class, (short) 1), sw);
 		log.info(sw.toString());
 		log.info("null short");
 		sw = new StringWriter();
 		context.createMarshaller().marshal(new JAXBElement<Short>(new QName("urn:test", "short"), Short.class, null), sw);
+		log.info(sw.toString());
+
+		log.info("non-null string");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<String>(new QName("urn:test", "string"), String.class, "test"), sw);
+		log.info(sw.toString());
+		log.info("null string");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<String>(new QName("urn:test", "string"), String.class, null), sw);
+		log.info(sw.toString());
+		
+		log.info("non-null long");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<Long>(new QName("urn:test", "long"), Long.class, 1L), sw);
+		log.info(sw.toString());
+		log.info("null long");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<Long>(new QName("urn:test", "long"), Long.class, null), sw);
+		log.info(sw.toString());
+		
+		log.info("non-null float");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<Float>(new QName("urn:test", "float"), Float.class, 1f), sw);
+		log.info(sw.toString());
+		log.info("null float");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<Float>(new QName("urn:test", "float"), Float.class, null), sw);
+		log.info(sw.toString());
+		
+		log.info("non-null double");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<Double>(new QName("urn:test", "double"), Double.class, 1d), sw);
+		log.info(sw.toString());
+		log.info("null double");
+		sw = new StringWriter();
+		context.createMarshaller().marshal(new JAXBElement<Double>(new QName("urn:test", "double"), Double.class, null), sw);
 		log.info(sw.toString());
 	}
 
@@ -112,11 +168,20 @@ public class JwsJaxbMarshallerTest {
 		ClassWithAttributes value = new ClassWithAttributes("test", 42);
 		context.createMarshaller().marshal(new JAXBElement<ClassWithAttributes>(new QName("urn:test", "root"), ClassWithAttributes.class, value), System.out);
 	}
-	
+
 	@Test
 	public void marshallComplexContent() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.jaxws.soapenc.context1");
 		ClassWithComplexContent value = new ClassWithComplexContent("test", 42, "inside");
-		context.createMarshaller().marshal(new JAXBElement<ClassWithComplexContent>(new QName("urn:test", "root"), ClassWithComplexContent.class, value), System.out);
+		context.createMarshaller().marshal(new JAXBElement<ClassWithComplexContent>(new QName("urn:test", "root"), ClassWithComplexContent.class, value),
+				System.out);
+	}
+
+	@Test
+	public void marshallSimpleContentAndAttributes() throws Exception {
+		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.jaxws.soapenc.context1");
+		ClassWithSimpleContentAndAttributes value = new ClassWithSimpleContentAndAttributes("test", 42, "inside");
+		context.createMarshaller().marshal(
+				new JAXBElement<ClassWithSimpleContentAndAttributes>(new QName("urn:test", "root"), ClassWithSimpleContentAndAttributes.class, value), System.out);
 	}
 }

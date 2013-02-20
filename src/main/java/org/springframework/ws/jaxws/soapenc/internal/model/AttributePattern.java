@@ -16,39 +16,46 @@
 
 package org.springframework.ws.jaxws.soapenc.internal.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 
-import org.springframework.beans.BeanWrapper;
+import org.springframework.core.convert.ConversionService;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public class AttributePattern extends PropertyPattern implements XmlEventsPattern {
+public class AttributePattern extends PropertyPattern implements SimpleTypePattern {
 
 	private QName attributeName;
+	private ConversionService conversionService;
 
 	/**
-	 * @param accessType
+	 * @param directAccess
 	 * @param propertyName
 	 */
-	public AttributePattern(QName attributeName, XmlAccessType accessType, String propertyName) {
-		super(accessType, propertyName);
+	public AttributePattern(QName attributeName, boolean directProperty, String propertyName) {
+		super(directProperty, propertyName);
 		this.attributeName = attributeName;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(org.springframework.beans.BeanWrapper, javax.xml.stream.XMLEventWriter, boolean)
+	 * @see org.springframework.ws.jaxws.soapenc.internal.model.SimpleTypePattern#setConversionService(org.springframework.core.convert.ConversionService)
 	 */
 	@Override
-	public void replay(BeanWrapper beanWrapper, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
-		if (beanWrapper.getWrappedInstance() != null) {
-			String value = beanWrapper.convertIfNecessary(beanWrapper.getWrappedInstance(), String.class);
-			eventWriter.add(XML_EVENTS_FACTORY.createAttribute(this.attributeName, value));
+	public void setConversionService(ConversionService conversionService) {
+		this.conversionService = conversionService;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, boolean)
+	 */
+	@Override
+	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
+		if (object != null) {
+			eventWriter.add(XML_EVENTS_FACTORY.createAttribute(this.attributeName, this.conversionService.convert(object, String.class)));
 		}
 	}
 
@@ -64,8 +71,16 @@ public class AttributePattern extends PropertyPattern implements XmlEventsPatter
 	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isSimpleType()
 	 */
 	@Override
-	public boolean isSimpleValue() {
-		return false;
+	public boolean isSimpleType() {
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.springframework.ws.jaxws.soapenc.internal.model.PropertyPattern#toString()
+	 */
+	@Override
+	public String toString() {
+		return super.toString() + " and " + this.attributeName + " ATTRIBUTE";
 	}
 
 }

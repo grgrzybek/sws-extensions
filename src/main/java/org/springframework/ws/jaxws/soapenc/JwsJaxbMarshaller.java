@@ -45,8 +45,6 @@ import javax.xml.transform.stax.StAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.ws.jaxws.soapenc.internal.model.WrappedXmlEventsPattern;
 import org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern;
 import org.w3c.dom.Node;
@@ -173,12 +171,9 @@ public class JwsJaxbMarshaller implements Marshaller {
 	 */
 	@Override
 	public void marshal(Object jaxbElement, XMLEventWriter writer) throws JAXBException {
-		XmlEventsPattern pattern = this.determineMarshallingPattern(jaxbElement);
+		XmlEventsPattern pattern = this.determinePatternForMarshalling(jaxbElement);
 		try {
-			// for convenience we will use PropertyAccessor
-			// DESIGNFLAW: we allow to wrap JAXBElement inside BeanWrapper
-			BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(jaxbElement);
-			pattern.replay(wrapper, writer, (Boolean) this.xmlOutputFactory.getProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES));
+			pattern.replay(jaxbElement, writer, (Boolean) this.xmlOutputFactory.getProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES));
 		}
 		catch (XMLStreamException e) {
 			throw new MarshalException(e);
@@ -312,23 +307,28 @@ public class JwsJaxbMarshaller implements Marshaller {
 	 * @return
 	 * @throws MarshalException 
 	 */
-	private XmlEventsPattern determineMarshallingPattern(Object jaxbElement) throws MarshalException {
+	private XmlEventsPattern determinePatternForMarshalling(Object jaxbElement) throws MarshalException {
 		Class<?> clz = jaxbElement.getClass();
 		if (jaxbElement instanceof JAXBElement)
 			clz  = ((JAXBElement<?>) jaxbElement).getDeclaredType();
 
-		// pattern (both for root and non-root classes) must be present in class2meta
-		XmlEventsPattern xmlEventsPattern = this.jaxbContext.class2meta.get(clz);
+		// pattern (both for root and non-root classes) must be pr`esent in class2Patterns
+		XmlEventsPattern xmlEventsPattern = this.jaxbContext.class2Patterns.get(clz);
 
-		if (xmlEventsPattern == null)
-			throw new MarshalException("Unable to determine XML Events pattern to marshall object of class " + jaxbElement.getClass().getName());
+		if (xmlEventsPattern == null) {
+			// maybe it's a SimpleType (directly convertible to String, used in @XmlValue or @XmlAttribute)?
+			if (this.jaxbContext.formattingConversionService.canConvert(clz, String.class))
+				xmlEventsPattern = this.jaxbContext.simpleTypeSingleton;
+			else
+				throw new MarshalException("Unable to determine XML Events pattern to marshall object of class " + jaxbElement.getClass().getName());
+		}
 
 		if (jaxbElement instanceof JAXBElement) {
-			// we can determine how to marshall the value of the object (pattern) AND what XML element to create (info from JAXBElement)
+			// we can determine how to marshall the value of the object (pattern) AND what XML element to create (information from JAXBElement)
 			return new WrappedXmlEventsPattern(xmlEventsPattern, ((JAXBElement<?>) jaxbElement).getName());
-		} else if (this.jaxbContext.class2rootPatterns.containsKey(clz)) {
-			// we're marshalling @XmlRootElement
-			return this.jaxbContext.class2rootPatterns.get(clz);
+		} else if (this.jaxbContext.class2RootPatterns.containsKey(clz)) {
+			// we're marshalling @XmlRootElement and the WrappedXmlEventsPattern is ready in class2RootPatterns
+			return this.jaxbContext.class2RootPatterns.get(clz);
 		}
 
 		throw new MarshalException("Unable to marshall object of class " + clz.getName() + ". Only JAXBElements and @XmlRootElement annotated classes may be marshalled.");

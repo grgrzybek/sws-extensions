@@ -121,5 +121,15 @@ public class JaxbTest {
 		mc5.setC(String.class);
 		m.marshal(new JAXBElement<org.springframework.ws.jaxws.soapenc.jaxb.context5.MyClass>(new QName("a", "a"), org.springframework.ws.jaxws.soapenc.jaxb.context5.MyClass.class, mc5), System.out);
 	}
+	
+	@Test
+	public void marshalIllegalName() throws Exception {
+		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.jaxws.soapenc.jaxb.context1.MyClass.class);
+		Marshaller m = ctx.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		
+		// and I thought it's illegal...
+		m.marshal(new JAXBElement<String>(new QName("a", "a a"), String.class, "hello"), System.out);
+	}
 
 }

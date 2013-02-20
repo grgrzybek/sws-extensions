@@ -16,13 +16,10 @@
 
 package org.springframework.ws.jaxws.soapenc.internal.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
-
-import org.springframework.beans.BeanWrapper;
 
 /**
  * <p></p>
@@ -36,30 +33,33 @@ public class ElementPattern extends PropertyPattern implements XmlEventsPattern 
 
 	/**
 	 * @param elementName
-	 * @param accessType
+	 * @param directAccessor
 	 * @param propertyName
 	 * @param nestedPattern
 	 */
-	public ElementPattern(QName elementName, XmlAccessType accessType, String propertyName, XmlEventsPattern nestedPattern) {
-		super(accessType, propertyName);
+	public ElementPattern(QName elementName, boolean directAccessor, String propertyName, XmlEventsPattern nestedPattern) {
+		super(directAccessor, propertyName);
 		this.elementName = elementName;
 		this.nestedPattern = nestedPattern;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(org.springframework.beans.BeanWrapper, javax.xml.stream.XMLEventWriter, boolean)
+	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, boolean)
 	 */
 	@Override
-	public void replay(BeanWrapper beanWrapper, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
-		eventWriter.add(XML_EVENTS_FACTORY.createStartElement(elementName, null, null));
+	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
+		eventWriter.add(XML_EVENTS_FACTORY.createStartElement(this.elementName, null, null));
+
+		NamespaceContext nsc = eventWriter.getNamespaceContext();
 		if (!repairingWriter) {
-			NamespaceContext nsc = eventWriter.getNamespaceContext();
-			if (nsc.getPrefix(elementName.getNamespaceURI()) == null) {
-				eventWriter.add(XML_EVENTS_FACTORY.createNamespace(elementName.getNamespaceURI()));
+			if (nsc.getPrefix(this.elementName.getNamespaceURI()) == null) {
+				eventWriter.add(XML_EVENTS_FACTORY.createNamespace(this.elementName.getNamespaceURI()));
 			}
 		}
-		this.nestedPattern.replay(beanWrapper, eventWriter, repairingWriter);
-		eventWriter.add(XML_EVENTS_FACTORY.createEndElement(elementName, null));
+
+		this.nestedPattern.replay(object, eventWriter, repairingWriter);
+
+		eventWriter.add(XML_EVENTS_FACTORY.createEndElement(this.elementName, null));
 	}
 
 	/* (non-Javadoc)
@@ -74,8 +74,16 @@ public class ElementPattern extends PropertyPattern implements XmlEventsPattern 
 	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isSimpleType()
 	 */
 	@Override
-	public boolean isSimpleValue() {
+	public boolean isSimpleType() {
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.springframework.ws.jaxws.soapenc.internal.model.PropertyPattern#toString()
+	 */
+	@Override
+	public String toString() {
+		return super.toString() + " and " + this.elementName + " ELEMENT wrapping " + this.nestedPattern.toString();
 	}
 
 }

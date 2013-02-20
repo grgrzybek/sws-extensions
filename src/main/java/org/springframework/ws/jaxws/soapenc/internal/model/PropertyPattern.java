@@ -16,42 +16,46 @@
 
 package org.springframework.ws.jaxws.soapenc.internal.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessor;
-import org.springframework.beans.PropertyAccessorFactory;
 
 /**
  * <p>A pattern of {@link XMLEvent XML events} which uses single property from the marshalled object.</p>
+ * <p>This pattern knows what property to extract from the {@link PropertyAccessor} configured earlier in the marshalling process.</p>
  *
  * @author Grzegorz Grzybek
  */
 public abstract class PropertyPattern implements XmlEventsPattern {
 
-	// DESIGNFLAW: maybe we should use dedicated enum instead of javax.xml.bind.annotation.XmlAccessType
-	// DESIGNFLAW: accessType seems to be needed only by ComplexContentPattern
-	private XmlAccessType accessType = null;
-
 	private String propertyName;
+
+	/** Is it field ({@code true}) or getter ({@code false} property? */
+	private boolean directProperty;
 
 	/**
 	 * @param accessType
 	 * @param propertyName
 	 */
-	public PropertyPattern(XmlAccessType accessType, String propertyName) {
-		this.accessType = accessType;
+	public PropertyPattern(boolean directProperty, String propertyName) {
+		this.directProperty = directProperty;
 		this.propertyName = propertyName;
 	}
 
 	/**
-	 * @return the accessType
+	 * @return the directProperty
 	 */
-	public XmlAccessType getAccessType() {
-		return this.accessType;
+	public boolean isDirectProperty() {
+		return this.directProperty;
+	}
+
+	/**
+	 * @return the propertyName
+	 */
+	public String getPropertyName() {
+		return this.propertyName;
 	}
 
 	/**
@@ -60,9 +64,15 @@ public abstract class PropertyPattern implements XmlEventsPattern {
 	 * @param repairingWriter
 	 */
 	public void replayProperty(PropertyAccessor propertyAccessor, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
-		// dereference a property, wrap it in BeanWrapper and go on
-		BeanWrapper nestedWrapper = PropertyAccessorFactory.forBeanPropertyAccess(propertyAccessor.getPropertyValue(this.propertyName));
-		this.replay(nestedWrapper, eventWriter, repairingWriter);
+		this.replay(propertyAccessor.getPropertyValue(this.propertyName), eventWriter, repairingWriter);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Property pattern for \"" + this.propertyName + "\" " + (this.directProperty ? "field" : "bean property");
 	}
 
 }

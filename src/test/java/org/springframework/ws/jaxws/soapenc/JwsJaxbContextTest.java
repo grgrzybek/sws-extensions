@@ -79,7 +79,7 @@ public class JwsJaxbContextTest {
 	public void scanClassesOfPackage() throws Exception {
 		JAXBContext context = JAXBContext.newInstance(org.springframework.ws.jaxws.soapenc.context1.MyClass.class.getPackage().getName());
 		@SuppressWarnings("unchecked")
-		Map<Class<?>, Object> mapping = (Map<Class<?>, Object>) ReflectionTestUtils.getField(context, "class2meta");
-		assertThat(mapping.size(), equalTo(1));
+		Map<Class<?>, Object> mapping = (Map<Class<?>, Object>) ReflectionTestUtils.getField(context, "class2Patterns");
+		assertTrue(mapping.size() > 0);
 	}
 }

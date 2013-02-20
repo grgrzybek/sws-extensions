@@ -37,6 +37,7 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.ws.jaxws.server.endpoint.support.NamespaceUtils;
 
 /**
  * <p></p>
@@ -84,12 +85,13 @@ public class JwsJaxbContextFactory {
 			Resource[] resources = resourcePatternResolver.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + ClassUtils.convertClassNameToResourcePath(pkg) + "/*.class");
 			for (Resource classResource: resources) {
 				MetadataReader mdReader = metadataReaderFactory.getMetadataReader(classResource);
-				log.trace(" - found class: {}", mdReader.getClassMetadata().getClassName());
 				Class<?> cls = ClassUtils.resolveClassName(mdReader.getClassMetadata().getClassName(), classLoader);
 				if (cls.getSimpleName().equals("package-info")) {
 					XmlSchema xmlSchema = AnnotationUtils.getAnnotation(cls.getPackage(), XmlSchema.class);
-					log.trace("    - namespace: {}", xmlSchema.namespace());
+					String namespace = xmlSchema == null ? NamespaceUtils.packageNameToNamespace(cls.getPackage()) : xmlSchema.namespace();
+					log.trace(" - found package-info: {}, namespace: {}", cls.getPackage().getName(), namespace);
 				} else {
+					log.trace(" - found class: {}", mdReader.getClassMetadata().getClassName());
 					classes.add(cls);
 				}
 			}

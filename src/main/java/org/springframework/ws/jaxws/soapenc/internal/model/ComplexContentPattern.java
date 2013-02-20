@@ -19,34 +19,45 @@ package org.springframework.ws.jaxws.soapenc.internal.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlValue;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 
-import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.ws.jaxws.soapenc.JwsJaxbContext;
 
 /**
- * <p>Non-wrapped sequence of element and/or attribute events.</p>
+ * <p>ComplexContent is used to marshall an object of class which may have many properties. These properties may be:<ul>
+ * <li>{@link XmlAttribute XML attributes}</li>
+ * <li>{@link XmlElement XML elements}</li>
+ * <li>{@link XmlValue XML value} (only one and may not have other {@link XmlElement XML elements}</li>
+ * </ul></p>
+ * <p>This pattern replays the object using nested patterns and uses {@link PropertyAccessor} to access nested properties of marshalled object.</p>
  *
  * @author Grzegorz Grzybek
  */
 public class ComplexContentPattern implements XmlEventsPattern {
 
-	private List<XmlEventsPattern> nestedPatterns = new LinkedList<XmlEventsPattern>();
+	private List<PropertyPattern> nestedPatterns = new LinkedList<PropertyPattern>();
 
 	// optimizations to check wether to create particular PropertyAccessor
 	private boolean hasFieldProperties = false;
 
+	// DESIGNFLAW: extract an interface for creating PropertyAccessors
+	private JwsJaxbContext jwsJaxbContext = null;
+
 	/**
 	 * @param childPatterns
 	 */
-	public ComplexContentPattern(List<XmlEventsPattern> childPatterns) {
+	public ComplexContentPattern(JwsJaxbContext jwsJaxbContext, List<PropertyPattern> childPatterns) {
+		this.jwsJaxbContext = jwsJaxbContext;
 		this.nestedPatterns = childPatterns;
 		for (XmlEventsPattern pattern : this.nestedPatterns) {
 			if (pattern instanceof PropertyPattern) {
-				if (((PropertyPattern) pattern).getAccessType() == XmlAccessType.FIELD) {
+				if (((PropertyPattern) pattern).isDirectProperty()) {
 					this.hasFieldProperties = true;
 					break;
 				}
@@ -55,26 +66,28 @@ public class ComplexContentPattern implements XmlEventsPattern {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(org.springframework.beans.BeanWrapper, javax.xml.stream.XMLEventWriter, boolean)
+	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, boolean)
 	 */
 	@Override
-	public void replay(BeanWrapper beanWrapper, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
+	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
 		// nested patterns will extract configured property (field or getter) from this beanWrapper.
 		// in order to minimize a number of PropertyAccessor instances we will create them here and reuse for each direct/child property
 		PropertyAccessor directAccessor = null;
+		PropertyAccessor getterAccessor = null;
 		if (this.hasFieldProperties) {
 			// we'll get to the wrapped instance through DirectFieldAccessor
 			// we create it here, because there may be more field properties to be marshalled
-			directAccessor = PropertyAccessorFactory.forDirectFieldAccess(beanWrapper.getWrappedInstance());
+			directAccessor = PropertyAccessorFactory.forDirectFieldAccess(object);
+		}
+		else {
+			getterAccessor = this.jwsJaxbContext.createBeanWrapper(object);
 		}
 
-		for (XmlEventsPattern pattern : this.nestedPatterns) {
-			if (pattern instanceof PropertyPattern) {
-				boolean direct = ((PropertyPattern) pattern).getAccessType() == XmlAccessType.FIELD;
-				((PropertyPattern) pattern).replayProperty(direct ? directAccessor : directAccessor, eventWriter, repairingWriter);
-			} else {
-				pattern.replay(beanWrapper, eventWriter, repairingWriter);
-			}
+		// each nested pattern relates to some property of the marshalled object
+		for (PropertyPattern pattern : this.nestedPatterns) {
+			boolean direct = pattern.isDirectProperty();
+			PropertyAccessor propertyAccessor = direct ? directAccessor : getterAccessor;
+			pattern.replayProperty(propertyAccessor, eventWriter, repairingWriter);
 		}
 	}
 
@@ -87,11 +100,19 @@ public class ComplexContentPattern implements XmlEventsPattern {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isSimpleValue()
+	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isSimpleType()
 	 */
 	@Override
-	public boolean isSimpleValue() {
+	public boolean isSimpleType() {
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "A sequence of " + this.nestedPatterns.size() + " nested property patterns";
 	}
 
 }
