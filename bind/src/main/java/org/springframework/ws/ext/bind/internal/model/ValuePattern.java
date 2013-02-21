@@ -20,56 +20,27 @@ import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import org.springframework.core.convert.ConversionService;
-
 /**
  * <p>ValuePattern generates CHARACTERS {@link XMLEvent}</p>
  *
  * @author Grzegorz Grzybek
  */
-public class ValuePattern extends PropertyPattern implements SimpleTypePattern {
+public class ValuePattern extends AbstractSimpleTypePattern {
 
-	private ConversionService conversionService;
-
+	public static final ValuePattern INSTANCE = new ValuePattern();
+	
 	/**
-	 * @param directAccess
-	 * @param fieldName
+	 * 
 	 */
-	public ValuePattern(boolean directAccess, String fieldName) {
-		super(directAccess, fieldName);
+	private ValuePattern() {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.SimpleTypePattern#setConversionService(org.springframework.core.convert.ConversionService)
+	 * @see org.springframework.ws.ext.bind.internal.model.SimpleTypePattern#replayNonNullString(java.lang.String, javax.xml.stream.XMLEventWriter)
 	 */
 	@Override
-	public void setConversionService(ConversionService conversionService) {
-		this.conversionService = conversionService;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, boolean)
-	 */
-	@Override
-	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
-		if (object != null)
-			eventWriter.add(XML_EVENTS_FACTORY.createCharacters(this.conversionService.convert(object, String.class)));
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isElement()
-	 */
-	@Override
-	public boolean isElement() {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isSimpleType()
-	 */
-	@Override
-	public boolean isSimpleType() {
-		return true;
+	protected void replayNonNullString(String value, XMLEventWriter eventWriter) throws XMLStreamException {
+		eventWriter.add(XML_EVENTS_FACTORY.createCharacters(value));
 	}
 
 	/* (non-Javadoc)
@@ -77,7 +48,7 @@ public class ValuePattern extends PropertyPattern implements SimpleTypePattern {
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " and single CHARACTERS Event";
+		return super.toString() + " marshalled as CHARACTERS event";
 	}
 
 }

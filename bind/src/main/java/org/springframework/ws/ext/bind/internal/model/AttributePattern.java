@@ -20,59 +20,29 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 
-import org.springframework.core.convert.ConversionService;
-
 /**
- * <p></p>
+ * <p>AttributePattern generates ATTRIBUTE {@link XMLEvent}</p>
  *
  * @author Grzegorz Grzybek
  */
-public class AttributePattern extends PropertyPattern implements SimpleTypePattern {
+public class AttributePattern extends AbstractSimpleTypePattern {
 
 	private QName attributeName;
-	private ConversionService conversionService;
 
 	/**
 	 * @param directAccess
 	 * @param propertyName
 	 */
-	public AttributePattern(QName attributeName, boolean directProperty, String propertyName) {
-		super(directProperty, propertyName);
+	public AttributePattern(QName attributeName) {
 		this.attributeName = attributeName;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.SimpleTypePattern#setConversionService(org.springframework.core.convert.ConversionService)
+	 * @see org.springframework.ws.ext.bind.internal.model.SimpleTypePattern#replayString(java.lang.String, javax.xml.stream.XMLEventWriter)
 	 */
 	@Override
-	public void setConversionService(ConversionService conversionService) {
-		this.conversionService = conversionService;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, boolean)
-	 */
-	@Override
-	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
-		if (object != null) {
-			eventWriter.add(XML_EVENTS_FACTORY.createAttribute(this.attributeName, this.conversionService.convert(object, String.class)));
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isElement()
-	 */
-	@Override
-	public boolean isElement() {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isSimpleType()
-	 */
-	@Override
-	public boolean isSimpleType() {
-		return true;
+	protected void replayNonNullString(String value, XMLEventWriter eventWriter) throws XMLStreamException {
+		eventWriter.add(XML_EVENTS_FACTORY.createAttribute(this.attributeName, value));
 	}
 
 	/* (non-Javadoc)
@@ -80,7 +50,7 @@ public class AttributePattern extends PropertyPattern implements SimpleTypePatte
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " and " + this.attributeName + " ATTRIBUTE";
+		return super.toString() + " marshalled as \"" + this.attributeName + "\" ATTRIBUTE event";
 	}
 
 }

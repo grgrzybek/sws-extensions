@@ -18,6 +18,7 @@ package org.springframework.ws.ext.bind.internal.model;
 
 import javax.xml.bind.MarshalException;
 import javax.xml.stream.XMLEventFactory;
+import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
@@ -48,7 +49,7 @@ public interface XmlEventsPattern {
 	public static final XMLEventFactory XML_EVENTS_FACTORY = XMLEventFactory.newInstance();
 
 	/**
-	 * <p>Converts Java object into series of {@link XMLEvent XML events}.</p>
+	 * <p>Marshaling - converts Java object into series of {@link XMLEvent XML events}.</p>
 	 * 
 	 * @param object
 	 * @param eventWriter
@@ -58,12 +59,13 @@ public interface XmlEventsPattern {
 	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException;
 
 	/**
-	 * <p>Checks whether this pattern may be used to produce XML Element.</p>
-	 * <p>Simple types, comments, PIs, ... are not elements</p>
+	 * <p>Unmarshaling - converts a series of {@link XMLEvent XML events} into a Java object.</p>
 	 * 
+	 * @param eventReader
 	 * @return
+	 * @throws XMLStreamException
 	 */
-	public boolean isElement();
+	public Object consume(XMLEventReader eventReader) throws XMLStreamException;
 
 	/**
 	 * <p>Checks whether this pattern relates to a XML Schema Type derived from xsd:anySimpleType and which outputs only objects

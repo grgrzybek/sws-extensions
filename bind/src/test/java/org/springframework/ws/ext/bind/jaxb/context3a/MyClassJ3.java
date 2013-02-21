@@ -14,37 +14,13 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind.jaxb.context2;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-
-import org.springframework.ws.ext.bind.jaxb.context0.MyProperty2;
+package org.springframework.ws.ext.bind.jaxb.context3a;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class MyClass {
-
-	@XmlElement(name = "p", namespace = "urn:x")
-	private MyProperty2 p;
-
-	/**
-	 * @return the p
-	 */
-	public MyProperty2 getP() {
-		return this.p;
-	}
-
-	/**
-	 * @param p the p to set
-	 */
-	public void setP(MyProperty2 p) {
-		this.p = p;
-	}
+public class MyClassJ3 {
 
 }

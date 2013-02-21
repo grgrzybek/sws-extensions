@@ -16,19 +16,28 @@
 
 package org.springframework.ws.ext.bind.internal.model;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+
+import org.springframework.ws.ext.bind.internal.QNames;
 
 /**
- * <p></p>
+ * <p>{@link ElementPattern} always wraps a {@link ContentModelPattern}</p>
  *
  * @author Grzegorz Grzybek
  */
-public class ElementPattern extends PropertyPattern implements XmlEventsPattern {
+public class ElementPattern implements XmlEventsPattern {
 
 	private QName elementName;
+	private StartElement startElementEvent;
+	private EndElement endElementEvent;
+
 	private XmlEventsPattern nestedPattern;
 
 	/**
@@ -37,10 +46,12 @@ public class ElementPattern extends PropertyPattern implements XmlEventsPattern 
 	 * @param propertyName
 	 * @param nestedPattern
 	 */
-	public ElementPattern(QName elementName, boolean directAccessor, String propertyName, XmlEventsPattern nestedPattern) {
-		super(directAccessor, propertyName);
+	public ElementPattern(QName elementName, XmlEventsPattern nestedPattern) {
 		this.elementName = elementName;
 		this.nestedPattern = nestedPattern;
+
+		this.startElementEvent = XML_EVENTS_FACTORY.createStartElement(this.elementName, null, null);
+		this.endElementEvent = XML_EVENTS_FACTORY.createEndElement(this.elementName, null);
 	}
 
 	/* (non-Javadoc)
@@ -48,7 +59,7 @@ public class ElementPattern extends PropertyPattern implements XmlEventsPattern 
 	 */
 	@Override
 	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
-		eventWriter.add(XML_EVENTS_FACTORY.createStartElement(this.elementName, null, null));
+		eventWriter.add(this.startElementEvent);
 
 		NamespaceContext nsc = eventWriter.getNamespaceContext();
 		if (!repairingWriter) {
@@ -57,17 +68,29 @@ public class ElementPattern extends PropertyPattern implements XmlEventsPattern 
 			}
 		}
 
+		if (object instanceof JAXBElement) {
+			// is it xsi:nil?
+			if (((JAXBElement<?>) object).isNil()) {
+				if (!repairingWriter && nsc.getPrefix(QNames.XSI_NIL.getNamespaceURI()) == null) {
+					eventWriter.add(XML_EVENTS_FACTORY.createNamespace(QNames.XSI_NIL.getPrefix(), QNames.XSI_NIL.getNamespaceURI()));
+				}
+				eventWriter.add(XML_EVENTS_FACTORY.createAttribute(QNames.XSI_NIL, "true"));
+			}
+			// dereference marshalled value
+			object = ((JAXBElement<?>) object).getValue();
+		}
+
 		this.nestedPattern.replay(object, eventWriter, repairingWriter);
 
-		eventWriter.add(XML_EVENTS_FACTORY.createEndElement(this.elementName, null));
+		eventWriter.add(this.endElementEvent);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#isElement()
+	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#consume(javax.xml.stream.XMLEventReader)
 	 */
 	@Override
-	public boolean isElement() {
-		return true;
+	public Object consume(XMLEventReader eventReader) throws XMLStreamException {
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -83,7 +106,7 @@ public class ElementPattern extends PropertyPattern implements XmlEventsPattern 
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " and " + this.elementName + " ELEMENT wrapping " + this.nestedPattern.toString();
+		return "Pattern marshalled inside \"" + this.elementName + "\" ELEMENT event";
 	}
 
 }
