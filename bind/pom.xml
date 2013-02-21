@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<groupId>org.springframework.ws</groupId>
+		<artifactId>spring-ws-extensions-parent</artifactId>
+		<version>0.1.0.BUILD-SNAPSHOT</version> 
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>spring-ws-extensions-bind</artifactId>
+	<packaging>jar</packaging>
+
+	<dependencies>
+
+		<!-- Spring-Ws-Extensions -->
+
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-ws-extensions-core</artifactId>
+		</dependency>
+
+		<!-- Spring -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-context</artifactId> -->
+<!-- 			<version>${springframework.version}</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework</groupId> -->
+<!-- 			<artifactId>spring-test</artifactId> -->
+<!-- 			<version>${springframework.version}</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
+
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-ws-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.xml.stream</groupId>
+					<artifactId>stax-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-ws-test</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.xml.stream</groupId>
+					<artifactId>stax-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Web Services -->
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>javax.jws</groupId> -->
+<!-- 			<artifactId>jsr181-api</artifactId> -->
+<!-- 			<version>1.0-MR1</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>javax.xml.ws</groupId> -->
+<!-- 			<artifactId>jaxws-api</artifactId> -->
+<!-- 			<version>2.2.8</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>javax.xml</groupId> -->
+<!-- 			<artifactId>jaxrpc-api</artifactId> -->
+<!-- 			<version>1.1</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>wsdl4j</groupId> -->
+<!-- 			<artifactId>wsdl4j</artifactId> -->
+<!-- 			<version>1.6.2</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.apache.ws.xmlschema</groupId>
+			<artifactId>xmlschema-core</artifactId>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.ws.commons.axiom</groupId> -->
+<!-- 			<artifactId>axiom-api</artifactId> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.ws.commons.axiom</groupId> -->
+<!-- 			<artifactId>axiom-impl</artifactId> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.codehaus.woodstox</groupId>
+			<artifactId>woodstox-core-asl</artifactId>
+			<scope>optional</scope>
+		</dependency>
+
+		<!-- Marshalling -->
+
+		<!-- Castor + dependencies -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.codehaus.castor</groupId> -->
+<!-- 			<artifactId>castor-xml</artifactId> -->
+<!-- 			<optional>true</optional> -->
+<!-- 		</dependency> -->
+		<!-- XmlBeans + dependencies -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.xmlbeans</groupId> -->
+<!-- 			<artifactId>xmlbeans</artifactId> -->
+<!-- 			<optional>true</optional> -->
+<!-- 		</dependency> -->
+		<!-- XStream + dependencies -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.thoughtworks.xstream</groupId> -->
+<!-- 			<artifactId>xstream</artifactId> -->
+<!-- 			<optional>true</optional> -->
+<!-- 		</dependency>  -->
+
+		<!-- Other -->
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+
+	</dependencies>
+
+</project>

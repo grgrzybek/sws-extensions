@@ -9,3 +9,4 @@ model in Spring-WS based WebServices.
 * Spring-Ws-Policy
 * Spring-Ws-ReliableMessaging
 * Spring-Ws-Gateway
+* Spring-Ws-VTD
