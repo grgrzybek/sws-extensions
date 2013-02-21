@@ -34,8 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ws.ext.bind.context1.ClassWithAttributes;
 import org.springframework.ws.ext.bind.context1.ClassWithComplexContent;
 import org.springframework.ws.ext.bind.context1.ClassWithSimpleContentAndAttributes;
-import org.springframework.ws.ext.bind.context1.MyClass1;
-import org.springframework.ws.ext.bind.context2.MyClass2;
+import org.springframework.ws.ext.bind.context1.MyClass;
 
 /**
  * <p></p>
@@ -46,11 +45,11 @@ public class JwsJaxbMarshallerTest {
 
 	private static Logger log = LoggerFactory.getLogger(JwsJaxbMarshallerTest.class.getName());
 
-	@Test(expected = JAXBException.class)
+	@Test
 	public void marshallMyClass1() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		StringWriter sw = new StringWriter();
-		context.createMarshaller().marshal(new MyClass1(), sw);
+		context.createMarshaller().marshal(new MyClass(), sw);
 		log.info(sw.toString());
 	}
 
@@ -58,16 +57,7 @@ public class JwsJaxbMarshallerTest {
 	public void marshallMyClass2() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context2");
 		StringWriter sw = new StringWriter();
-		context.createMarshaller().marshal(new MyClass2(), sw);
-		log.info(sw.toString());
-	}
-	
-	@Test
-	public void marshallJAXBElementWithMyClass2() throws Exception {
-		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context2");
-		StringWriter sw = new StringWriter();
-		MyClass2 mc2 = new MyClass2();
-		context.createMarshaller().marshal(new JAXBElement<MyClass2>(new QName("urn:test", "mc"), MyClass2.class, mc2), sw);
+		context.createMarshaller().marshal(new org.springframework.ws.ext.bind.jaxb.context2.MyClass(), sw);
 		log.info(sw.toString());
 	}
 

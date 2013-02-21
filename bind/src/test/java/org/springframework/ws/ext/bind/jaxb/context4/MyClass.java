@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind.jaxb.context5;
+package org.springframework.ws.ext.bind.jaxb.context4;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * <p></p>
@@ -27,19 +27,13 @@ import javax.xml.bind.annotation.XmlElement;
  * @author Grzegorz Grzybek
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MyClassJ5_1 {
+public class MyClass {
 
 	@XmlElement(name = "p", namespace = "urn:x")
 	private String p;
 
-	@XmlElement(name = "v", namespace = "urn:y")
+	@XmlValue
 	private String v;
-
-	@XmlElement(name = "c", namespace = "urn:z")
-	private Class<?> c;
-
-	@XmlAttribute(name = "d", namespace = "urn:d")
-	private MyClassJ5_2 d;
 
 	/**
 	 * @return the p
@@ -67,34 +61,6 @@ public class MyClassJ5_1 {
 	 */
 	public void setV(String v) {
 		this.v = v;
-	}
-
-	/**
-	 * @return the c
-	 */
-	public Class<?> getC() {
-		return this.c;
-	}
-
-	/**
-	 * @param c the c to set
-	 */
-	public void setC(Class<?> c) {
-		this.c = c;
-	}
-
-	/**
-	 * @return the d
-	 */
-	public MyClassJ5_2 getD() {
-		return this.d;
-	}
-
-	/**
-	 * @param d the d to set
-	 */
-	public void setD(MyClassJ5_2 d) {
-		this.d = d;
 	}
 
 }

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind.jaxb.context4;
+package org.springframework.ws.ext.bind.jaxb.context5;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlValue;
 
 /**
  * <p></p>
@@ -27,12 +26,12 @@ import javax.xml.bind.annotation.XmlValue;
  * @author Grzegorz Grzybek
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MyClassJ4 {
+public class MyClass2 {
 
 	@XmlElement(name = "p", namespace = "urn:x")
 	private String p;
 
-	@XmlValue
+	@XmlElement(name = "v", namespace = "urn:y")
 	private String v;
 
 	/**

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind.context2;
+package org.springframework.ws.ext.bind.jaxb.context3a;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public class MyClass2 {
+public class MyClass {
 
 }

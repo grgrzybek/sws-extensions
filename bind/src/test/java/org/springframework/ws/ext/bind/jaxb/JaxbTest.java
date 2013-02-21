@@ -49,8 +49,8 @@ public class JaxbTest {
 
 	@Test
 	public void generateXmlSchema() throws Exception {
-		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context2.MyClassJ2.class,
-				org.springframework.ws.ext.bind.jaxb.context3a.MyClassJ3.class);
+		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context2.MyClass.class,
+				org.springframework.ws.ext.bind.jaxb.context3a.MyClass.class);
 
 		final List<DOMResult> results = new LinkedList<DOMResult>();
 
@@ -76,59 +76,59 @@ public class JaxbTest {
 
 	@Test(expected = IllegalAnnotationsException.class)
 	public void conflicts() throws Exception {
-		JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context3a.MyClassJ3.class, org.springframework.ws.ext.bind.jaxb.context3b.MyClassJ3.class);
+		JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context3a.MyClass.class, org.springframework.ws.ext.bind.jaxb.context3b.MyClass.class);
 	}
 
 	@Test
 	public void unmarshallSameQNames() throws Exception {
-		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context1.MyClassJ1.class,
-				org.springframework.ws.ext.bind.jaxb.context2.MyClassJ2.class);
+		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context1.MyClass.class,
+				org.springframework.ws.ext.bind.jaxb.context2.MyClass.class);
 		Marshaller m = ctx.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
 		log.info("context1");
-		org.springframework.ws.ext.bind.jaxb.context1.MyClassJ1 mc1 = new org.springframework.ws.ext.bind.jaxb.context1.MyClassJ1();
+		org.springframework.ws.ext.bind.jaxb.context1.MyClass mc1 = new org.springframework.ws.ext.bind.jaxb.context1.MyClass();
 		mc1.setP(new MyProperty1());
-		m.marshal(new JAXBElement<org.springframework.ws.ext.bind.jaxb.context1.MyClassJ1>(new QName("a", "a"),
-				org.springframework.ws.ext.bind.jaxb.context1.MyClassJ1.class, mc1), System.out);
+		m.marshal(new JAXBElement<org.springframework.ws.ext.bind.jaxb.context1.MyClass>(new QName("a", "a"),
+				org.springframework.ws.ext.bind.jaxb.context1.MyClass.class, mc1), System.out);
 		log.info("context2");
-		org.springframework.ws.ext.bind.jaxb.context2.MyClassJ2 mc2 = new org.springframework.ws.ext.bind.jaxb.context2.MyClassJ2();
+		org.springframework.ws.ext.bind.jaxb.context2.MyClass mc2 = new org.springframework.ws.ext.bind.jaxb.context2.MyClass();
 		mc2.setP(new MyProperty2());
-		m.marshal(new JAXBElement<org.springframework.ws.ext.bind.jaxb.context2.MyClassJ2>(new QName("a", "a"),
-				org.springframework.ws.ext.bind.jaxb.context2.MyClassJ2.class, mc2), System.out);
+		m.marshal(new JAXBElement<org.springframework.ws.ext.bind.jaxb.context2.MyClass>(new QName("a", "a"),
+				org.springframework.ws.ext.bind.jaxb.context2.MyClass.class, mc2), System.out);
 
 		Object object = ctx.createUnmarshaller().unmarshal(
 				new StreamSource(new StringReader("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n"
-						+ "<ns2:a xmlns=\"urn:x\" xmlns:ns2=\"a\">\r\n" + "    <p/>\r\n" + "</ns2:a>")), org.springframework.ws.ext.bind.jaxb.context2.MyClassJ2.class);
+						+ "<ns2:a xmlns=\"urn:x\" xmlns:ns2=\"a\">\r\n" + "    <p/>\r\n" + "</ns2:a>")), org.springframework.ws.ext.bind.jaxb.context2.MyClass.class);
 		log.info("Class: {}", ((JAXBElement<?>) object).getValue().getClass());
 	}
 
 	@Test(expected = IllegalAnnotationsException.class)
 	public void marshalMixed() throws Exception {
-		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context4.MyClassJ4.class);
+		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context4.MyClass.class);
 		Marshaller m = ctx.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-		org.springframework.ws.ext.bind.jaxb.context4.MyClassJ4 mc4 = new org.springframework.ws.ext.bind.jaxb.context4.MyClassJ4();
-		m.marshal(new JAXBElement<org.springframework.ws.ext.bind.jaxb.context4.MyClassJ4>(new QName("a", "a"),
-				org.springframework.ws.ext.bind.jaxb.context4.MyClassJ4.class, mc4), System.out);
+		org.springframework.ws.ext.bind.jaxb.context4.MyClass mc4 = new org.springframework.ws.ext.bind.jaxb.context4.MyClass();
+		m.marshal(new JAXBElement<org.springframework.ws.ext.bind.jaxb.context4.MyClass>(new QName("a", "a"),
+				org.springframework.ws.ext.bind.jaxb.context4.MyClass.class, mc4), System.out);
 	}
 
 	@Test
 	public void marshalIllegalProperties() throws Exception {
-		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context5.MyClassJ5_1.class);
+		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context5.MyClass.class);
 		Marshaller m = ctx.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-		org.springframework.ws.ext.bind.jaxb.context5.MyClassJ5_1 mc5 = new org.springframework.ws.ext.bind.jaxb.context5.MyClassJ5_1();
+		org.springframework.ws.ext.bind.jaxb.context5.MyClass mc5 = new org.springframework.ws.ext.bind.jaxb.context5.MyClass();
 		mc5.setC(String.class);
-		m.marshal(new JAXBElement<org.springframework.ws.ext.bind.jaxb.context5.MyClassJ5_1>(new QName("a", "a"),
-				org.springframework.ws.ext.bind.jaxb.context5.MyClassJ5_1.class, mc5), System.out);
+		m.marshal(new JAXBElement<org.springframework.ws.ext.bind.jaxb.context5.MyClass>(new QName("a", "a"),
+				org.springframework.ws.ext.bind.jaxb.context5.MyClass.class, mc5), System.out);
 	}
 
 	@Test
 	public void marshalIllegalName() throws Exception {
-		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context1.MyClassJ1.class);
+		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context1.MyClass.class);
 		Marshaller m = ctx.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
