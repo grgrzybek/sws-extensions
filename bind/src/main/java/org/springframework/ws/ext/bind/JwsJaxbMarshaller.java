@@ -48,6 +48,7 @@ import javax.xml.validation.Schema;
 import org.springframework.ws.ext.bind.internal.model.ElementPattern;
 import org.springframework.ws.ext.bind.internal.model.ValuePattern;
 import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
+import org.springframework.ws.ext.bind.internal.stax.IndentingXMLEventWriter;
 import org.w3c.dom.Node;
 import org.xml.sax.ContentHandler;
 
@@ -63,7 +64,7 @@ public class JwsJaxbMarshaller implements Marshaller {
 
 	private JwsJaxbContext jaxbContext;
 
-	private Map<String, Object> properties;
+	private Map<String, Object> properties = new HashMap<String, Object>();
 
 	private AttachmentMarshaller attachmentMarshaller;
 
@@ -76,6 +77,12 @@ public class JwsJaxbMarshaller implements Marshaller {
 	private ValidationEventHandler validationEventHandler;
 
 	private XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newFactory();
+
+	/* Flags configured using properties */
+
+	private boolean formatting = false;
+
+	private boolean fragment = false;
 
 	/**
 	 * @param jaxbContext
@@ -174,7 +181,13 @@ public class JwsJaxbMarshaller implements Marshaller {
 	public void marshal(Object jaxbElement, XMLEventWriter writer) throws JAXBException {
 		XmlEventsPattern pattern = this.determineXmlPattern(jaxbElement);
 		try {
+			if (this.formatting)
+				writer = new IndentingXMLEventWriter(writer);
+			if (!this.fragment)
+				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createStartDocument("UTF-8", "1.0", true));
 			pattern.replay(jaxbElement, writer, (Boolean) this.xmlOutputFactory.getProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES));
+			if (!this.fragment)
+				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createEndDocument());
 		}
 		catch (XMLStreamException e) {
 			throw new MarshalException(e);
@@ -196,7 +209,12 @@ public class JwsJaxbMarshaller implements Marshaller {
 	 */
 	@Override
 	public void setProperty(String name, Object value) throws PropertyException {
-		this.properties.put(name, value);
+		if (Marshaller.JAXB_FORMATTED_OUTPUT.equals(name))
+			this.formatting = (Boolean) value;
+		else if (Marshaller.JAXB_FORMATTED_OUTPUT.equals(name))
+			this.fragment = (Boolean) value;
+		else
+			this.properties.put(name, value);
 	}
 
 	/* (non-Javadoc)
@@ -321,7 +339,8 @@ public class JwsJaxbMarshaller implements Marshaller {
 				// we're marshalling known, convertible to java.lang.String object. So create an on-demand pattern
 				// TODO: maybe we should do that in JaxbContext?
 				xmlEventsPattern = ValuePattern.INSTANCE;
-			} else {
+			}
+			else {
 				throw new MarshalException("Unable to determine XML Events pattern to marshall object of class " + jaxbElement.getClass().getName());
 			}
 		}

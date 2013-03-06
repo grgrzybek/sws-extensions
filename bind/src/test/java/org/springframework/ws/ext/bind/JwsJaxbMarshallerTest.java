@@ -22,6 +22,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.MarshalException;
+import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
@@ -62,7 +63,7 @@ public class JwsJaxbMarshallerTest {
 		context.createMarshaller().marshal(new MyClass2(), sw);
 		log.info(sw.toString());
 	}
-	
+
 	@Test
 	public void marshallJAXBElementWithMyClass2() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context2");
@@ -178,22 +179,26 @@ public class JwsJaxbMarshallerTest {
 	public void marshallAttributes() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		ClassWithAttributes value = new ClassWithAttributes("test", 42);
-		context.createMarshaller().marshal(new JAXBElement<ClassWithAttributes>(new QName("urn:test", "root"), ClassWithAttributes.class, value), System.out);
+		Marshaller m = context.createMarshaller();
+		m.marshal(new JAXBElement<ClassWithAttributes>(new QName("urn:test", "root"), ClassWithAttributes.class, value), System.out);
 	}
 
 	@Test
 	public void marshallComplexContent() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		ClassWithComplexContent value = new ClassWithComplexContent("test", 42, "inside");
-		context.createMarshaller().marshal(new JAXBElement<ClassWithComplexContent>(new QName("urn:test", "root"), ClassWithComplexContent.class, value),
-				System.out);
+		Marshaller m = context.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		m.marshal(new JAXBElement<ClassWithComplexContent>(new QName("urn:test", "root"), ClassWithComplexContent.class, value), System.out);
 	}
 
 	@Test
 	public void marshallSimpleContentAndAttributes() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		ClassWithSimpleContentAndAttributes value = new ClassWithSimpleContentAndAttributes("test", 42, "inside");
-		context.createMarshaller().marshal(
-				new JAXBElement<ClassWithSimpleContentAndAttributes>(new QName("urn:test", "root"), ClassWithSimpleContentAndAttributes.class, value), System.out);
+		Marshaller m = context.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		m.marshal(new JAXBElement<ClassWithSimpleContentAndAttributes>(new QName("urn:test", "root"), ClassWithSimpleContentAndAttributes.class, value),
+				System.out);
 	}
 }
