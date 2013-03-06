@@ -36,6 +36,7 @@ import org.springframework.ws.ext.bind.context1.ClassWithComplexContent;
 import org.springframework.ws.ext.bind.context1.ClassWithSimpleContentAndAttributes;
 import org.springframework.ws.ext.bind.context1.MyClass1;
 import org.springframework.ws.ext.bind.context2.MyClass2;
+import org.springframework.ws.ext.bind.internal.stax.IndentingXMLEventWriter;
 
 /**
  * <p></p>
@@ -155,6 +156,7 @@ public class JwsJaxbMarshallerTest {
 		outputFactory.setProperty(XMLOutputFactory2.P_AUTOMATIC_EMPTY_ELEMENTS, true);
 		outputFactory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, false);
 		XMLEventWriter writer = outputFactory.createXMLEventWriter(sw);
+		writer = new IndentingXMLEventWriter(writer);
 		writer.setPrefix("x", "y");
 		writer.add(f.createStartDocument());
 		writer.add(f.createStartElement(new QName("urn:x", "root"), null, null));
@@ -169,7 +171,7 @@ public class JwsJaxbMarshallerTest {
 		writer.close();
 		sw.flush();
 		sw.close();
-		log.info(sw.toString());
+		log.info("\n{}", sw.toString());
 	}
 
 	@Test

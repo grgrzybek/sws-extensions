@@ -25,6 +25,7 @@ import org.springframework.core.convert.ConversionService;
 
 /**
  * <p>{@link AbstractSimpleTypePattern} uses {@link ConversionService} to deal only with {@link String} values.</p>
+ * <p>It is a representation of XML Schema (see: "2.2.1.2 Simple Type Definition") {@code xs:anySimpleType}.</p>
  *
  * @author Grzegorz Grzybek
  */

@@ -114,7 +114,7 @@ public class JaxbTest {
 				org.springframework.ws.ext.bind.jaxb.context4.MyClassJ4.class, mc4), System.out);
 	}
 
-	@Test
+	@Test(expected = IllegalAnnotationsException.class)
 	public void marshalIllegalProperties() throws Exception {
 		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context5.MyClassJ5_1.class);
 		Marshaller m = ctx.createMarshaller();
