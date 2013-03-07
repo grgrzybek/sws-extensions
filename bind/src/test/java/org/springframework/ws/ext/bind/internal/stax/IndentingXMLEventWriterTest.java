@@ -107,19 +107,53 @@ public class IndentingXMLEventWriterTest {
 		assertThat(this.sw.toString(), equalTo(xml));
 		System.out.print(this.sw.toString());
 	}
+	
+	@Test
+	public void threeLevels() throws Exception {
+		String xml =
+				"<?xml version='1.0' encoding='UTF-8'?>\n" + 
+						"<a>\n" +
+						" · <b1/>\n" +
+						" · <b1 id=\"#1\">\n" +
+						" ·  · <c/>\n" +
+						" · </b1>\n" +
+						"</a>\n";
+		
+		this.writer.setIndentationString(" · ");
+		this.writer.add(this.EF.createStartDocument("UTF-8"));
+		this.writer.add(this.EF.createStartElement(new QName("urn:test", "a"), null, null));
+		this.writer.add(this.EF.createStartElement(new QName("urn:test", "b1"), null, null));
+		this.writer.add(this.EF.createEndElement(new QName("urn:test", "b1"), null));
+		this.writer.add(this.EF.createStartElement(new QName("urn:test", "b1"), null, null));
+		this.writer.add(this.EF.createAttribute(new QName("urn:test", "id"), "#1"));
+		this.writer.add(this.EF.createStartElement(new QName("urn:test", "c"), null, null));
+		this.writer.add(this.EF.createEndElement(new QName("urn:test", "c"), null));
+		this.writer.add(this.EF.createEndElement(new QName("urn:test", "b1"), null));
+		this.writer.add(this.EF.createEndElement(new QName("urn:test", "a"), null));
+		this.writer.add(this.EF.createEndDocument());
+		assertThat(this.sw.toString(), equalTo(xml));
+		System.out.print(this.sw.toString());
+	}
 
 	@Test
 	public void aMixOfEvents() throws Exception {
 		String xml =
-				"<?xml version='1.0' encoding='UTF-8'?>	   <!--comment-->	   <?php phpinfo();?>\n" + 
-				"<a><?php phpinfo();?>	   <!--comment-->\n" + 
+				"<?xml version='1.0' encoding='UTF-8'?>\n" + 
+				"	   <!--comment-->\n" + 
+				"	   <?php phpinfo();?>\n" + 
+				"<a><?php phpinfo();?>\n" + 
+				"	   <!--comment-->\n" + 
 				"	<b>	   <?php phpinfo();?>\n" + 
-				"		<c/>\n" + 
+				"		<c><?php phpinfo();?>\n" + 
+				"		</c>\n" + 
 				"<!--comment-->\n" + 
 				"	</b>\n" + 
 				"	   <?php phpinfo();?>\n" + 
 				"</a>\n" + 
-				"	   <?php phpinfo();?>	   <!--comment-->	   <?php phpinfo();?>	   ";
+				"	   <?php phpinfo();?>\n" + 
+				"	   <!--comment-->\n" + 
+				"	   <?php phpinfo();?>\n" + 
+				"	   ";
 
 		this.writer.add(this.EF.createStartDocument("UTF-8"));
 		this.writer.add(this.EF.createCharacters("\t   "));
@@ -134,6 +168,7 @@ public class IndentingXMLEventWriterTest {
 		this.writer.add(this.EF.createCharacters("\t   "));
 		this.writer.add(this.EF.createProcessingInstruction("php", "phpinfo();"));
 		this.writer.add(this.EF.createStartElement(new QName("urn:test", "c"), null, null));
+		this.writer.add(this.EF.createProcessingInstruction("php", "phpinfo();"));
 		this.writer.add(this.EF.createEndElement(new QName("urn:test", "c"), null));
 		this.writer.add(this.EF.createComment("comment"));
 		this.writer.add(this.EF.createEndElement(new QName("urn:test", "b"), null));

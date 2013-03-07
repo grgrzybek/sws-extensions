@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ws.ext.bind.context1.ClassWithAttributes;
 import org.springframework.ws.ext.bind.context1.ClassWithComplexContent;
 import org.springframework.ws.ext.bind.context1.ClassWithSimpleContentAndAttributes;
+import org.springframework.ws.ext.bind.context1.ClassWithVeryComplexContent;
 import org.springframework.ws.ext.bind.context1.MyClass1;
 import org.springframework.ws.ext.bind.context2.MyClass2;
 import org.springframework.ws.ext.bind.internal.stax.IndentingXMLEventWriter;
@@ -159,20 +160,24 @@ public class JwsJaxbMarshallerTest {
 		XMLEventWriter writer = outputFactory.createXMLEventWriter(sw);
 		writer = new IndentingXMLEventWriter(writer);
 		writer.setPrefix("x", "y");
-		writer.add(f.createStartDocument());
+		writer.add(f.createStartDocument("UTF-16LE", "1.0"));
 		writer.add(f.createStartElement(new QName("urn:x", "root"), null, null));
 		// writer.add(f.createNamespace("urn:x"));
 		// writer.add(f.createNamespace("t", "urn:test"));
 		// writer.add(f.createNamespace("xsi", QNames.XSI_NIL.getNamespaceURI()));
-		context.createMarshaller().marshal(new JAXBElement<Short>(new QName("urn:test", "short"), Short.class, (short) 1), writer);
-		context.createMarshaller().marshal(new JAXBElement<Short>(new QName("urn:test", "short"), Short.class, null), writer);
+		Marshaller m = context.createMarshaller();
+		// the writer is already indenting
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
+		m.setProperty(Marshaller.JAXB_FRAGMENT, true);
+		m.marshal(new JAXBElement<Short>(new QName("urn:test", "short"), Short.class, (short) 1), writer);
+		m.marshal(new JAXBElement<Short>(new QName("urn:test", "short"), Short.class, null), writer);
 		writer.add(f.createEndElement(new QName("urn:x", "root"), null));
 		writer.add(f.createEndDocument());
 		writer.flush();
 		writer.close();
 		sw.flush();
 		sw.close();
-		log.info("\n{}", sw.toString());
+		log.info("\n===>\n{}<===", sw.toString());
 	}
 
 	@Test
@@ -190,6 +195,15 @@ public class JwsJaxbMarshallerTest {
 		Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		m.marshal(new JAXBElement<ClassWithComplexContent>(new QName("urn:test", "root"), ClassWithComplexContent.class, value), System.out);
+	}
+	
+	@Test
+	public void marshallVeryComplexContent() throws Exception {
+		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
+		ClassWithVeryComplexContent value = new ClassWithVeryComplexContent("test", "str", new ClassWithComplexContent("test", 42, "inside"));
+		Marshaller m = context.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		m.marshal(new JAXBElement<ClassWithVeryComplexContent>(new QName("urn:test", "root"), ClassWithVeryComplexContent.class, value), System.out);
 	}
 
 	@Test

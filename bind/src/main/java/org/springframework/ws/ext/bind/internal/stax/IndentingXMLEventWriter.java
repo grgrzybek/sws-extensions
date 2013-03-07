@@ -25,9 +25,8 @@ public class IndentingXMLEventWriter implements XMLEventWriter {
 	private XMLEventWriter wrappedWriter;
 	private int depth = 0;
 
-	/* Always true until we add END_ELEMENT - from then on new lines will be created after END_ELEMENT */
-	private boolean newLineBeforeStartElement = true;
-	private boolean newLineBeforeEndElement = false;
+	private boolean newLineBeforeStartElement = false;
+	private boolean indentBeforeEndElement = false;
 
 	private String indentationString = "\t";
 
@@ -55,30 +54,34 @@ public class IndentingXMLEventWriter implements XMLEventWriter {
 	@Override
 	public void add(XMLEvent event) throws XMLStreamException {
 		switch (event.getEventType()) {
+		case XMLStreamConstants.START_DOCUMENT:
+			this.wrappedWriter.add(event);
+			this.wrappedWriter.add(factory.createCharacters("\n"));
+			break;
 		case XMLStreamConstants.START_ELEMENT:
 			if (this.newLineBeforeStartElement)
 				this.wrappedWriter.add(factory.createCharacters("\n"));
-			// end element tags will be in the same line, unless there will be comments or PIs
-			this.newLineBeforeEndElement = false;
-			possiblyIndent();
+			this.newLineBeforeStartElement = true;
+			this.indentBeforeEndElement = false;
+			this.possiblyIndent();
 			this.wrappedWriter.add(event);
 			this.depth++;
 			break;
 		case XMLStreamConstants.END_ELEMENT:
-			this.depth--;
 			this.newLineBeforeStartElement = false;
-			if (this.newLineBeforeEndElement) {
-				this.wrappedWriter.add(factory.createCharacters("\n"));
-				possiblyIndent();
-			}
+			this.depth--;
+			if (this.indentBeforeEndElement)
+				this.possiblyIndent();
+			this.indentBeforeEndElement = true;
 			this.wrappedWriter.add(event);
-			// always
 			this.wrappedWriter.add(factory.createCharacters("\n"));
 			break;
 		case XMLStreamConstants.COMMENT:
 		case XMLStreamConstants.PROCESSING_INSTRUCTION:
-			this.newLineBeforeEndElement = true;
 			this.wrappedWriter.add(event);
+			this.wrappedWriter.add(factory.createCharacters("\n"));
+			this.newLineBeforeStartElement = false;
+			this.indentBeforeEndElement = true;
 			break;
 		default:
 			this.wrappedWriter.add(event);
@@ -86,7 +89,7 @@ public class IndentingXMLEventWriter implements XMLEventWriter {
 	}
 
 	/**
-	 * Indent if necessary
+	 * Indent at non-zero depth
 	 * 
 	 * @throws XMLStreamException
 	 */

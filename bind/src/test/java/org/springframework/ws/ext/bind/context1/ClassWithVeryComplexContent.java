@@ -24,26 +24,26 @@ import javax.xml.bind.annotation.XmlElement;
  *
  * @author Grzegorz Grzybek
  */
-public class ClassWithComplexContent {
+public class ClassWithVeryComplexContent {
 
 	@XmlAttribute
 	private String str;
 
-	@XmlAttribute
-	private int number;
-
-	@XmlElement(name = "inside-element-with-customized-name", namespace = "urn:inside:1")
+	@XmlElement(name = "custom-element", namespace = "urn:inside:2")
 	private String inside;
+	
+	@XmlElement(name = "custom-element2", namespace = "urn:inside:3")
+	private ClassWithComplexContent inside2;
 
 	/**
 	 * @param str
-	 * @param number
 	 * @param inside
+	 * @param inside2
 	 */
-	public ClassWithComplexContent(String str, int number, String inside) {
+	public ClassWithVeryComplexContent(String str, String inside, ClassWithComplexContent inside2) {
 		this.str = str;
-		this.number = number;
 		this.inside = inside;
+		this.inside2 = inside2;
 	}
 
 	/**
@@ -61,20 +61,6 @@ public class ClassWithComplexContent {
 	}
 
 	/**
-	 * @return the number
-	 */
-	public int getNumber() {
-		return this.number;
-	}
-
-	/**
-	 * @param number the number to set
-	 */
-	public void setNumber(int number) {
-		this.number = number;
-	}
-
-	/**
 	 * @return the inside
 	 */
 	public String getInside() {
@@ -86,6 +72,20 @@ public class ClassWithComplexContent {
 	 */
 	public void setInside(String inside) {
 		this.inside = inside;
+	}
+
+	/**
+	 * @return the inside2
+	 */
+	public ClassWithComplexContent getInside2() {
+		return this.inside2;
+	}
+
+	/**
+	 * @param inside2 the inside2 to set
+	 */
+	public void setInside2(ClassWithComplexContent inside2) {
+		this.inside2 = inside2;
 	}
 
 }

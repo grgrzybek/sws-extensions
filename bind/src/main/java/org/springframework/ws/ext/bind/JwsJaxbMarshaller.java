@@ -211,7 +211,7 @@ public class JwsJaxbMarshaller implements Marshaller {
 	public void setProperty(String name, Object value) throws PropertyException {
 		if (Marshaller.JAXB_FORMATTED_OUTPUT.equals(name))
 			this.formatting = (Boolean) value;
-		else if (Marshaller.JAXB_FORMATTED_OUTPUT.equals(name))
+		else if (Marshaller.JAXB_FRAGMENT.equals(name))
 			this.fragment = (Boolean) value;
 		else
 			this.properties.put(name, value);
