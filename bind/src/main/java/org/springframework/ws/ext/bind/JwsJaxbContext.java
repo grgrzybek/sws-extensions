@@ -330,9 +330,10 @@ public class JwsJaxbContext extends JAXBContext {
 		}
 
 		// before stepping into the class we'll add DeferredXmlPattern to the mapping to be able to analyze cross-dependent classes
-		this.patterns.put(cl, new TemporaryXmlEventsPattern());
+		TemporaryXmlEventsPattern txp = new TemporaryXmlEventsPattern();
+		this.patterns.put(cl, txp);
 		ContentModelPattern mapping = new PropertyCallback(namespace, xmlAccessType).analyze(cl);
-		this.patterns.remove(cl);
+		txp.setRealPattern(mapping);
 
 		XmlRootElement xmlRootElement = AnnotationUtils.findAnnotation(cl, XmlRootElement.class);
 		if (xmlRootElement != null) {

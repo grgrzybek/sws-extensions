@@ -66,6 +66,32 @@ import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
  * <li>Complex type {@code multiRef} elements have element children</li>
  * <li>{@link XmlAttribute} or {@link XmlValue}-annotated bean properties should always be marshalled as if they were elements (!)</li>
  * </ul></p>
+ * 
+ * <p>Non-multiRef marshalling will result in {@link StackOverflowError} for interdependent classes and something like this, when
+ * a class contains reference to itself:<pre>
+ * &lt;?xml version='1.0' encoding='UTF-8'?>
+ * &lt;r:root-wrapper-for-multirefs xmlns:r="urn:test:1">
+ *   &lt;r:root xmlns:r="urn:test">
+ *     &lt;other xmlns="http://context3.bind.ext.ws.springframework.org/">
+ *       &lt;other>
+ *         &lt;other>
+ *           &lt;other>
+ *             &lt;other>
+ *               &lt;other>
+ *                 &lt;other>
+ *                   &lt;other>
+ *                     &lt;other>
+ *                     ...
+ * </pre></p>
+ * <p>For multi-ref encoding we'll get:<pre>
+ * &lt;?xml version='1.0' encoding='UTF-8'?>
+ * &lt;r:root-wrapper-for-multirefs xmlns:r="urn:test:1">
+ *   &lt;r:root xmlns:r="urn:test" href="#id0"/>
+ *   &lt;mr id="id0">
+ *     &lt;other xmlns="http://context3.bind.ext.ws.springframework.org/" href="#id0"/>
+ *   &lt;/mr>
+ * &lt;/r:root-wrapper-for-multirefs>
+ * </pre></p>
  *
  * @author Grzegorz Grzybek
  */

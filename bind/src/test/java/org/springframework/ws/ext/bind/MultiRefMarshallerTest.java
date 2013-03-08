@@ -99,9 +99,9 @@ public class MultiRefMarshallerTest {
 		Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
 		m.setProperty(Marshaller.JAXB_FRAGMENT, true);
-		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, true);
 		
-		log.info("===== multi-ref 1 =====");
+		log.info("===== no multi-ref 1 =====");
+		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, false);
 		XMLEventWriter writer = outputFactory.createXMLEventWriter(System.out);
 		writer = new IndentingXMLEventWriter(writer);
 		((IndentingXMLEventWriter)writer).setIndentationString("  ");
@@ -109,6 +109,23 @@ public class MultiRefMarshallerTest {
 		writer.add(this.eventFactory.createStartElement(new QName("urn:test:1", "root-wrapper-for-multirefs", "r"), null, null));
 		
 		MyClass1 c1 = new MyClass1();
+		// do not try this at home...
+		//c1.setOther(c1);
+		
+		m.marshal(new JAXBElement<MyClass1>(new QName("urn:test", "root", "r"), MyClass1.class, c1), writer);
+		
+		writer.add(this.eventFactory.createEndElement(new QName("urn:test:1", "root-wrapper-for-multirefs", "r"), null));
+		writer.close();
+		
+		log.info("===== multi-ref 1 =====");
+		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, true);
+		writer = outputFactory.createXMLEventWriter(System.out);
+		writer = new IndentingXMLEventWriter(writer);
+		((IndentingXMLEventWriter)writer).setIndentationString("  ");
+		writer.add(this.eventFactory.createStartDocument("UTF-8", "1.0"));
+		writer.add(this.eventFactory.createStartElement(new QName("urn:test:1", "root-wrapper-for-multirefs", "r"), null, null));
+		
+		c1 = new MyClass1();
 		// dodge this!
 		c1.setOther(c1);
 
@@ -118,6 +135,7 @@ public class MultiRefMarshallerTest {
 		writer.close();
 		
 		log.info("===== multi-ref 2 =====");
+		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, true);
 		writer = outputFactory.createXMLEventWriter(System.out);
 		writer = new IndentingXMLEventWriter(writer);
 		((IndentingXMLEventWriter)writer).setIndentationString("  ");

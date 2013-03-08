@@ -38,7 +38,7 @@ public class DefaultMultiRefSupport implements MultiRefSupport {
 		int sysId = mr.getSystemIdentity();
 		if (!this.multiRefs.containsKey(sysId)) {
 			this.multiRefs.put(sysId, mr);
-			mr.setPattern(nestedPattern); // it's the same for all objects, because the container is the same object in every registration
+			mr.setPattern(nestedPattern); // it's the same for all objects, because the containing object is the same object in every registerMultiRef() invocation
 			mr.setId(this.sequence++);
 		}
 		mr = this.multiRefs.get(sysId);
