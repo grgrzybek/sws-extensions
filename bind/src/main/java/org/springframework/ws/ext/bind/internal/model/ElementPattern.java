@@ -77,34 +77,39 @@ public class ElementPattern implements XmlEventsPattern {
 			}
 		}
 
-		// TODO: nil, non-JAXBElements
+		boolean isNil = false;
 		// TODO: handle non "xsi" prefix for "http://www.w3.org/2001/XMLSchema-instance" namespace 
 		if (object instanceof JAXBElement) {
 			// is it xsi:nil?
-			if (((JAXBElement<?>) object).isNil()) {
-				if (!context.isRepairingXmlEventWriter() && nsc.getPrefix(QNames.XSI_NIL.getNamespaceURI()) == null) {
-					eventWriter.add(XML_EVENTS_FACTORY.createNamespace(QNames.XSI_NIL.getPrefix(), QNames.XSI_NIL.getNamespaceURI()));
-				}
-				eventWriter.add(XML_EVENTS_FACTORY.createAttribute(QNames.XSI_NIL, "true"));
-			}
+			if (((JAXBElement<?>) object).isNil())
+				isNil = true;
 			// dereference marshalled value
 			object = ((JAXBElement<?>) object).getValue();
+		} else if (object == null) {
+			isNil = true;
 		}
 
-		if (/*not nil &&*/context.isMultiRefEncoding()) {
-			// choices:
-			//  - marshal ValuePattern.INSTANCE pattern "inline" or as @href?
-			//  - marshal single references "inline" or as @href to multiRef? - requires deferred marshalling to see wether there will more references
-			//    to this value
-			//  - add xsi:type?
-			
-			// the "href" attribute should be unqualified
-			// TODO: what about @href attributes inside elements in default, non-empty namespace? Like: <a xmlns="b" href="#1" />...
-			
-			context.getMultiRefSupport().registerMultiRef(object, eventWriter, this.nestedPattern);
+		if (isNil) {
+			if (!context.isRepairingXmlEventWriter() && nsc.getPrefix(QNames.XSI_NIL.getNamespaceURI()) == null) {
+				eventWriter.add(XML_EVENTS_FACTORY.createNamespace(QNames.XSI_NIL.getPrefix(), QNames.XSI_NIL.getNamespaceURI()));
+			}
+			eventWriter.add(XML_EVENTS_FACTORY.createAttribute(QNames.XSI_NIL, "true"));
 		} else {
-			// inline children
-			this.nestedPattern.replay(object, eventWriter, context);
+			if (context.isMultiRefEncoding()) {
+				// choices:
+				//  - marshal ValuePattern.INSTANCE pattern "inline" or as @href?
+				//  - marshal single references "inline" or as @href to multiRef? - requires deferred marshalling to see wether there will more references
+				//    to this value
+				//  - add xsi:type?
+				
+				// the "href" attribute should be unqualified
+				// TODO: what about @href attributes inside elements in default, non-empty namespace? Like: <a xmlns="b" href="#1" />...
+				
+				context.getMultiRefSupport().registerMultiRef(object, eventWriter, this.nestedPattern);
+			} else {
+				// inline children
+				this.nestedPattern.replay(object, eventWriter, context);
+			}
 		}
 
 		// </elementName>
