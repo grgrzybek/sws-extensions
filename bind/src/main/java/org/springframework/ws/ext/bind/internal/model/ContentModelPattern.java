@@ -29,6 +29,7 @@ import javax.xml.stream.XMLStreamException;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.PropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.ws.ext.bind.internal.MarshallingContext;
 import org.springframework.ws.ext.bind.internal.metadata.PropertyMetadata;
 
 /**
@@ -69,10 +70,10 @@ public class ContentModelPattern implements XmlEventsPattern {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.jaxws.soapenc.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, boolean)
+	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, org.springframework.ws.ext.bind.internal.MarshallingContext)
 	 */
 	@Override
-	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
+	public void replay(Object object, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException {
 		// nested patterns will extract configured property (field or getter) from this beanWrapper.
 		// in order to minimize a number of PropertyAccessor instances we will create them here and reuse for each direct/child property
 		PropertyAccessor directFieldAccessor = null;
@@ -89,12 +90,13 @@ public class ContentModelPattern implements XmlEventsPattern {
 		}
 
 		// each nested pattern relates to some property of the marshalled object
-		// this is the role of this pattern (ContentModelPattern)
+		// this is the main responsibility of this pattern (ContentModelPattern)
+		// the order of properties is determined by this.contentModel, not by the order of bean properties
 		for (PropertyMetadata pm : this.contentModel) {
 			boolean direct = pm.isDirectProperty();
 			PropertyAccessor propertyAccessor = direct ? directFieldAccessor : beanPropertyAccessor;
 			object = propertyAccessor.getPropertyValue(pm.getPropertyName());
-			pm.getPattern().replay(object, eventWriter, repairingWriter);
+			pm.getPattern().replay(object, eventWriter, context);
 		}
 	}
 

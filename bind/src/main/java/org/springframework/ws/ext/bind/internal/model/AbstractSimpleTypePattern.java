@@ -22,6 +22,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.ws.ext.bind.internal.MarshallingContext;
 
 /**
  * <p>{@link AbstractSimpleTypePattern} uses {@link ConversionService} to deal only with {@link String} values.</p>
@@ -34,10 +35,10 @@ public abstract class AbstractSimpleTypePattern implements XmlEventsPattern {
 	private ConversionService conversionService;
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, boolean)
+	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, org.springframework.ws.ext.bind.internal.MarshallingContext)
 	 */
 	@Override
-	public final void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException {
+	public void replay(Object object, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException {
 		if (object != null)
 			this.replayNonNullString(this.conversionService.convert(object, String.class), eventWriter);
 	}

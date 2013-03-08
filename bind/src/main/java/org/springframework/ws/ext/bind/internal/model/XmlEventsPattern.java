@@ -16,12 +16,13 @@
 
 package org.springframework.ws.ext.bind.internal.model;
 
-import javax.xml.bind.MarshalException;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
+
+import org.springframework.ws.ext.bind.internal.MarshallingContext;
 
 /**
  * <p>In Object-XML mapping, each object may be converted to a series of {@link XMLEvent XML events}. Some of these events (or of these
@@ -49,17 +50,17 @@ public interface XmlEventsPattern {
 	public static final XMLEventFactory XML_EVENTS_FACTORY = XMLEventFactory.newInstance();
 
 	/**
-	 * <p>Marshaling - converts Java object into series of {@link XMLEvent XML events}.</p>
+	 * <p>Marshalling - converts Java object into series of {@link XMLEvent XML events}.</p>
 	 * 
 	 * @param object
 	 * @param eventWriter
-	 * @param repairingWriter
-	 * @throws MarshalException
+	 * @param context
+	 * @throws XMLStreamException
 	 */
-	public void replay(Object object, XMLEventWriter eventWriter, boolean repairingWriter) throws XMLStreamException;
+	public void replay(Object object, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException;
 
 	/**
-	 * <p>Unmarshaling - converts a series of {@link XMLEvent XML events} into a Java object.</p>
+	 * <p>Unmarshalling - converts a series of {@link XMLEvent XML events} into a Java object.</p>
 	 * 
 	 * @param eventReader
 	 * @return

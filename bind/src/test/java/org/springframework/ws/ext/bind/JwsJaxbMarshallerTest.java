@@ -196,7 +196,7 @@ public class JwsJaxbMarshallerTest {
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		m.marshal(new JAXBElement<ClassWithComplexContent>(new QName("urn:test", "root"), ClassWithComplexContent.class, value), System.out);
 	}
-	
+
 	@Test
 	public void marshallVeryComplexContent() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");

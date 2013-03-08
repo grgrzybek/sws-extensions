@@ -45,6 +45,7 @@ import javax.xml.transform.stax.StAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 
+import org.springframework.ws.ext.bind.internal.MarshallingContext;
 import org.springframework.ws.ext.bind.internal.model.ElementPattern;
 import org.springframework.ws.ext.bind.internal.model.ValuePattern;
 import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
@@ -60,7 +61,7 @@ import org.xml.sax.ContentHandler;
  *
  * @author Grzegorz Grzybek
  */
-public class JwsJaxbMarshaller implements Marshaller {
+public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 
 	private JwsJaxbContext jaxbContext;
 
@@ -83,6 +84,10 @@ public class JwsJaxbMarshaller implements Marshaller {
 	private boolean formatting = false;
 
 	private boolean fragment = false;
+	
+	private String encoding = "UTF-8";
+	
+	private boolean multiRefEncoding = false;
 
 	/**
 	 * @param jaxbContext
@@ -173,7 +178,7 @@ public class JwsJaxbMarshaller implements Marshaller {
 	}
 
 	/**
-	 * The main marshal method.
+	 * The main marshal method which converts an object into a series of {@link XMLEventWriter XML events}.
 	 * 
 	 * @see javax.xml.bind.Marshaller#marshal(java.lang.Object, javax.xml.stream.XMLEventWriter)
 	 */
@@ -183,9 +188,17 @@ public class JwsJaxbMarshaller implements Marshaller {
 		try {
 			if (this.formatting)
 				writer = new IndentingXMLEventWriter(writer);
+
 			if (!this.fragment)
-				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createStartDocument("UTF-8", "1.0", true));
-			pattern.replay(jaxbElement, writer, (Boolean) this.xmlOutputFactory.getProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES));
+				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createStartDocument(this.encoding, "1.0", true));
+
+			MarshallingContext context = new MarshallingContext();
+			context.setRepairingXmlEventWriter((Boolean) this.xmlOutputFactory.getProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES));
+			context.setMultiRefEncoding(this.multiRefEncoding);
+
+			// go!
+			pattern.replay(jaxbElement, writer, context);
+
 			if (!this.fragment)
 				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createEndDocument());
 		}
@@ -213,6 +226,10 @@ public class JwsJaxbMarshaller implements Marshaller {
 			this.formatting = (Boolean) value;
 		else if (Marshaller.JAXB_FRAGMENT.equals(name))
 			this.fragment = (Boolean) value;
+		else if (Marshaller.JAXB_ENCODING.equals(name))
+			this.encoding = (String)value;
+		else if (JwsJaxbConstants.JWS_JAXB_MULTIREFS.equals(name))
+			this.multiRefEncoding = (Boolean) value;
 		else
 			this.properties.put(name, value);
 	}
@@ -350,6 +367,7 @@ public class JwsJaxbMarshaller implements Marshaller {
 			return this.jaxbContext.rootPatterns.get(clz);
 
 		// if we marshall JAXBElement, we create ElementPattern on demand (without caching it!)
+		// this is the only place when 
 		if (jaxbElement instanceof JAXBElement)
 			return new ElementPattern(((JAXBElement<?>) jaxbElement).getName(), xmlEventsPattern);
 
