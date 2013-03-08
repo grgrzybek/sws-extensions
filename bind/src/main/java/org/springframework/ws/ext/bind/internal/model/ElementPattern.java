@@ -91,8 +91,21 @@ public class ElementPattern implements XmlEventsPattern {
 			object = ((JAXBElement<?>) object).getValue();
 		}
 
-		// children
-		this.nestedPattern.replay(object, eventWriter, context);
+		if (/*not nil &&*/context.isMultiRefEncoding()) {
+			// choices:
+			//  - marshal ValuePattern.INSTANCE pattern "inline" or as @href?
+			//  - marshal single references "inline" or as @href to multiRef? - requires deferred marshalling to see wether there will more references
+			//    to this value
+			//  - add xsi:type?
+			
+			// the "href" attribute should be unqualified
+			// TODO: what about @href attributes inside elements in default, non-empty namespace? Like: <a xmlns="b" href="#1" />...
+			
+			context.getMultiRefSupport().registerMultiRef(object, eventWriter, this.nestedPattern);
+		} else {
+			// inline children
+			this.nestedPattern.replay(object, eventWriter, context);
+		}
 
 		// </elementName>
 		eventWriter.add(this.endElementEvent);

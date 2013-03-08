@@ -6,7 +6,15 @@
 package org.springframework.ws.ext.bind.internal.encoding;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLStreamException;
 
+import org.springframework.ws.ext.bind.internal.MarshallingContext;
+import org.springframework.ws.ext.bind.internal.model.AbstractSimpleTypePattern;
+import org.springframework.ws.ext.bind.internal.model.ContentModelPattern;
+import org.springframework.ws.ext.bind.internal.model.ElementPattern;
+import org.springframework.ws.ext.bind.internal.model.ValuePattern;
 import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
 
 /**
@@ -56,11 +64,46 @@ import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
  * <li>Only {@code multiRef} elements have children.</li>
  * <li>Simple type {@code multiRef} elements have single text child</li>
  * <li>Complex type {@code multiRef} elements have element children</li>
- * <li>{@link XmlAttribute}-annotated properties should be marshalled as elements (!)</li>
+ * <li>{@link XmlAttribute} or {@link XmlValue}-annotated bean properties should always be marshalled as if they were elements (!)</li>
  * </ul></p>
  *
  * @author Grzegorz Grzybek
  */
 public interface MultiRefSupport {
 
+	/**
+	 * <p>Called during the process of marshalling of the nestedPattern of {@link ElementPattern}.</p>
+	 * 
+	 * <p>See: <a href="http://www.w3.org/TR/2000/NOTE-SOAP-20000508/#_Toc478383513">5.1 Rules for Encoding Types in XML</a></p>
+	 * 
+	 * <p>It's easiest for the ElementPattern to always marshall nestedPattern as multiRefValue, but there may be special cases:<ol>
+	 * <li>{@link ValuePattern} may be marshalled inline, because <i>special rules allow them to be represented efficiently for common cases</i>. An accessor to a string or byte-array value MAY have an attribute named "id" and of type "ID" per the XML Specification [7]. If so, all other accessors to the same value are encoded as empty elements having a local, unqualified attribute named "href" and of type "uri-reference" per the XML Schema Specification [11], with a "href" attribute value of a URI fragment identifier referencing the single element containing the value. </li>
+	 * <li>A multi-reference value MUST be represented as the content of an independent element. A single-reference value SHOULD not be (but MAY be).</li>
+	 * <li>A multi-reference simple or compound value is encoded as an independent element containing a local, unqualified attribute named "id" and of type "ID" per the XML Specification [7]. Each accessor to this value is an empty element having a local, unqualified attribute named "href" and of type "uri-reference" per the XML Schema Specification [11], with a "href" attribute value of a URI fragment identifier referencing the corresponding independent element.</li>
+	 * </ol></p>
+	 * 
+	 * @param object
+	 * @param eventWriter
+	 * @param nestedPattern
+	 */
+	public void registerMultiRef(Object object, XMLEventWriter eventWriter, XmlEventsPattern nestedPattern) throws XMLStreamException;
+
+	/**
+	 * @param eventWriter
+	 * @param context
+	 * @throws XMLStreamException
+	 */
+	public void outputMultiRefs(XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException;
+
+	/**
+	 * <p>MultiRef encoding doesn't marshal any property of complex type as attributes or characters - {@link ContentModelPattern}
+	 * uses this method to convert {@link AbstractSimpleTypePattern} to {@link ElementPattern}.</p>
+	 * 
+	 * <p>Soap 1.1: Accessors whose names are local to their containing types have unqualified element names; all others have qualified names</p>
+	 * 
+	 * @param pattern
+	 * @param accessorName
+	 * @return
+	 */
+	public XmlEventsPattern adaptPattern(XmlEventsPattern pattern, String accessorName);
 }

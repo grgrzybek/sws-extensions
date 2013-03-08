@@ -96,7 +96,13 @@ public class ContentModelPattern implements XmlEventsPattern {
 			boolean direct = pm.isDirectProperty();
 			PropertyAccessor propertyAccessor = direct ? directFieldAccessor : beanPropertyAccessor;
 			object = propertyAccessor.getPropertyValue(pm.getPropertyName());
-			pm.getPattern().replay(object, eventWriter, context);
+			
+			// for multi-ref encoding every property is an element - @XmlValue and @XmlAttribute too!
+			if (context.isMultiRefEncoding()) {
+				context.getMultiRefSupport().adaptPattern(pm.getPattern(), pm.getPropertyName()).replay(object, eventWriter, context);
+			} else {
+				pm.getPattern().replay(object, eventWriter, context);
+			}
 		}
 	}
 

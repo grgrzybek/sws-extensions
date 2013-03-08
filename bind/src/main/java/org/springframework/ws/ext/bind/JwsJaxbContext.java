@@ -57,6 +57,7 @@ import org.springframework.ws.ext.bind.internal.metadata.PropertyMetadata;
 import org.springframework.ws.ext.bind.internal.model.AttributePattern;
 import org.springframework.ws.ext.bind.internal.model.ContentModelPattern;
 import org.springframework.ws.ext.bind.internal.model.ElementPattern;
+import org.springframework.ws.ext.bind.internal.model.TemporaryXmlEventsPattern;
 import org.springframework.ws.ext.bind.internal.model.ValuePattern;
 import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
 import org.springframework.ws.ext.utils.NamespaceUtils;
@@ -328,7 +329,10 @@ public class JwsJaxbContext extends JAXBContext {
 			xmlAccessType = xmlAccessorType.value();
 		}
 
+		// before stepping into the class we'll add DeferredXmlPattern to the mapping to be able to analyze cross-dependent classes
+		this.patterns.put(cl, new TemporaryXmlEventsPattern());
 		ContentModelPattern mapping = new PropertyCallback(namespace, xmlAccessType).analyze(cl);
+		this.patterns.remove(cl);
 
 		XmlRootElement xmlRootElement = AnnotationUtils.findAnnotation(cl, XmlRootElement.class);
 		if (xmlRootElement != null) {

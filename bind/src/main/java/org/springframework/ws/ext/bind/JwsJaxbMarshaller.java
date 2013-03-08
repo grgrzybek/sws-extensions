@@ -332,6 +332,9 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 
 			// go!
 			pattern.replay(jaxbElement, writer, context);
+			
+			if (context.isMultiRefEncoding())
+				context.getMultiRefSupport().outputMultiRefs(writer, context);
 
 			if (!this.fragment)
 				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createEndDocument());

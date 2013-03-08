@@ -27,8 +27,13 @@ import javax.xml.stream.XMLOutputFactory;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ws.ext.bind.context1.ClassWithComplexContent;
 import org.springframework.ws.ext.bind.context1.ClassWithVeryComplexContent;
+import org.springframework.ws.ext.bind.context3.MyClass1;
+import org.springframework.ws.ext.bind.context3.MyClass2;
+import org.springframework.ws.ext.bind.context3.MyClass3;
 import org.springframework.ws.ext.bind.internal.stax.IndentingXMLEventWriter;
 
 /**
@@ -37,6 +42,8 @@ import org.springframework.ws.ext.bind.internal.stax.IndentingXMLEventWriter;
  * @author Grzegorz Grzybek
  */
 public class MultiRefMarshallerTest {
+
+	private static Logger log = LoggerFactory.getLogger(MultiRefMarshallerTest.class.getName());
 
 	private XMLOutputFactory outputFactory;
 	private XMLEventFactory eventFactory;
@@ -56,15 +63,75 @@ public class MultiRefMarshallerTest {
 		Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
 		m.setProperty(Marshaller.JAXB_FRAGMENT, true);
+		
+		log.info("===== multi-ref =====");
+		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, true);
 
 		XMLEventWriter writer = outputFactory.createXMLEventWriter(System.out);
 		writer = new IndentingXMLEventWriter(writer);
+		((IndentingXMLEventWriter)writer).setIndentationString("  ");
 		writer.add(this.eventFactory.createStartDocument("UTF-8", "1.0"));
-		writer.add(this.eventFactory.createStartElement(new QName("urn:test:1", "root-wrapper-for-multirefs"), null, null));
+		writer.add(this.eventFactory.createStartElement(new QName("urn:test:1", "root-wrapper-for-multirefs", "r"), null, null));
 
-		m.marshal(new JAXBElement<ClassWithVeryComplexContent>(new QName("urn:test", "root"), ClassWithVeryComplexContent.class, value), writer);
+		m.marshal(new JAXBElement<ClassWithVeryComplexContent>(new QName("urn:test", "root", "r"), ClassWithVeryComplexContent.class, value), writer);
 
-		writer.add(this.eventFactory.createEndElement(new QName("urn:test:1", "root-wrapper-for-multirefs"), null));
+		writer.add(this.eventFactory.createEndElement(new QName("urn:test:1", "root-wrapper-for-multirefs", "r"), null));
+		writer.close();
+
+		log.info("===== no multi-ref =====");
+		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, false);
+
+		writer = outputFactory.createXMLEventWriter(System.out);
+		writer = new IndentingXMLEventWriter(writer);
+		((IndentingXMLEventWriter)writer).setIndentationString("  ");
+		writer.add(this.eventFactory.createStartDocument("UTF-8", "1.0"));
+		writer.add(this.eventFactory.createStartElement(new QName("urn:test:1", "root-wrapper", "r"), null, null));
+
+		m.marshal(new JAXBElement<ClassWithVeryComplexContent>(new QName("urn:test", "root", "r"), ClassWithVeryComplexContent.class, value), writer);
+
+		writer.add(this.eventFactory.createEndElement(new QName("urn:test:1", "root-wrapper", "r"), null));
+		writer.close();
+	}
+	
+	@Test
+	public void marshallCrossReferences() throws Exception {
+		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context3");
+		Marshaller m = context.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
+		m.setProperty(Marshaller.JAXB_FRAGMENT, true);
+		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, true);
+		
+		log.info("===== multi-ref 1 =====");
+		XMLEventWriter writer = outputFactory.createXMLEventWriter(System.out);
+		writer = new IndentingXMLEventWriter(writer);
+		((IndentingXMLEventWriter)writer).setIndentationString("  ");
+		writer.add(this.eventFactory.createStartDocument("UTF-8", "1.0"));
+		writer.add(this.eventFactory.createStartElement(new QName("urn:test:1", "root-wrapper-for-multirefs", "r"), null, null));
+		
+		MyClass1 c1 = new MyClass1();
+		// dodge this!
+		c1.setOther(c1);
+
+		m.marshal(new JAXBElement<MyClass1>(new QName("urn:test", "root", "r"), MyClass1.class, c1), writer);
+		
+		writer.add(this.eventFactory.createEndElement(new QName("urn:test:1", "root-wrapper-for-multirefs", "r"), null));
+		writer.close();
+		
+		log.info("===== multi-ref 2 =====");
+		writer = outputFactory.createXMLEventWriter(System.out);
+		writer = new IndentingXMLEventWriter(writer);
+		((IndentingXMLEventWriter)writer).setIndentationString("  ");
+		writer.add(this.eventFactory.createStartDocument("UTF-8", "1.0"));
+		writer.add(this.eventFactory.createStartElement(new QName("urn:test:1", "root-wrapper-for-multirefs", "r"), null, null));
+		
+		MyClass2 c2 = new MyClass2();
+		MyClass3 c3 = new MyClass3();
+		c2.setC3(c3);
+		c3.setC2(c2);
+		
+		m.marshal(new JAXBElement<MyClass2>(new QName("urn:test", "root", "r"), MyClass2.class, c2), writer);
+		
+		writer.add(this.eventFactory.createEndElement(new QName("urn:test:1", "root-wrapper-for-multirefs", "r"), null));
 		writer.close();
 	}
 
