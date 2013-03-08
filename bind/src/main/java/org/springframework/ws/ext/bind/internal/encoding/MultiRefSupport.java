@@ -5,6 +5,8 @@
 
 package org.springframework.ws.ext.bind.internal.encoding;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
 
 /**
@@ -54,7 +56,7 @@ import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
  * <li>Only {@code multiRef} elements have children.</li>
  * <li>Simple type {@code multiRef} elements have single text child</li>
  * <li>Complex type {@code multiRef} elements have element children</li>
- * <li>...</li>
+ * <li>{@link XmlAttribute}-annotated properties should be marshalled as elements (!)</li>
  * </ul></p>
  *
  * @author Grzegorz Grzybek

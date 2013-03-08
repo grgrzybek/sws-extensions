@@ -83,7 +83,7 @@ public class JwsJaxbContext extends JAXBContext {
 	 * Mapping of Java classes to OXM metadata. This metadata is about how Java class maps to a given XML Schema type (simple or complex).
 	 * This mapping doesn't deal with XML Schema elements - these are determined for each marshall operation, not at the creation time.
 	 */
-	Map<Class<?>, ContentModelPattern> patterns = new LinkedHashMap<Class<?>, ContentModelPattern>();
+	Map<Class<?>, XmlEventsPattern> patterns = new LinkedHashMap<Class<?>, XmlEventsPattern>();
 
 	/**
 	 * Mapping of {@link XmlRootElement} annotated classes.
@@ -171,6 +171,7 @@ public class JwsJaxbContext extends JAXBContext {
 		// see: com.sun.xml.bind.v2.model.impl.RuntimeBuiltinLeafInfoImpl<T> and inner
 		// com.sun.xml.bind.v2.model.impl.RuntimeBuiltinLeafInfoImpl.StringImpl<T> implementations
 
+		this.patterns.put(Boolean.class, ValuePattern.INSTANCE);
 		this.formattingConversionService.addFormatterForFieldType(Boolean.class, new Formatter<Boolean>() {
 			@Override
 			public String print(Boolean object, Locale locale) {
@@ -182,6 +183,8 @@ public class JwsJaxbContext extends JAXBContext {
 				return Boolean.parseBoolean(text);
 			}
 		});
+
+		this.patterns.put(Byte.class, ValuePattern.INSTANCE);
 		this.formattingConversionService.addFormatterForFieldType(Byte.class, new Formatter<Byte>() {
 			@Override
 			public String print(Byte object, Locale locale) {
@@ -193,6 +196,8 @@ public class JwsJaxbContext extends JAXBContext {
 				return Byte.parseByte(text);
 			}
 		});
+		
+		this.patterns.put(Short.class, ValuePattern.INSTANCE);
 		this.formattingConversionService.addFormatterForFieldType(Short.class, new Formatter<Short>() {
 			@Override
 			public String print(Short object, Locale locale) {
@@ -204,6 +209,8 @@ public class JwsJaxbContext extends JAXBContext {
 				return Short.parseShort(text);
 			}
 		});
+		
+		this.patterns.put(Integer.class, ValuePattern.INSTANCE);
 		this.formattingConversionService.addFormatterForFieldType(Integer.class, new Formatter<Integer>() {
 			@Override
 			public String print(Integer object, Locale locale) {
@@ -215,6 +222,8 @@ public class JwsJaxbContext extends JAXBContext {
 				return Integer.parseInt(text);
 			}
 		});
+		
+		this.patterns.put(Long.class, ValuePattern.INSTANCE);
 		this.formattingConversionService.addFormatterForFieldType(Long.class, new Formatter<Long>() {
 			@Override
 			public String print(Long object, Locale locale) {
@@ -226,6 +235,8 @@ public class JwsJaxbContext extends JAXBContext {
 				return Long.parseLong(text);
 			}
 		});
+		
+		this.patterns.put(Float.class, ValuePattern.INSTANCE);
 		this.formattingConversionService.addFormatterForFieldType(Float.class, new Formatter<Float>() {
 			@Override
 			public String print(Float object, Locale locale) {
@@ -237,6 +248,8 @@ public class JwsJaxbContext extends JAXBContext {
 				return Float.parseFloat(text);
 			}
 		});
+		
+		this.patterns.put(Double.class, ValuePattern.INSTANCE);
 		this.formattingConversionService.addFormatterForFieldType(Double.class, new Formatter<Double>() {
 			@Override
 			public String print(Double object, Locale locale) {
@@ -248,6 +261,8 @@ public class JwsJaxbContext extends JAXBContext {
 				return Double.parseDouble(text);
 			}
 		});
+
+		this.patterns.put(String.class, ValuePattern.INSTANCE);
 
 		// other simple types
 		// JAXB2:
@@ -283,7 +298,7 @@ public class JwsJaxbContext extends JAXBContext {
 	 * @param cl
 	 * @return
 	 */
-	private ContentModelPattern determineXmlPattern(Class<?> cl) {
+	private XmlEventsPattern determineXmlPattern(Class<?> cl) {
 		if (this.patterns.containsKey(cl))
 			return this.patterns.get(cl);
 
@@ -413,8 +428,9 @@ public class JwsJaxbContext extends JAXBContext {
 			XmlValue xmlValue = AnnotationUtils.getAnnotation(field, XmlValue.class);
 			if (xmlValue != null) {
 				// we (may) have simple type
-				// a simpleType contains only one @XmlValue annotation. In terms of XML Schema - it contains simpleContent
+				// a simpleType contains only one @XmlValue annotation. In terms of XML Schema - it has simpleContent (and possibly attributes)
 				// field's class should be convertible to java.lang.String
+				// this class should have no child @XmlElements
 				metadata.setPattern(ValuePattern.INSTANCE);
 				this.childPatterns.add(metadata);
 				return;

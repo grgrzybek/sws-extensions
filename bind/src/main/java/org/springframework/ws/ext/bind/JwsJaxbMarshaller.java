@@ -47,7 +47,6 @@ import javax.xml.validation.Schema;
 
 import org.springframework.ws.ext.bind.internal.MarshallingContext;
 import org.springframework.ws.ext.bind.internal.model.ElementPattern;
-import org.springframework.ws.ext.bind.internal.model.ValuePattern;
 import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
 import org.springframework.ws.ext.bind.internal.stax.IndentingXMLEventWriter;
 import org.w3c.dom.Node;
@@ -79,7 +78,7 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 
 	private XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newFactory();
 
-	/* Flags configured using properties */
+	/* properties-based configuration of marshaller */
 
 	private boolean formatting = false;
 
@@ -358,23 +357,14 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 		// pattern (both for root and non-root classes) must be present in context's mapping metadata
 		XmlEventsPattern xmlEventsPattern = this.jaxbContext.patterns.get(clz);
 
-		if (xmlEventsPattern == null) {
-			if (this.jaxbContext.formattingConversionService.canConvert(clz, String.class)) {
-				// we're marshalling known, convertible to java.lang.String object. So create an on-demand pattern
-				// TODO: maybe we should do that in JaxbContext?
-				xmlEventsPattern = ValuePattern.INSTANCE;
-			}
-			else {
-				throw new MarshalException("Unable to determine XML Events pattern to marshall object of class " + jaxbElement.getClass().getName());
-			}
-		}
+		if (xmlEventsPattern == null)
+			throw new MarshalException("Unable to determine XML Events pattern to marshall object of class " + jaxbElement.getClass().getName());
 
 		// if we marshall XmlRootElement, then return proper pattern
 		if (this.jaxbContext.rootPatterns.containsKey(clz))
 			return this.jaxbContext.rootPatterns.get(clz);
 
 		// if we marshall JAXBElement, we create ElementPattern on demand (without caching it!)
-		// this is the only place when
 		if (jaxbElement instanceof JAXBElement)
 			return new ElementPattern(((JAXBElement<?>) jaxbElement).getName(), xmlEventsPattern);
 
