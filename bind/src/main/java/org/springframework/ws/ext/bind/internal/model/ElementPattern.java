@@ -78,6 +78,7 @@ public class ElementPattern implements XmlEventsPattern {
 		}
 
 		// TODO: nil, non-JAXBElements
+		// TODO: handle non "xsi" prefix for "http://www.w3.org/2001/XMLSchema-instance" namespace 
 		if (object instanceof JAXBElement) {
 			// is it xsi:nil?
 			if (((JAXBElement<?>) object).isNil()) {

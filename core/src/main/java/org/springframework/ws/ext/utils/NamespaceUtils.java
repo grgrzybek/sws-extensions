@@ -34,6 +34,12 @@ public abstract class NamespaceUtils {
 	private NamespaceUtils() {
 	}
 
+	/**
+	 * Converts package name to URL for namespace according to JAXB/JAX-WS conventions
+	 * 
+	 * @param pkg
+	 * @return
+	 */
 	public static String packageNameToNamespace(Package pkg) {
 		Assert.notNull(pkg, "Package should not be null");
 		List<String> elements = new ArrayList<String>(Arrays.asList(pkg.getName().split("\\.")));

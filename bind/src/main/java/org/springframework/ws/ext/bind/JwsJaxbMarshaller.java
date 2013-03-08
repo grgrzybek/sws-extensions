@@ -84,9 +84,9 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 	private boolean formatting = false;
 
 	private boolean fragment = false;
-	
+
 	private String encoding = "UTF-8";
-	
+
 	private boolean multiRefEncoding = false;
 
 	/**
@@ -168,7 +168,6 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 		this.marshal(jaxbElement, new DOMResult(node));
 	}
 
-	/**
 	/* (non-Javadoc)
 	 * @see javax.xml.bind.Marshaller#marshal(java.lang.Object, javax.xml.stream.XMLStreamWriter)
 	 */
@@ -177,34 +176,12 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 		this.marshal(jaxbElement, new StAXResult(writer));
 	}
 
-	/**
-	 * The main marshal method which converts an object into a series of {@link XMLEventWriter XML events}.
-	 * 
+	/* (non-Javadoc)
 	 * @see javax.xml.bind.Marshaller#marshal(java.lang.Object, javax.xml.stream.XMLEventWriter)
 	 */
 	@Override
 	public void marshal(Object jaxbElement, XMLEventWriter writer) throws JAXBException {
-		XmlEventsPattern pattern = this.determineXmlPattern(jaxbElement);
-		try {
-			if (this.formatting)
-				writer = new IndentingXMLEventWriter(writer);
-
-			if (!this.fragment)
-				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createStartDocument(this.encoding, "1.0", true));
-
-			MarshallingContext context = new MarshallingContext();
-			context.setRepairingXmlEventWriter((Boolean) this.xmlOutputFactory.getProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES));
-			context.setMultiRefEncoding(this.multiRefEncoding);
-
-			// go!
-			pattern.replay(jaxbElement, writer, context);
-
-			if (!this.fragment)
-				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createEndDocument());
-		}
-		catch (XMLStreamException e) {
-			throw new MarshalException(e);
-		}
+		this.marshal0(jaxbElement, writer);
 	}
 
 	/* Other operations */
@@ -227,7 +204,7 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 		else if (Marshaller.JAXB_FRAGMENT.equals(name))
 			this.fragment = (Boolean) value;
 		else if (Marshaller.JAXB_ENCODING.equals(name))
-			this.encoding = (String)value;
+			this.encoding = (String) value;
 		else if (JwsJaxbConstants.JWS_JAXB_MULTIREFS.equals(name))
 			this.multiRefEncoding = (Boolean) value;
 		else
@@ -336,6 +313,36 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 	/* Internal methods */
 
 	/**
+	 * The main marshal method which converts an object into a series of {@link XMLEventWriter XML events} being added to {@link XMLEventWriter}.
+	 * 
+	 * @param jaxbElement
+	 * @param writer
+	 */
+	private void marshal0(Object jaxbElement, XMLEventWriter writer) throws JAXBException {
+		XmlEventsPattern pattern = this.determineXmlPattern(jaxbElement);
+		try {
+			if (this.formatting)
+				writer = new IndentingXMLEventWriter(writer);
+
+			if (!this.fragment)
+				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createStartDocument(this.encoding, "1.0", true));
+
+			MarshallingContext context = new MarshallingContext();
+			context.setRepairingXmlEventWriter((Boolean) this.xmlOutputFactory.getProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES));
+			context.setMultiRefEncoding(this.multiRefEncoding);
+
+			// go!
+			pattern.replay(jaxbElement, writer, context);
+
+			if (!this.fragment)
+				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createEndDocument());
+		}
+		catch (XMLStreamException e) {
+			throw new MarshalException(e);
+		}
+	}
+
+	/**
 	 * Using the class of the object to be marshalled determines a series of XML Events to be generated in order to marshal given object.
 	 * Used only at the highest level of marshalling and must result in a pattern which {@link XmlEventsPattern#isElement() is an element}.
 	 * 
@@ -367,7 +374,7 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 			return this.jaxbContext.rootPatterns.get(clz);
 
 		// if we marshall JAXBElement, we create ElementPattern on demand (without caching it!)
-		// this is the only place when 
+		// this is the only place when
 		if (jaxbElement instanceof JAXBElement)
 			return new ElementPattern(((JAXBElement<?>) jaxbElement).getName(), xmlEventsPattern);
 
