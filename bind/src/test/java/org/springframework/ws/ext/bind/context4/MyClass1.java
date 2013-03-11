@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind;
+package org.springframework.ws.ext.bind.context4;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
+import org.springframework.ws.ext.bind.context4.nested.MyClass2;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public interface JwsJaxbConstants {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class MyClass1 {
 
-	/**
-	 * The name of the property used to specify whether or not we're doing multiRef encoding (Soap 1.1 Section 5 Encoding) during marshalling.
-	 * This should be detected by Unmarshaller however.
-	 */
-	public static final String JWS_JAXB_MULTIREFS = "jws.jaxb.multirefs";
+	@SuppressWarnings("unused")
+	private MyClass2 nested;
 
 }

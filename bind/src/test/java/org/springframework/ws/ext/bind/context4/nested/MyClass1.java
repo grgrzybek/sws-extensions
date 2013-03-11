@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind;
+package org.springframework.ws.ext.bind.context4.nested;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public interface JwsJaxbConstants {
-
-	/**
-	 * The name of the property used to specify whether or not we're doing multiRef encoding (Soap 1.1 Section 5 Encoding) during marshalling.
-	 * This should be detected by Unmarshaller however.
-	 */
-	public static final String JWS_JAXB_MULTIREFS = "jws.jaxb.multirefs";
+public class MyClass1 {
 
 }

@@ -16,12 +16,18 @@
 
 package org.springframework.ws.ext.bind;
 
+import java.util.Map;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
+
+import static org.junit.Assert.*;
 
 /**
  * <p></p>
@@ -43,8 +49,19 @@ public class JwsJaxbContextFactoryTest {
 	@Test
 	public void noPackage() throws Exception {
 		JAXBContext ctx = JwsJaxbContextFactory.createContext("", null);
-		// but we may marshall objects of built-in classes
-		ctx.createMarshaller().marshal(new JAXBElement<Short>(new QName("urn:test", "short"), Short.class, (short) 1), System.out);
+		// but we may marshall objects of built-in classes - XSD simple types
+		ctx.createMarshaller().marshal(new JAXBElement<String>(new QName("urn:test", "str"), String.class, "content"), System.out);
+	}
+	
+	@Test
+	public void nestedPackageNotScanned() throws Exception {
+		JAXBContext ctx = JwsJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context4", null);
+		@SuppressWarnings("unchecked")
+		Map<String, XmlEventsPattern> patterns = (Map<String, XmlEventsPattern>) ReflectionTestUtils.getField(ctx, "patterns");
+		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context4.MyClass1.class));
+		assertFalse(patterns.containsKey(org.springframework.ws.ext.bind.context4.nested.MyClass1.class));
+		// not package-scanned but analyzed as a MyClass1 property as XmlAccessType.FIELD
+		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context4.nested.MyClass2.class));
 	}
 
 }
