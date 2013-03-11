@@ -109,7 +109,7 @@ public class MultiRefMarshallerTest {
 		writer.add(this.eventFactory.createStartElement(new QName("urn:test:1", "root-wrapper-for-multirefs", "r"), null, null));
 		
 		MyClass1 c1 = new MyClass1();
-		// do not try this at home...
+		// do not try this at home without multiRefs...
 		//c1.setOther(c1);
 		
 		m.marshal(new JAXBElement<MyClass1>(new QName("urn:test", "root", "r"), MyClass1.class, c1), writer);
