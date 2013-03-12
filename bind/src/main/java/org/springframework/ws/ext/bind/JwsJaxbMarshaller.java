@@ -370,7 +370,7 @@ public class JwsJaxbMarshaller implements Marshaller, SweJaxbConstants {
 		if (jaxbElement instanceof JAXBElement)
 			return new ElementPattern(((JAXBElement<?>) jaxbElement).getName(), xmlEventsPattern);
 
-		throw new MarshalException("Unable to marshall object of class " + clz.getName()
+		throw new MarshalException("Unable to marshal object of class " + clz.getName()
 				+ ". Only JAXBElements and @XmlRootElement annotated classes may be marshalled.");
 	}
 
