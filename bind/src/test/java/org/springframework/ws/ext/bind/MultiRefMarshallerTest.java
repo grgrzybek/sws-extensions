@@ -57,7 +57,7 @@ public class MultiRefMarshallerTest {
 	}
 
 	@Test
-	public void marshallVeryComplexContent() throws Exception {
+	public void marshalVeryComplexContent() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		ClassWithVeryComplexContent value = new ClassWithVeryComplexContent("test", "str", new ClassWithComplexContent("test", 42, "inside"));
 		Marshaller m = context.createMarshaller();
@@ -65,7 +65,7 @@ public class MultiRefMarshallerTest {
 		m.setProperty(Marshaller.JAXB_FRAGMENT, true);
 		
 		log.info("===== multi-ref =====");
-		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, true);
+		m.setProperty(SweJaxbConstants.SWE_MARSHALLER_PROPERTY_JAXB_MULTIREFS, true);
 
 		XMLEventWriter writer = outputFactory.createXMLEventWriter(System.out);
 		writer = new IndentingXMLEventWriter(writer);
@@ -79,7 +79,7 @@ public class MultiRefMarshallerTest {
 		writer.close();
 
 		log.info("===== no multi-ref =====");
-		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, false);
+		m.setProperty(SweJaxbConstants.SWE_MARSHALLER_PROPERTY_JAXB_MULTIREFS, false);
 
 		writer = outputFactory.createXMLEventWriter(System.out);
 		writer = new IndentingXMLEventWriter(writer);
@@ -94,14 +94,14 @@ public class MultiRefMarshallerTest {
 	}
 	
 	@Test
-	public void marshallCrossReferences() throws Exception {
+	public void marshalCrossReferences() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context3");
 		Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
 		m.setProperty(Marshaller.JAXB_FRAGMENT, true);
 		
 		log.info("===== no multi-ref 1 =====");
-		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, false);
+		m.setProperty(SweJaxbConstants.SWE_MARSHALLER_PROPERTY_JAXB_MULTIREFS, false);
 		XMLEventWriter writer = outputFactory.createXMLEventWriter(System.out);
 		writer = new IndentingXMLEventWriter(writer);
 		((IndentingXMLEventWriter)writer).setIndentationString("  ");
@@ -118,7 +118,7 @@ public class MultiRefMarshallerTest {
 		writer.close();
 		
 		log.info("===== multi-ref 1 =====");
-		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, true);
+		m.setProperty(SweJaxbConstants.SWE_MARSHALLER_PROPERTY_JAXB_MULTIREFS, true);
 		writer = outputFactory.createXMLEventWriter(System.out);
 		writer = new IndentingXMLEventWriter(writer);
 		((IndentingXMLEventWriter)writer).setIndentationString("  ");
@@ -135,7 +135,7 @@ public class MultiRefMarshallerTest {
 		writer.close();
 		
 		log.info("===== multi-ref 2 =====");
-		m.setProperty(JwsJaxbConstants.JWS_JAXB_MULTIREFS, true);
+		m.setProperty(SweJaxbConstants.SWE_MARSHALLER_PROPERTY_JAXB_MULTIREFS, true);
 		writer = outputFactory.createXMLEventWriter(System.out);
 		writer = new IndentingXMLEventWriter(writer);
 		((IndentingXMLEventWriter)writer).setIndentationString("  ");

@@ -80,7 +80,7 @@ public class JaxbTest {
 	}
 
 	@Test
-	public void unmarshallSameQNames() throws Exception {
+	public void unmarshalSameQNames() throws Exception {
 		JAXBContext ctx = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context1.MyClassJ1.class,
 				org.springframework.ws.ext.bind.jaxb.context2.MyClassJ2.class);
 		Marshaller m = ctx.createMarshaller();

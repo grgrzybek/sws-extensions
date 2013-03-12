@@ -36,7 +36,7 @@ import org.springframework.ws.ext.bind.internal.metadata.PropertyMetadata;
  * <p>This pattern maps bean's properties to content models of XML Schema components.
  * There are mainly complex (sequence, choice, all) or simple content models</p>
  * 
- * <p>ComplexContent is used to marshall an object of class which may have many properties. These properties may be:<ul>
+ * <p>ComplexContent is used to marshal an object of class which may have many properties. These properties may be:<ul>
  * <li>{@link XmlAttribute XML attributes}</li>
  * <li>{@link XmlElement XML elements}</li>
  * <li>{@link XmlValue XML value} (only one and may not have other {@link XmlElement XML elements}</li>

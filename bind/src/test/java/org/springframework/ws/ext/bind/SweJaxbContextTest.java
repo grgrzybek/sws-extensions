@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
  *
  * @author Grzegorz Grzybek
  */
-public class JwsJaxbContextTest {
+public class SweJaxbContextTest {
 
 	@Test
 	public void useDefaultImplementation() throws Exception {
@@ -48,20 +48,20 @@ public class JwsJaxbContextTest {
 	@Test
 	public void useOurImplementation() throws Exception {
 		JAXBContext context = JAXBContext.newInstance(org.springframework.ws.ext.bind.context1.MyClass1.class);
-		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.JwsJaxbContext"));
+		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.SweJaxbContext"));
 
 		context = JAXBContext.newInstance(org.springframework.ws.ext.bind.context1.MyClass1.class.getPackage().getName());
-		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.JwsJaxbContext"));
+		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.SweJaxbContext"));
 
 		context = JAXBContext.newInstance(new Class<?>[] { org.springframework.ws.ext.bind.context1.MyClass1.class }, new HashMap<String, Object>());
-		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.JwsJaxbContext"));
+		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.SweJaxbContext"));
 
 		context = JAXBContext.newInstance(org.springframework.ws.ext.bind.context1.MyClass1.class.getPackage().getName(), this.getClass().getClassLoader());
-		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.JwsJaxbContext"));
+		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.SweJaxbContext"));
 
 		context = JAXBContext.newInstance(org.springframework.ws.ext.bind.context1.MyClass1.class.getPackage().getName(), this.getClass().getClassLoader(),
 				new HashMap<String, Object>());
-		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.JwsJaxbContext"));
+		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.SweJaxbContext"));
 	}
 
 	@Test
@@ -72,8 +72,8 @@ public class JwsJaxbContextTest {
 		assertThat(context.getClass().getName(), equalTo(com.sun.xml.bind.v2.runtime.JAXBContextImpl.class.getName()));
 
 		// but no one will forbid us to call this method :)
-		context = JwsJaxbContextFactory.createContext("org.springframework.ws.jaxws.soapenc.context2", null);
-		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.JwsJaxbContext"));
+		context = SweJaxbContextFactory.createContext("org.springframework.ws.jaxws.soapenc.context2", null);
+		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.SweJaxbContext"));
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class JwsJaxbContextTest {
 	
 	@Test
 	public void nestedPackageNotScanned() throws Exception {
-		JAXBContext ctx = JwsJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context4", null);
+		JAXBContext ctx = SweJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context4", null);
 		@SuppressWarnings("unchecked")
 		Map<Class<?>, XmlEventsPattern> patterns = (Map<Class<?>, XmlEventsPattern>) ReflectionTestUtils.getField(ctx, "patterns");
 		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context4.MyClass1.class));
@@ -97,7 +97,7 @@ public class JwsJaxbContextTest {
 	
 	@Test
 	public void twoPackages() throws Exception {
-		JAXBContext ctx = JwsJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context1:org.springframework.ws.ext.bind.context2", null);
+		JAXBContext ctx = SweJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context1:org.springframework.ws.ext.bind.context2", null);
 		@SuppressWarnings("unchecked")
 		Map<Class<?>, XmlEventsPattern> patterns = (Map<Class<?>, XmlEventsPattern>) ReflectionTestUtils.getField(ctx, "patterns");
 		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context1.ClassWithAttributes.class));

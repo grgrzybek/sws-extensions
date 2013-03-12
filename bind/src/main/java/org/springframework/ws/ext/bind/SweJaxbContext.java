@@ -68,21 +68,11 @@ import org.springframework.ws.ext.utils.NamespaceUtils;
  * @author Grzegorz Grzybek
  */
 @SuppressWarnings("deprecation")
-public class JwsJaxbContext extends JAXBContext {
-
-	public static final String PROPERTY_PREFIX = JwsJaxbContext.class.getPackage().getName();
-
-	/**
-	 * <p>If the value of this property is true, we try to be as much JAXB compliant as its ... reasonable. Otherwise we try to be pragmatic.</p>
-	 * <p>This setting affects:<ul>
-	 * <li>package scanning: Do we use ObjectFactory/@XmlRegistry/jaxb.index (compliant) or just all package's classes (pragmatic)?</li>
-	 * </ul></p>
-	 */
-	public static final String PROPERTY_STRICT_JAXB = PROPERTY_PREFIX + ".strictJaxbCompliance";
+public class SweJaxbContext extends JAXBContext {
 
 	/**
 	 * Mapping of Java classes to OXM metadata. This metadata is about how Java class maps to a given XML Schema type (simple or complex).
-	 * This mapping doesn't deal with XML Schema elements - these are determined for each marshall operation, not at the creation time.
+	 * This mapping doesn't deal with XML Schema elements - these are determined for each marshal operation, not at the creation time.
 	 */
 	Map<Class<?>, XmlEventsPattern> patterns = new LinkedHashMap<Class<?>, XmlEventsPattern>();
 
@@ -115,7 +105,7 @@ public class JwsJaxbContext extends JAXBContext {
 	 * @param classesToBeBound
 	 * @param properties
 	 */
-	JwsJaxbContext(Class<?>[] classesToBeBound, Map<String, ?> properties) {
+	SweJaxbContext(Class<?>[] classesToBeBound, Map<String, ?> properties) {
 
 		this.initializeConversionService();
 
@@ -436,6 +426,7 @@ public class JwsJaxbContext extends JAXBContext {
 				// a simpleType contains only one @XmlValue annotation. In terms of XML Schema - it has simpleContent (and possibly attributes)
 				// field's class should be convertible to java.lang.String
 				// this class should have no child @XmlElements
+				// TODO: make possible to handle properties which are classes with @XmlValue property (possibly nested)
 				metadata.setPattern(ValuePattern.INSTANCE);
 				this.childPatterns.add(metadata);
 				return;
@@ -447,7 +438,7 @@ public class JwsJaxbContext extends JAXBContext {
 				String namespace = "##default".equals(xmlAttribute.namespace()) ? this.namespace : xmlAttribute.namespace();
 				String name = "##default".equals(xmlAttribute.name()) ? fieldName : xmlAttribute.name();
 				AttributePattern attributePattern = new AttributePattern(new QName(namespace, name));
-				attributePattern.setConversionService(JwsJaxbContext.this.formattingConversionService);
+				attributePattern.setConversionService(SweJaxbContext.this.formattingConversionService);
 				metadata.setPattern(attributePattern);
 				this.childAttributePatterns.add(metadata);
 				return;
@@ -466,7 +457,7 @@ public class JwsJaxbContext extends JAXBContext {
 			if (xmlElement != null || isElement) {
 				String namespace = xmlElement == null || "##default".equals(xmlElement.namespace()) ? this.namespace : xmlElement.namespace();
 				String name = xmlElement == null || "##default".equals(xmlElement.name()) ? fieldName : xmlElement.name();
-				ElementPattern elementPattern = new ElementPattern(new QName(namespace, name), JwsJaxbContext.this.determineXmlPattern(field.getType()));
+				ElementPattern elementPattern = new ElementPattern(new QName(namespace, name), SweJaxbContext.this.determineXmlPattern(field.getType()));
 				metadata.setPattern(elementPattern);
 				this.childPatterns.add(metadata);
 				return;

@@ -35,7 +35,7 @@ import org.springframework.ws.ext.bind.internal.QNames;
 /**
  * <p>{@link ElementPattern} wraps:<ul>
  * <li>{@link ContentModelPattern} when it represents non-primitive JavaBean object with properties ({@link XmlElement}, {@link XmlAttribute}, {@link XmlValue}, {@link XmlElementWrapper})</li>
- * <li>{@link ValuePattern} when constructed to marshall {@link JAXBElement}-wrapped primitive type or primitive {@link XmlElement}-annotated properties.</li>
+ * <li>{@link ValuePattern} when constructed to marshal {@link JAXBElement}-wrapped primitive type or primitive {@link XmlElement}-annotated properties.</li>
  * </ul></p>
  *
  * @author Grzegorz Grzybek

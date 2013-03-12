@@ -53,16 +53,16 @@ import org.w3c.dom.Node;
 import org.xml.sax.ContentHandler;
 
 /**
- * <p>Marshaller able to convert objects to XML representations. This marshaller can marshall any object, given the object is:<ul>
+ * <p>Marshaller able to convert objects to XML representations. This marshaller can marshal any object, given the object is:<ul>
  * <li>a {@link JAXBElement}</li>
  * <li>an object of class annotated with {@link XmlRootElement} annotations</li>
  * </ul></p>
  *
  * @author Grzegorz Grzybek
  */
-public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
+public class JwsJaxbMarshaller implements Marshaller, SweJaxbConstants {
 
-	private JwsJaxbContext jaxbContext;
+	private SweJaxbContext jaxbContext;
 
 	private Map<String, Object> properties = new HashMap<String, Object>();
 
@@ -91,19 +91,18 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 	/**
 	 * @param jaxbContext
 	 */
-	JwsJaxbMarshaller(JwsJaxbContext jaxbContext) {
+	JwsJaxbMarshaller(SweJaxbContext jaxbContext) {
 		this.jaxbContext = jaxbContext;
 	}
 
 	/*
-	 * Marshall operations.
+	 * Marshal operations.
 	 * 
-	 * One marshal() method can invoke another. The "ultimate" marshal() method should (I think) take XMLStreamWriter as an argument.
-	 * The other methods construct proper XMLStreamWriter object (for "lower-level" objects) or acquire XMLStreamWriter (from "higher-level" objects
-	 * such as XMLEventWriter).
+	 * One marshal() method can invoke another. The "ultimate" marshal() method should (I think) take XMLEventWriter as an argument.
+	 * The other methods construct or acquire proper XMLEventWriter object.
 	 * 
 	 * XMLEvent added() to XMLEventWriter is at the higher level than invocation of XMLStreamWriter methods. That's why Woodstox passes
-	 * XMLStreamWriter to XMLEventWriter. We need a class like javanet.staxutils.XMLStreamEventWriter (see: http://java.net/projects/stax-utils/pages/Utilities).
+	 * XMLStreamWriter to XMLEventWriter. We need bridge classes like e.g., javanet.staxutils.XMLStreamEventWriter (see: http://java.net/projects/stax-utils/pages/Utilities).
 	 * Some cases are provided in org.springframework.util.xml.StaxUtils - but not all of them.
 	 */
 
@@ -204,7 +203,7 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 			this.fragment = (Boolean) value;
 		else if (Marshaller.JAXB_ENCODING.equals(name))
 			this.encoding = (String) value;
-		else if (JwsJaxbConstants.JWS_JAXB_MULTIREFS.equals(name))
+		else if (SweJaxbConstants.SWE_MARSHALLER_PROPERTY_JAXB_MULTIREFS.equals(name))
 			this.multiRefEncoding = (Boolean) value;
 		else
 			this.properties.put(name, value);
@@ -361,13 +360,13 @@ public class JwsJaxbMarshaller implements Marshaller, JwsJaxbConstants {
 		XmlEventsPattern xmlEventsPattern = this.jaxbContext.patterns.get(clz);
 
 		if (xmlEventsPattern == null)
-			throw new MarshalException("Unable to determine XML Events pattern to marshall object of class " + jaxbElement.getClass().getName());
+			throw new MarshalException("Unable to determine XML Events pattern to marshal object of class " + jaxbElement.getClass().getName());
 
-		// if we marshall XmlRootElement, then return proper pattern
+		// if we marshal XmlRootElement, then return proper pattern
 		if (this.jaxbContext.rootPatterns.containsKey(clz))
 			return this.jaxbContext.rootPatterns.get(clz);
 
-		// if we marshall JAXBElement, we create ElementPattern on demand (without caching it!)
+		// if we marshal JAXBElement, we create ElementPattern on demand (without caching it!)
 		if (jaxbElement instanceof JAXBElement)
 			return new ElementPattern(((JAXBElement<?>) jaxbElement).getName(), xmlEventsPattern);
 

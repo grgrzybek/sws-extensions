@@ -14,19 +14,35 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind;
+package org.springframework.ws.ext.bind.context5;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public interface JwsJaxbConstants {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class C2 {
+
+	@XmlValue
+	private String value;
 
 	/**
-	 * The name of the property used to specify whether or not we're doing multiRef encoding (Soap 1.1 Section 5 Encoding) during marshalling.
-	 * This should be detected by Unmarshaller however.
+	 * @return the value
 	 */
-	public static final String JWS_JAXB_MULTIREFS = "jws.jaxb.multirefs";
+	public String getValue() {
+		return this.value;
+	}
+
+	/**
+	 * @param value the value to set
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
 
 }

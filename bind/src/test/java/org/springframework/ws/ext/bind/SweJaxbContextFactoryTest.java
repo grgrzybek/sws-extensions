@@ -38,7 +38,7 @@ import static org.junit.Assert.*;
  *
  * @author Grzegorz Grzybek
  */
-public class JwsJaxbContextFactoryTest {
+public class SweJaxbContextFactoryTest {
 
 	@Test(expected = JAXBException.class)
 	public void illegalPackageForJaxbRi() throws Exception {
@@ -52,13 +52,13 @@ public class JwsJaxbContextFactoryTest {
 
 	@Test
 	public void nonExistingPackage() throws Exception {
-		JwsJaxbContextFactory.createContext("a.b.c", null);
+		SweJaxbContextFactory.createContext("a.b.c", null);
 	}
 
 	@Test
 	public void defaultPackage() throws Exception {
-		JAXBContext ctx = JwsJaxbContextFactory.createContext("", null);
-		// but we may marshall objects of built-in classes - XSD simple types
+		JAXBContext ctx = SweJaxbContextFactory.createContext("", null);
+		// but we may marshal objects of built-in classes - XSD simple types
 		ctx.createMarshaller().marshal(new JAXBElement<String>(new QName("urn:test", "str"), String.class, "content"), System.out);
 	}
 	
@@ -90,7 +90,7 @@ public class JwsJaxbContextFactoryTest {
 			}
 		};
 
-		JAXBContext ctx = JwsJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context2", cl);
+		JAXBContext ctx = SweJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context2", cl);
 		@SuppressWarnings("unchecked")
 		Map<Class<?>, XmlEventsPattern> patterns = (Map<Class<?>, XmlEventsPattern>) ReflectionTestUtils.getField(ctx, "patterns");
 		Class<?> mc = null;

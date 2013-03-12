@@ -38,6 +38,8 @@ import org.springframework.ws.ext.bind.context1.ClassWithSimpleContentAndAttribu
 import org.springframework.ws.ext.bind.context1.ClassWithVeryComplexContent;
 import org.springframework.ws.ext.bind.context1.MyClass1;
 import org.springframework.ws.ext.bind.context2.MyClass2;
+import org.springframework.ws.ext.bind.context5.C1;
+import org.springframework.ws.ext.bind.context5.C2;
 import org.springframework.ws.ext.bind.internal.stax.IndentingXMLEventWriter;
 
 /**
@@ -50,7 +52,7 @@ public class JwsJaxbMarshallerTest {
 	private static Logger log = LoggerFactory.getLogger(JwsJaxbMarshallerTest.class.getName());
 
 	@Test(expected = JAXBException.class)
-	public void marshallMyClass1() throws Exception {
+	public void marshalMyClass1() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		StringWriter sw = new StringWriter();
 		context.createMarshaller().marshal(new MyClass1(), sw);
@@ -58,7 +60,7 @@ public class JwsJaxbMarshallerTest {
 	}
 
 	@Test(expected = JAXBException.class)
-	public void marshallMyClass2() throws Exception {
+	public void marshalMyClass2() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context2");
 		StringWriter sw = new StringWriter();
 		context.createMarshaller().marshal(new MyClass2(), sw);
@@ -66,7 +68,7 @@ public class JwsJaxbMarshallerTest {
 	}
 
 	@Test
-	public void marshallJAXBElementWithMyClass2() throws Exception {
+	public void marshalJAXBElementWithMyClass2() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context2");
 		StringWriter sw = new StringWriter();
 		MyClass2 mc2 = new MyClass2();
@@ -75,14 +77,14 @@ public class JwsJaxbMarshallerTest {
 	}
 
 	@Test(expected = MarshalException.class)
-	public void cantMarshallPrimitive() throws Exception {
+	public void cantMarshalPrimitive() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		StringWriter sw = new StringWriter();
 		context.createMarshaller().marshal((short) 1, sw);
 	}
 
 	@Test
-	public void marshallPrimitivesInJAXBElement() throws Exception {
+	public void marshalPrimitivesInJAXBElement() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 
 		log.info("non-null boolean");
@@ -150,7 +152,7 @@ public class JwsJaxbMarshallerTest {
 	}
 
 	@Test
-	public void marshallPrimitivesInJAXBElementInExternalWriter() throws Exception {
+	public void marshalPrimitivesInJAXBElementInExternalWriter() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		StringWriter sw = new StringWriter();
 		XMLEventFactory f = XMLEventFactory.newFactory();
@@ -181,7 +183,7 @@ public class JwsJaxbMarshallerTest {
 	}
 
 	@Test
-	public void marshallAttributes() throws Exception {
+	public void marshalAttributes() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		ClassWithAttributes value = new ClassWithAttributes("test", 42);
 		Marshaller m = context.createMarshaller();
@@ -189,7 +191,7 @@ public class JwsJaxbMarshallerTest {
 	}
 
 	@Test
-	public void marshallComplexContent() throws Exception {
+	public void marshalComplexContent() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		ClassWithComplexContent value = new ClassWithComplexContent("test", 42, "inside");
 		Marshaller m = context.createMarshaller();
@@ -198,7 +200,7 @@ public class JwsJaxbMarshallerTest {
 	}
 
 	@Test
-	public void marshallVeryComplexContent() throws Exception {
+	public void marshalVeryComplexContent() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		ClassWithVeryComplexContent value = new ClassWithVeryComplexContent("test", "str", new ClassWithComplexContent("test", 42, "inside"));
 		Marshaller m = context.createMarshaller();
@@ -207,12 +209,38 @@ public class JwsJaxbMarshallerTest {
 	}
 
 	@Test
-	public void marshallSimpleContentAndAttributes() throws Exception {
+	public void marshalSimpleContentAndAttributes() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		ClassWithSimpleContentAndAttributes value = new ClassWithSimpleContentAndAttributes("test", 42, "inside");
 		Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		m.marshal(new JAXBElement<ClassWithSimpleContentAndAttributes>(new QName("urn:test", "root"), ClassWithSimpleContentAndAttributes.class, value),
 				System.out);
+	}
+	
+	@Test
+	public void marshalNestedSimpleTypes() throws Exception {
+		JAXBContext context = SweJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context5", null);
+		// possibly multiply-nested @XmlValues are still simpleType...
+		// from XSD point of view, C1 is simpleType
+		C1 c1 = new C1();
+		c1.setC2(new C2());
+		c1.getC2().setValue("test");
+		Marshaller m = context.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		m.marshal(new JAXBElement<C1>(new QName("urn:test", "root"), C1.class, c1), System.out);
+	}
+	
+	@Test
+	public void marshalNestedSimpleTypesRi() throws Exception {
+		JAXBContext context = JAXBContext.newInstance(C1.class);
+		// possibly multiply-nested @XmlValues are still simpleType...
+		// from XSD point of view, C1 is simpleType
+		C1 c1 = new C1();
+		c1.setC2(new C2());
+		c1.getC2().setValue("test");
+		Marshaller m = context.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		m.marshal(new JAXBElement<C1>(new QName("urn:test", "root"), C1.class, c1), System.out);
 	}
 }

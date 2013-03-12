@@ -70,7 +70,7 @@ import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
  * </ul></p>
  * 
  * <p>When dealing with multi-ref marshalling in general (outside the WebServices context), the process may have the following properties:<ul>
- * <li>Marshall an element with {@code href} attribute to {@code multiRef} element with {@code id} attribute</li>
+ * <li>Marshal an element with {@code href} attribute to {@code multiRef} element with {@code id} attribute</li>
  * <li>No non-multiRef (or an element with {@code href} attribute) element has child elements</li>
  * <li>Only {@code multiRef} elements have children.</li>
  * <li>Simple type {@code multiRef} elements have single text child</li>
@@ -113,7 +113,7 @@ public interface MultiRefSupport {
 	 * 
 	 * <p>See: <a href="http://www.w3.org/TR/2000/NOTE-SOAP-20000508/#_Toc478383513">5.1 Rules for Encoding Types in XML</a></p>
 	 * 
-	 * <p>It's easiest for the ElementPattern to always marshall nestedPattern as multiRefValue, but there may be special cases:<ol>
+	 * <p>It's easiest for the ElementPattern to always marshal nestedPattern as multiRefValue, but there may be special cases:<ol>
 	 * <li>{@link ValuePattern} may be marshalled inline, because <i>special rules allow them to be represented efficiently for common cases</i>. An accessor to a string or byte-array value MAY have an attribute named "id" and of type "ID" per the XML Specification [7]. If so, all other accessors to the same value are encoded as empty elements having a local, unqualified attribute named "href" and of type "uri-reference" per the XML Schema Specification [11], with a "href" attribute value of a URI fragment identifier referencing the single element containing the value. </li>
 	 * <li>A multi-reference value MUST be represented as the content of an independent element. A single-reference value SHOULD not be (but MAY be).</li>
 	 * <li>A multi-reference simple or compound value is encoded as an independent element containing a local, unqualified attribute named "id" and of type "ID" per the XML Specification [7]. Each accessor to this value is an empty element having a local, unqualified attribute named "href" and of type "uri-reference" per the XML Schema Specification [11], with a "href" attribute value of a URI fragment identifier referencing the corresponding independent element.</li>

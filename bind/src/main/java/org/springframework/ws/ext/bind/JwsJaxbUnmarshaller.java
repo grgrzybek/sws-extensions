@@ -45,9 +45,9 @@ import org.xml.sax.InputSource;
 public class JwsJaxbUnmarshaller implements Unmarshaller {
 
 	/**
-	 * @param jwsJaxbContext
+	 * @param sweJaxbContext
 	 */
-	JwsJaxbUnmarshaller(JwsJaxbContext jwsJaxbContext) {
+	JwsJaxbUnmarshaller(SweJaxbContext sweJaxbContext) {
 		// TODO Auto-generated constructor stub
 	}
 

@@ -52,7 +52,7 @@ import org.springframework.ws.ext.utils.NamespaceUtils;
  * </ul></p>
  * 
  * <p>So to use this class use this properties file in scanned package:<pre>
- * javax.xml.bind.context.factory = org.springframework.ws.ext.bind.JwsJaxbContextFactory
+ * javax.xml.bind.context.factory = org.springframework.ws.ext.bind.SweJaxbContextFactory
  * </pre>
  * Of course {@code META-INF/services} approach may be used as well.</p>
  * 
@@ -64,9 +64,9 @@ import org.springframework.ws.ext.utils.NamespaceUtils;
  *
  * @author Grzegorz Grzybek
  */
-public class JwsJaxbContextFactory {
+public class SweJaxbContextFactory {
 
-	private static Logger log = LoggerFactory.getLogger(JwsJaxbContextFactory.class.getName());
+	private static Logger log = LoggerFactory.getLogger(SweJaxbContextFactory.class.getName());
 
 	/**
 	 * <p>Creates {@link JAXBContext} using provided classes.</p>
@@ -79,7 +79,7 @@ public class JwsJaxbContextFactory {
 	public static JAXBContext createContext(Class<?>[] classesToBeBound, Map<String, ?> properties) {
 		if (properties == null)
 			properties = Collections.<String, Object> emptyMap();
-		return new JwsJaxbContext(classesToBeBound, properties);
+		return new SweJaxbContext(classesToBeBound, properties);
 	}
 
 	/**
