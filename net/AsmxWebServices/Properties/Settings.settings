@@ -1,0 +1,36 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AsmxWebServices.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="AsmxWebServices_DocumentEncoded12_EchoEndpointService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://axis1.org/ws/services/EchoEndpointDocumentEncoded12</Value>
+    </Setting>
+    <Setting Name="AsmxWebServices_DocumentLiteral12_EchoEndpointService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://axis1.org/ws/services/EchoEndpointDocumentLiteral12</Value>
+    </Setting>
+    <Setting Name="AsmxWebServices_RpcEncoded12_EchoEndpointService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://axis1.org/ws/services/EchoEndpointRpcEncoded12</Value>
+    </Setting>
+    <Setting Name="AsmxWebServices_RpcLiteral12_EchoEndpointService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://axis1.org/ws/services/EchoEndpointRpcLiteral12</Value>
+    </Setting>
+    <Setting Name="AsmxWebServices_WrappedLiteral12_EchoEndpointService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://axis1.org/ws/services/EchoEndpointWrappedLiteral12</Value>
+    </Setting>
+    <Setting Name="AsmxWebServices_Axis1Case2DocumentEncoded12_EchoEndpointService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://axis1.org/ws/services/EchoEndpointDocumentEncoded12</Value>
+    </Setting>
+    <Setting Name="AsmxWebServices_Axis1Case2DocumentLiteral12_EchoEndpointService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://axis1.org/ws/services/EchoEndpointDocumentLiteral12</Value>
+    </Setting>
+    <Setting Name="AsmxWebServices_Axis1Case2RpcEncoded12_EchoEndpointService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://axis1.org/ws/services/EchoEndpointRpcEncoded12</Value>
+    </Setting>
+    <Setting Name="AsmxWebServices_Axis1Case2RpcLiteral12_EchoEndpointService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://axis1.org/ws/services/EchoEndpointRpcLiteral12</Value>
+    </Setting>
+    <Setting Name="AsmxWebServices_Axis1Case2WrappedLiteral12_EchoEndpointService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://axis1.org/ws/services/EchoEndpointWrappedLiteral12</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

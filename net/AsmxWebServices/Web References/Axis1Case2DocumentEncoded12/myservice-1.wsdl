@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:intf="http://codefirst.case2.axis1.ws.springframework.org" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://codefirst.case2.axis1.ws.springframework.org" targetNamespace="http://codefirst.case2.axis1.ws.springframework.org" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://codefirst.case2.axis1.ws.springframework.org">
+      <xsd:complexType name="ArrayOf_soapenc_byte">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="soapenc:byte[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_soapenc_string">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="soapenc:string[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Param3">
+        <xsd:sequence>
+          <xsd:element name="lvalue" nillable="true" type="soapenc:long" />
+          <xsd:element name="svalue" nillable="true" type="soapenc:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfParam3">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="impl:Param3[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Param2">
+        <xsd:sequence>
+          <xsd:element name="bd" nillable="true" type="soapenc:decimal" />
+          <xsd:element name="list" nillable="true" type="impl:ArrayOf_soapenc_string" />
+          <xsd:element name="number" nillable="true" type="soapenc:int" />
+          <xsd:element name="param3Tab" nillable="true" type="impl:ArrayOfParam3" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Param1">
+        <xsd:sequence>
+          <xsd:element name="list" nillable="true" type="impl:ArrayOf_soapenc_byte" />
+          <xsd:element name="number" nillable="true" type="soapenc:long" />
+          <xsd:element name="param2" nillable="true" type="impl:Param2" />
+          <xsd:element name="param3list" nillable="true" type="impl:ArrayOfParam3" />
+          <xsd:element name="string" nillable="true" type="soapenc:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOf_soapenc_decimal">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="soapenc:decimal[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Result1">
+        <xsd:sequence>
+          <xsd:element name="list" nillable="true" type="impl:ArrayOf_soapenc_decimal" />
+          <xsd:element name="param2" nillable="true" type="impl:Param2" />
+          <xsd:element name="str" nillable="true" type="soapenc:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="echoRequest">
+    <wsdl:part name="param" type="impl:Param1" />
+    <wsdl:part name="param2" type="impl:Param2" />
+  </wsdl:message>
+  <wsdl:message name="echoResponse">
+    <wsdl:part name="echoReturn" type="impl:Result1" />
+  </wsdl:message>
+  <wsdl:portType name="EchoEndpoint">
+    <wsdl:operation name="echo" parameterOrder="param param2">
+      <wsdl:input name="echoRequest" message="impl:echoRequest" />
+      <wsdl:output name="echoResponse" message="impl:echoResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EchoEndpointDocumentEncoded12SoapBinding" type="impl:EchoEndpoint">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="echo">
+      <wsdlsoap:operation soapAction="echo" />
+      <wsdl:input name="echoRequest">
+        <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="echoResponse">
+        <wsdlsoap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EchoEndpointService">
+    <wsdl:port name="EchoEndpointDocumentEncoded12" binding="impl:EchoEndpointDocumentEncoded12SoapBinding">
+      <wsdlsoap:address location="http://axis1.org/ws/services/EchoEndpointDocumentEncoded12" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

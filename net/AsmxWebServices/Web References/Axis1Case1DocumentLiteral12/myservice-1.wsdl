@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:intf="http://codefirst.case1.axis1.ws.springframework.org" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://codefirst.case1.axis1.ws.springframework.org" targetNamespace="http://codefirst.case1.axis1.ws.springframework.org" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://codefirst.case1.axis1.ws.springframework.org">
+      <xsd:element name="param1" type="xsd:string" />
+      <xsd:element name="oneParamReturn" type="xsd:string" />
+      <xsd:element name="param2" type="xsd:string" />
+      <xsd:element name="param3" type="xsd:string" />
+      <xsd:element name="twoParamsReturn" type="xsd:string" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="twoParamsRequest">
+    <wsdl:part name="param1" element="impl:param2" />
+    <wsdl:part name="param2" element="impl:param3" />
+  </wsdl:message>
+  <wsdl:message name="oneParamRequest">
+    <wsdl:part name="param1" element="impl:param1" />
+  </wsdl:message>
+  <wsdl:message name="oneParamResponse">
+    <wsdl:part name="oneParamReturn" element="impl:oneParamReturn" />
+  </wsdl:message>
+  <wsdl:message name="twoParamsResponse">
+    <wsdl:part name="twoParamsReturn" element="impl:twoParamsReturn" />
+  </wsdl:message>
+  <wsdl:portType name="EchoEndpoint">
+    <wsdl:operation name="oneParam" parameterOrder="param1">
+      <wsdl:input name="oneParamRequest" message="impl:oneParamRequest" />
+      <wsdl:output name="oneParamResponse" message="impl:oneParamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="twoParams" parameterOrder="param1 param2">
+      <wsdl:input name="twoParamsRequest" message="impl:twoParamsRequest" />
+      <wsdl:output name="twoParamsResponse" message="impl:twoParamsResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EchoEndpointDocumentLiteral12SoapBinding" type="impl:EchoEndpoint">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="oneParam">
+      <wsdlsoap:operation soapAction="oneParam" />
+      <wsdl:input name="oneParamRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="oneParamResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="twoParams">
+      <wsdlsoap:operation soapAction="twoParams" />
+      <wsdl:input name="twoParamsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="twoParamsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EchoEndpointService">
+    <wsdl:port name="EchoEndpointDocumentLiteral12" binding="impl:EchoEndpointDocumentLiteral12SoapBinding">
+      <wsdlsoap:address location="http://axis1.org/ws/services/EchoEndpointDocumentLiteral12" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

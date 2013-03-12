@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="file:///C:/Dev/Git/projects-github-grgrzybek/spring-ws-extensions/jws/src/test/resources/org/springframework/ws/axis1/case1/codefirst/rpc_encoded/myservice-1.2.wsdl" filename="myservice-1.wsdl" />
+  </Results>
+</DiscoveryClientResultsFile>
