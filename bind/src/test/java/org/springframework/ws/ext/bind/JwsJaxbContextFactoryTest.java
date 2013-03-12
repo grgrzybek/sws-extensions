@@ -65,6 +65,7 @@ public class JwsJaxbContextFactoryTest {
 	@Test
 	public void nonDefaultClassLoader() throws Exception {
 		// parent-last class loader
+		// see org.apache.cocoon.servlet.ParanoidClassLoader
 		URLClassLoader cl = new URLClassLoader(new URL[] {
 				new File("target/test-classes").getCanonicalFile().toURI().toURL()
 		}) {

@@ -46,7 +46,7 @@ public class JwsJaxbContextTest {
 	}
 
 	@Test
-	public void useJwsImplementation() throws Exception {
+	public void useOurImplementation() throws Exception {
 		JAXBContext context = JAXBContext.newInstance(org.springframework.ws.ext.bind.context1.MyClass1.class);
 		assertThat(context.getClass().getName(), equalTo("org.springframework.ws.ext.bind.JwsJaxbContext"));
 
@@ -91,7 +91,16 @@ public class JwsJaxbContextTest {
 		Map<Class<?>, XmlEventsPattern> patterns = (Map<Class<?>, XmlEventsPattern>) ReflectionTestUtils.getField(ctx, "patterns");
 		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context4.MyClass1.class));
 		assertFalse(patterns.containsKey(org.springframework.ws.ext.bind.context4.nested.MyClass1.class));
-		// not package-scanned but analyzed as a MyClass1 property as XmlAccessType.FIELD
+		// not package-scanned but analyzed as a XmlAccessType.FIELD property of MyClass1 
 		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context4.nested.MyClass2.class));
+	}
+	
+	@Test
+	public void twoPackages() throws Exception {
+		JAXBContext ctx = JwsJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context1:org.springframework.ws.ext.bind.context2", null);
+		@SuppressWarnings("unchecked")
+		Map<Class<?>, XmlEventsPattern> patterns = (Map<Class<?>, XmlEventsPattern>) ReflectionTestUtils.getField(ctx, "patterns");
+		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context1.ClassWithAttributes.class));
+		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context2.MyClass2.class));
 	}
 }
