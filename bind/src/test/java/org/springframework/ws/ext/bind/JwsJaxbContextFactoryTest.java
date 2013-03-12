@@ -16,6 +16,9 @@
 
 package org.springframework.ws.ext.bind;
 
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
@@ -25,6 +28,7 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.ClassUtils;
 import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
 
 import static org.junit.Assert.*;
@@ -40,6 +44,11 @@ public class JwsJaxbContextFactoryTest {
 	public void illegalPackageForJaxbRi() throws Exception {
 		JAXBContext.newInstance("a.b.c");
 	}
+	
+	@Test(expected = JAXBException.class)
+	public void emptyPackageForJaxbRi() throws Exception {
+		JAXBContext.newInstance("");
+	}
 
 	@Test
 	public void nonExistingPackage() throws Exception {
@@ -47,21 +56,50 @@ public class JwsJaxbContextFactoryTest {
 	}
 
 	@Test
-	public void noPackage() throws Exception {
+	public void defaultPackage() throws Exception {
 		JAXBContext ctx = JwsJaxbContextFactory.createContext("", null);
 		// but we may marshall objects of built-in classes - XSD simple types
 		ctx.createMarshaller().marshal(new JAXBElement<String>(new QName("urn:test", "str"), String.class, "content"), System.out);
 	}
 	
 	@Test
-	public void nestedPackageNotScanned() throws Exception {
-		JAXBContext ctx = JwsJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context4", null);
+	public void nonDefaultClassLoader() throws Exception {
+		// parent-last class loader
+		URLClassLoader cl = new URLClassLoader(new URL[] {
+				new File("target/test-classes").getCanonicalFile().toURI().toURL()
+		}) {
+			@Override
+			protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+				Class<?> c = this.findLoadedClass(name);
+				if (c == null) {
+					try {
+						c = this.findClass(name);
+					}
+					catch (ClassNotFoundException e) {
+						if (this.getParent() != null) {
+							c = this.getParent().loadClass(name);
+						} else {
+							throw e;
+						}
+					}
+				}
+				if (resolve)
+					this.resolveClass(c);
+				return c;
+			}
+		};
+
+		JAXBContext ctx = JwsJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context2", cl);
 		@SuppressWarnings("unchecked")
-		Map<String, XmlEventsPattern> patterns = (Map<String, XmlEventsPattern>) ReflectionTestUtils.getField(ctx, "patterns");
-		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context4.MyClass1.class));
-		assertFalse(patterns.containsKey(org.springframework.ws.ext.bind.context4.nested.MyClass1.class));
-		// not package-scanned but analyzed as a MyClass1 property as XmlAccessType.FIELD
-		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context4.nested.MyClass2.class));
+		Map<Class<?>, XmlEventsPattern> patterns = (Map<Class<?>, XmlEventsPattern>) ReflectionTestUtils.getField(ctx, "patterns");
+		Class<?> mc = null;
+		for (Class<?> c: patterns.keySet()) {
+			if (c.getName().equals("org.springframework.ws.ext.bind.context2.MyClass2"))
+				mc = c;
+		}
+		assertSame(mc.getClassLoader(), cl);
+		Class<?> c1 = ClassUtils.resolveClassName("org.springframework.ws.ext.bind.context2.MyClass2", this.getClass().getClassLoader());
+		assertFalse(patterns.containsKey(c1));
 	}
 
 }

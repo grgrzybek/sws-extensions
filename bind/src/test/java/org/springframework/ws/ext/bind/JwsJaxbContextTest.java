@@ -23,6 +23,7 @@ import javax.xml.bind.JAXBContext;
 
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
 
 import static org.hamcrest.CoreMatchers.*;
 
@@ -81,5 +82,16 @@ public class JwsJaxbContextTest {
 		@SuppressWarnings("unchecked")
 		Map<Class<?>, Object> mapping = (Map<Class<?>, Object>) ReflectionTestUtils.getField(context, "patterns");
 		assertTrue(mapping.size() > 0);
+	}
+	
+	@Test
+	public void nestedPackageNotScanned() throws Exception {
+		JAXBContext ctx = JwsJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context4", null);
+		@SuppressWarnings("unchecked")
+		Map<Class<?>, XmlEventsPattern> patterns = (Map<Class<?>, XmlEventsPattern>) ReflectionTestUtils.getField(ctx, "patterns");
+		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context4.MyClass1.class));
+		assertFalse(patterns.containsKey(org.springframework.ws.ext.bind.context4.nested.MyClass1.class));
+		// not package-scanned but analyzed as a MyClass1 property as XmlAccessType.FIELD
+		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context4.nested.MyClass2.class));
 	}
 }

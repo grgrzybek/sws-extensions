@@ -40,7 +40,27 @@ import org.springframework.util.StringUtils;
 import org.springframework.ws.ext.utils.NamespaceUtils;
 
 /**
- * <p></p>
+ * <p>Everything starts with<pre>
+ * JAXBContext.newInstance(classes | packages to scan | classloader | properties)
+ * </pre></p>
+ * 
+ * <p>Underneath <code>javax.xml.bind.ContextFinder.find(Class[], Map)</code> or <code>javax.xml.bind.ContextFinder.find(String, String, ClassLoader, Map)</code>
+ * is called and for each package, {@code jaxb.properties} file is loaded (if exist). This file may contain {@code javax.xml.bind.context.factory} property
+ * which specifies a class. It should be this class to use this implementation of JAXB. Otherwise these are used (see META-INF/services/javax.xml.bind.JAXBContext file):<ul>
+ * <li>{@code com.sun.xml.bind.v2.ContextFactory} for external JAXB-RI</li>
+ * <li>{@code com.sun.xml.internal.bind.v2.ContextFactory} as a default for Oracle JDK</li>
+ * </ul></p>
+ * 
+ * <p>So to use this class use this properties file in scanned package:<pre>
+ * javax.xml.bind.context.factory = org.springframework.ws.ext.bind.JwsJaxbContextFactory
+ * </pre>
+ * Of course {@code META-INF/services} approach may be used as well.</p>
+ * 
+ * <p>After determining the ContextFactory class, ContextFinder calls one of two methods by reflection:<ul>
+ * <li>createContext(String.class,ClassLoader.class,Map.class)</li>
+ * <li>createContext(Class[].class, Map.class)</li>
+ * </ul>
+ * There's also a variant of first method which doesn't take Map, but it's JAXB 1.0 legacy.</p>
  *
  * @author Grzegorz Grzybek
  */
@@ -57,6 +77,8 @@ public class JwsJaxbContextFactory {
 	 * @return
 	 */
 	public static JAXBContext createContext(Class<?>[] classesToBeBound, Map<String, ?> properties) {
+		if (properties == null)
+			properties = Collections.<String, Object> emptyMap();
 		return new JwsJaxbContext(classesToBeBound, properties);
 	}
 
@@ -89,7 +111,7 @@ public class JwsJaxbContextFactory {
 				Class<?> cls = ClassUtils.resolveClassName(mdReader.getClassMetadata().getClassName(), classLoader);
 				if (cls.getSimpleName().equals("package-info")) {
 					XmlSchema xmlSchema = AnnotationUtils.getAnnotation(cls.getPackage(), XmlSchema.class);
-					String namespace = xmlSchema == null ? NamespaceUtils.packageNameToNamespace(cls.getPackage()) : xmlSchema.namespace();
+					String namespace = xmlSchema == null || xmlSchema.namespace() == null ? NamespaceUtils.packageNameToNamespace(cls.getPackage()) : xmlSchema.namespace();
 					log.trace(" - found package-info: {}, namespace: {}", cls.getPackage().getName(), namespace);
 				}
 				else {
@@ -103,6 +125,9 @@ public class JwsJaxbContextFactory {
 	}
 
 	/**
+	 * <p>This method is not called if {@link #createContext(String, ClassLoader, Map)} is found by {@code javax.xml.bind.ContextFinder}.</p>
+	 * <p>This however is nice method to call if one needs to explicitely use Spring-Ws-Extensions JAXB2 implementation.</p>
+	 * 
 	 * @param contextPath
 	 * @param classLoader
 	 * @return
