@@ -63,6 +63,7 @@ public class MultiRefMarshallerTest {
 		Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
 		m.setProperty(Marshaller.JAXB_FRAGMENT, true);
+		m.setProperty(SweJaxbConstants.SWE_MARSHALLER_PROPERTY_SEND_TYPES, true);
 		
 		log.info("===== multi-ref =====");
 		m.setProperty(SweJaxbConstants.SWE_MARSHALLER_PROPERTY_JAXB_MULTIREFS, true);

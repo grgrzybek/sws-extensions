@@ -62,7 +62,7 @@ public class DefaultMultiRefSupport implements MultiRefSupport {
 	 */
 	@Override
 	public void outputMultiRefs(XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException {
-		// this process is recursive, because replaying multiRefs may create new multiRefs...
+		// this process is recursive, because replaying registered multiRefs may result in registering new multiRefs...
 		while (true) {
 			boolean emptyPass = true;
 			for (MultiRef mr: this.multiRefs.values()) {

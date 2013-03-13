@@ -401,7 +401,7 @@ public class SweJaxbContext extends JAXBContext {
 		if (xmlRootElement != null) {
 			// we may produce WrappedEventsPattern now, if the class is annotated with XmlRootElement
 			// TODO: determine QName for ElementPattern
-			this.rootPatterns.put(cl, new ElementPattern(null, cl, new QName(xmlRootElement.namespace(), xmlRootElement.name()), mapping));
+			this.rootPatterns.put(cl, new ElementPattern(new QName(namespace, cl.getSimpleName()), cl, new QName(xmlRootElement.namespace(), xmlRootElement.name()), mapping));
 		}
 
 		return mapping;
@@ -463,7 +463,7 @@ public class SweJaxbContext extends JAXBContext {
 			this.childAttributePatterns.addAll(this.childPatterns);
 
 			// TODO: determine QName for ContentModelPattern
-			return new ContentModelPattern(null, cl, this.childAttributePatterns);
+			return new ContentModelPattern(new QName(this.namespace, cl.getSimpleName()), cl, this.childAttributePatterns);
 
 			// if (this.childAttributePatterns.size() == 0 && this.childPatterns.size() == 1 && this.childPatterns.get(0).isSimpleType()) {
 			// return this.childPatterns.get(0);
@@ -515,7 +515,7 @@ public class SweJaxbContext extends JAXBContext {
 				String namespace = "##default".equals(xmlAttribute.namespace()) ? this.namespace : xmlAttribute.namespace();
 				String name = "##default".equals(xmlAttribute.name()) ? fieldName : xmlAttribute.name();
 				// TODO: determine QName for AttributePattern
-				AttributePattern attributePattern = new AttributePattern(null, field.getType(), new QName(namespace, name));
+				AttributePattern attributePattern = new AttributePattern(new QName(namespace, field.getType().getSimpleName()), field.getType(), new QName(namespace, name));
 				attributePattern.setConversionService(SweJaxbContext.this.formattingConversionService);
 				metadata.setPattern(attributePattern);
 				this.childAttributePatterns.add(metadata);
@@ -535,8 +535,8 @@ public class SweJaxbContext extends JAXBContext {
 			if (xmlElement != null || isElement) {
 				String namespace = xmlElement == null || "##default".equals(xmlElement.namespace()) ? this.namespace : xmlElement.namespace();
 				String name = xmlElement == null || "##default".equals(xmlElement.name()) ? fieldName : xmlElement.name();
-				// TODO: determine QName for ElementPattern
-				XmlEventsPattern elementPattern = new ElementPattern(null, field.getType(), new QName(namespace, name), SweJaxbContext.this.determineXmlPattern(field.getType()));
+				// TODO: determine QName for ElementPattern - use @XmlType
+				XmlEventsPattern elementPattern = new ElementPattern(new QName(namespace, field.getType().getSimpleName()), field.getType(), new QName(namespace, name), SweJaxbContext.this.determineXmlPattern(field.getType()));
 				metadata.setPattern(elementPattern);
 				this.childPatterns.add(metadata);
 				return;

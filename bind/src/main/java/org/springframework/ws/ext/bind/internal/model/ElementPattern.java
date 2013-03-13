@@ -83,6 +83,8 @@ public class ElementPattern extends XmlEventsPattern {
 			isNil = true;
 		}
 
+		// TODO: defer writing xsi:type for multiRefs
+		// TODO: move safeGetQValue() and safeRegisterNamespace() out of this hierarchy into helper class
 		if (context.isSendTypes()/* TODO: || must send xsi:type anyway*/) {
 			String qValue = this.safeGetQValue(context, eventWriter, this.getSchemaType());
 			String prefix = this.safeRegisterNamespace(context, eventWriter, QNames.XSI_TYPE);
