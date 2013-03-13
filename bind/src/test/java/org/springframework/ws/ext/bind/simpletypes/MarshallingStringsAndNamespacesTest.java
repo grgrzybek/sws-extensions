@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind;
+package org.springframework.ws.ext.bind.simpletypes;
 
 import java.io.StringWriter;
 
@@ -29,6 +29,8 @@ import javax.xml.stream.XMLOutputFactory;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.ws.ext.bind.SweJaxbConstants;
+import org.springframework.ws.ext.bind.SweJaxbContextFactory;
 
 import static org.junit.Assert.*;
 
@@ -37,7 +39,7 @@ import static org.junit.Assert.*;
  *
  * @author Grzegorz Grzybek
  */
-public class MarshallingNamespacesTest {
+public class MarshallingStringsAndNamespacesTest {
 
 	private Marshaller m;
 	private StringWriter sw;

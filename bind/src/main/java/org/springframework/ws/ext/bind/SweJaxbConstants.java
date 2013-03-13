@@ -65,7 +65,7 @@ public interface SweJaxbConstants {
 	// 3.3.1 string (#string)
 	public static final QName XSD_STRING = new QName(Constants.URI_2001_SCHEMA_XSD, "string", XSD_PREFIX);
 	// 3.3.2 boolean (#boolean)
-
+	public static final QName XSD_BOOLEAN = new QName(Constants.URI_2001_SCHEMA_XSD, "boolean", XSD_PREFIX);
 	// 3.3.3 decimal (#decimal)
 	// 3.3.4 float (#float)
 	// 3.3.5 double (#double)

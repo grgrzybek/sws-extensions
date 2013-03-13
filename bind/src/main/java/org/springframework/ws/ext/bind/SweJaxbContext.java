@@ -183,7 +183,7 @@ public class SweJaxbContext extends JAXBContext {
 		this.patterns.put(String.class, new ValuePattern(SweJaxbConstants.XSD_STRING, java.lang.String.class));
 
 		// 3.3.2 boolean (#boolean)
-		this.patterns.put(Boolean.class, ValuePattern.INSTANCE);
+		this.patterns.put(Boolean.class, new ValuePattern(SweJaxbConstants.XSD_BOOLEAN, java.lang.Boolean.class));
 		this.formattingConversionService.addFormatterForFieldType(Boolean.class, new Formatter<Boolean>() {
 			@Override
 			public String print(Boolean object, Locale locale) {
@@ -191,6 +191,7 @@ public class SweJaxbContext extends JAXBContext {
 			}
 			@Override
 			public Boolean parse(String text, Locale locale) throws ParseException {
+				// TODO: should allow "true", "false", "1", "0"
 				return Boolean.parseBoolean(text);
 			}
 		});
