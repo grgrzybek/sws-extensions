@@ -16,6 +16,7 @@
 
 package org.springframework.ws.ext.bind.internal.model;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
@@ -30,9 +31,17 @@ import org.springframework.ws.ext.bind.internal.MarshallingContext;
  *
  * @author Grzegorz Grzybek
  */
-public abstract class AbstractSimpleTypePattern implements XmlEventsPattern {
+public abstract class AbstractSimpleTypePattern extends XmlEventsPattern {
 
 	private ConversionService conversionService;
+
+	/**
+	 * @param schemaType
+	 * @param javaType
+	 */
+	protected AbstractSimpleTypePattern(QName schemaType, Class<?> javaType) {
+		super(schemaType, javaType);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, org.springframework.ws.ext.bind.internal.MarshallingContext)

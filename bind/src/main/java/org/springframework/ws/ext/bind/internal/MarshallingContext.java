@@ -29,6 +29,19 @@ public class MarshallingContext {
 	private boolean repairingXmlEventWriter = false;
 	private boolean multiRefEncoding = false;
 	private MultiRefSupport multiRefSupport = null;
+	private boolean sendTypes;
+
+	private int prefixCounter = 0;
+
+	/**
+	 * <p>Returns new, unused prefix. It may be used to register new or exising namespace under non-conflicting prefix.</p>
+	 * <p>This method is <b>not</b> thread-safe</p>
+	 * 
+	 * @return
+	 */
+	public String newPrefix() {
+		return "ns" + (++this.prefixCounter);
+	}
 
 	/**
 	 * @return the repairingXmlEventWriter
@@ -65,6 +78,20 @@ public class MarshallingContext {
 	 */
 	public MultiRefSupport getMultiRefSupport() {
 		return this.multiRefSupport;
+	}
+
+	/**
+	 * @param sendTypes the sendTypes to set
+	 */
+	public void setSendTypes(boolean sendTypes) {
+		this.sendTypes = sendTypes;
+	}
+
+	/**
+	 * @return the sendTypes
+	 */
+	public boolean isSendTypes() {
+		return this.sendTypes;
 	}
 
 }

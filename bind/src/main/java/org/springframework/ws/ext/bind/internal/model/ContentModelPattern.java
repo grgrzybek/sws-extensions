@@ -22,6 +22,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlValue;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
@@ -46,7 +47,7 @@ import org.springframework.ws.ext.bind.internal.metadata.PropertyMetadata;
  *
  * @author Grzegorz Grzybek
  */
-public class ContentModelPattern implements XmlEventsPattern {
+public class ContentModelPattern extends XmlEventsPattern {
 
 	private List<PropertyMetadata> contentModel = new LinkedList<PropertyMetadata>();
 
@@ -57,9 +58,12 @@ public class ContentModelPattern implements XmlEventsPattern {
 	 * <p>Initializes content model with a sequence (XSD's sequence, choice or all) of properties, each related to a given bean property and
 	 * mapping to a given {@link XmlEventsPattern}.</p>
 	 * 
+	 * @param schemaType
+	 * @param javaType
 	 * @param contentModel
 	 */
-	public ContentModelPattern(List<PropertyMetadata> contentModel) {
+	public ContentModelPattern(QName schemaType, Class<?> javaType, List<PropertyMetadata> contentModel) {
+		super(schemaType, javaType);
 		this.contentModel = contentModel;
 		for (PropertyMetadata pm : this.contentModel) {
 			if (pm.isDirectProperty()) {

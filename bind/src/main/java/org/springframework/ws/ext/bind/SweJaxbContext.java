@@ -77,6 +77,11 @@ public class SweJaxbContext extends JAXBContext {
 	Map<Class<?>, XmlEventsPattern> patterns = new LinkedHashMap<Class<?>, XmlEventsPattern>();
 
 	/**
+	 * Mapping of XML Schema types (simple or complex) to OXM metadata.
+	 */
+	Map<QName, XmlEventsPattern> xsdPatterns = new LinkedHashMap<QName, XmlEventsPattern>();
+
+	/**
 	 * Mapping of {@link XmlRootElement} annotated classes.
 	 */
 	Map<Class<?>, ElementPattern> rootPatterns = new LinkedHashMap<Class<?>, ElementPattern>();
@@ -147,7 +152,6 @@ public class SweJaxbContext extends JAXBContext {
 	 */
 	private void initializeConversionService() {
 		this.formattingConversionService = new FormattingConversionService();
-		ValuePattern.INSTANCE.setConversionService(this.formattingConversionService);
 	}
 
 	/**
@@ -158,22 +162,87 @@ public class SweJaxbContext extends JAXBContext {
 	 * </ul></p>
 	 */
 	private void initializeBuiltInMappings() {
-		// wrappers - nothing special (I hope so...)
 		// see: com.sun.xml.bind.v2.model.impl.RuntimeBuiltinLeafInfoImpl<T> and inner
 		// com.sun.xml.bind.v2.model.impl.RuntimeBuiltinLeafInfoImpl.StringImpl<T> implementations
 
+		// we have two places where XSD -> Java mapping is defined:
+		// - JAX-RPC 1.1 section 4.2.1 Simple Types
+		// - JAXB 2 section 6.2.2 Atomic Datatype
+
+		// XML Schema (1.0) Part 2: Datatypes Second Edition, or/and
+		// W3C XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes
+
+		// 3.2 Special Built-in Datatypes (#special-datatypes)
+		// 3.2.1 anySimpleType (#anySimpleType)
+		// 3.2.2 anyAtomicType (#anyAtomicType)
+
+		// 3.3 Primitive Datatypes (#built-in-primitive-datatypes)
+//		ValuePattern pattern = null;
+
+		// 3.3.1 string (#string)
+		this.patterns.put(String.class, new ValuePattern(SweJaxbConstants.XSD_STRING, java.lang.String.class));
+
+		// 3.3.2 boolean (#boolean)
 		this.patterns.put(Boolean.class, ValuePattern.INSTANCE);
 		this.formattingConversionService.addFormatterForFieldType(Boolean.class, new Formatter<Boolean>() {
 			@Override
 			public String print(Boolean object, Locale locale) {
 				return Boolean.toString(object);
 			}
-
 			@Override
 			public Boolean parse(String text, Locale locale) throws ParseException {
 				return Boolean.parseBoolean(text);
 			}
 		});
+
+		// 3.3.3 decimal (#decimal)
+		// 3.3.4 float (#float)
+		// 3.3.5 double (#double)
+		// 3.3.6 duration (#duration)
+		// 3.3.7 dateTime (#dateTime)
+		// 3.3.8 time (#time)
+		// 3.3.9 date (#date)
+		// 3.3.10 gYearMonth (#gYearMonth)
+		// 3.3.11 gYear (#gYear)
+		// 3.3.12 gMonthDay (#gMonthDay)
+		// 3.3.13 gDay (#gDay)
+		// 3.3.14 gMonth (#gMonth)
+		// 3.3.15 hexBinary (#hexBinary)
+		// 3.3.16 base64Binary (#base64Binary)
+		// 3.3.17 anyURI (#anyURI)
+		// 3.3.18 QName (#QName)
+		// 3.3.19 NOTATION (#NOTATION)
+
+		// 3.4 Other Built-in Datatypes (#ordinary-built-ins)
+
+		// 3.4.1 normalizedString (#normalizedString)
+		// 3.4.2 token (#token)
+		// 3.4.3 language (#language)
+		// 3.4.4 NMTOKEN (#NMTOKEN)
+		// 3.4.5 NMTOKENS (#NMTOKENS)
+		// 3.4.6 Name (#Name)
+		// 3.4.7 NCName (#NCName)
+		// 3.4.8 ID (#ID)
+		// 3.4.9 IDREF (#IDREF)
+		// 3.4.10 IDREFS (#IDREFS)
+		// 3.4.11 ENTITY (#ENTITY)
+		// 3.4.12 ENTITIES (#ENTITIES)
+		// 3.4.13 integer (#integer)
+		// 3.4.14 nonPositiveInteger (#nonPositiveInteger)
+		// 3.4.15 negativeInteger (#negativeInteger)
+		// 3.4.16 long (#long)
+		// 3.4.17 int (#int)
+		// 3.4.18 short (#short)
+		// 3.4.19 byte (#byte)
+		// 3.4.20 nonNegativeInteger (#nonNegativeInteger)
+		// 3.4.21 unsignedLong (#unsignedLong)
+		// 3.4.22 unsignedInt (#unsignedInt)
+		// 3.4.23 unsignedShort (#unsignedShort)
+		// 3.4.24 unsignedByte (#unsignedByte)
+		// 3.4.25 positiveInteger (#positiveInteger)
+		// 3.4.26 yearMonthDuration (#yearMonthDuration)
+		// 3.4.27 dayTimeDuration (#dayTimeDuration)
+		// 3.4.28 dateTimeStamp (#dateTimeStamp)
 
 		this.patterns.put(Byte.class, ValuePattern.INSTANCE);
 		this.formattingConversionService.addFormatterForFieldType(Byte.class, new Formatter<Byte>() {
@@ -253,7 +322,9 @@ public class SweJaxbContext extends JAXBContext {
 			}
 		});
 
-		this.patterns.put(String.class, ValuePattern.INSTANCE);
+		// conversion service
+		for (XmlEventsPattern vp: this.patterns.values())
+			((ValuePattern)vp).setConversionService(this.formattingConversionService);
 
 		// other simple types
 		// JAXB2:
@@ -320,7 +391,8 @@ public class SweJaxbContext extends JAXBContext {
 		}
 
 		// before stepping into the class we'll add DeferredXmlPattern to the mapping to be able to analyze cross-dependent classes
-		TemporaryXmlEventsPattern txp = new TemporaryXmlEventsPattern();
+		// TODO: determine QName for TemporaryXmlEventsPattern
+		TemporaryXmlEventsPattern txp = new TemporaryXmlEventsPattern(null, cl);
 		this.patterns.put(cl, txp);
 		ContentModelPattern mapping = new PropertyCallback(namespace, xmlAccessType).analyze(cl);
 		txp.setRealPattern(mapping);
@@ -328,7 +400,8 @@ public class SweJaxbContext extends JAXBContext {
 		XmlRootElement xmlRootElement = AnnotationUtils.findAnnotation(cl, XmlRootElement.class);
 		if (xmlRootElement != null) {
 			// we may produce WrappedEventsPattern now, if the class is annotated with XmlRootElement
-			this.rootPatterns.put(cl, new ElementPattern(new QName(xmlRootElement.namespace(), xmlRootElement.name()), mapping));
+			// TODO: determine QName for ElementPattern
+			this.rootPatterns.put(cl, new ElementPattern(null, cl, new QName(xmlRootElement.namespace(), xmlRootElement.name()), mapping));
 		}
 
 		return mapping;
@@ -389,7 +462,8 @@ public class SweJaxbContext extends JAXBContext {
 			// @XmlAttributes first. then @XmlElements + @XmlValue
 			this.childAttributePatterns.addAll(this.childPatterns);
 
-			return new ContentModelPattern(this.childAttributePatterns);
+			// TODO: determine QName for ContentModelPattern
+			return new ContentModelPattern(null, cl, this.childAttributePatterns);
 
 			// if (this.childAttributePatterns.size() == 0 && this.childPatterns.size() == 1 && this.childPatterns.get(0).isSimpleType()) {
 			// return this.childPatterns.get(0);
@@ -427,7 +501,10 @@ public class SweJaxbContext extends JAXBContext {
 				// field's class should be convertible to java.lang.String
 				// this class should have no child @XmlElements
 				// TODO: make possible to handle properties which are classes with @XmlValue property (possibly nested)
-				metadata.setPattern(ValuePattern.INSTANCE);
+				// TODO: determine QName for ValuePattern
+				ValuePattern valuePattern = new ValuePattern(null, field.getType());
+				valuePattern.setConversionService(SweJaxbContext.this.formattingConversionService);
+				metadata.setPattern(valuePattern);
 				this.childPatterns.add(metadata);
 				return;
 			}
@@ -437,7 +514,8 @@ public class SweJaxbContext extends JAXBContext {
 			if (xmlAttribute != null) {
 				String namespace = "##default".equals(xmlAttribute.namespace()) ? this.namespace : xmlAttribute.namespace();
 				String name = "##default".equals(xmlAttribute.name()) ? fieldName : xmlAttribute.name();
-				AttributePattern attributePattern = new AttributePattern(new QName(namespace, name));
+				// TODO: determine QName for AttributePattern
+				AttributePattern attributePattern = new AttributePattern(null, field.getType(), new QName(namespace, name));
 				attributePattern.setConversionService(SweJaxbContext.this.formattingConversionService);
 				metadata.setPattern(attributePattern);
 				this.childAttributePatterns.add(metadata);
@@ -457,7 +535,8 @@ public class SweJaxbContext extends JAXBContext {
 			if (xmlElement != null || isElement) {
 				String namespace = xmlElement == null || "##default".equals(xmlElement.namespace()) ? this.namespace : xmlElement.namespace();
 				String name = xmlElement == null || "##default".equals(xmlElement.name()) ? fieldName : xmlElement.name();
-				ElementPattern elementPattern = new ElementPattern(new QName(namespace, name), SweJaxbContext.this.determineXmlPattern(field.getType()));
+				// TODO: determine QName for ElementPattern
+				XmlEventsPattern elementPattern = new ElementPattern(null, field.getType(), new QName(namespace, name), SweJaxbContext.this.determineXmlPattern(field.getType()));
 				metadata.setPattern(elementPattern);
 				this.childPatterns.add(metadata);
 				return;

@@ -86,7 +86,7 @@ public class DefaultMultiRefSupport implements MultiRefSupport {
 	@Override
 	public XmlEventsPattern adaptPattern(XmlEventsPattern pattern, String accessorName) {
 		if (pattern instanceof AbstractSimpleTypePattern) {
-			return new ElementPattern(new QName("", accessorName), ValuePattern.INSTANCE);
+			return new ElementPattern(pattern.getSchemaType(), pattern.getJavaType(), new QName("", accessorName), ValuePattern.INSTANCE);
 		} else {
 			return pattern;
 		}

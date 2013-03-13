@@ -23,6 +23,13 @@
 			<artifactId>spring-ws-extensions-core</artifactId>
 		</dependency>
 
+		<!-- Commons -->
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+		</dependency>
+
 		<!-- Spring -->
 
 <!-- 		<dependency> -->

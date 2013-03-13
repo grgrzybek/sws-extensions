@@ -16,6 +16,7 @@
 
 package org.springframework.ws.ext.bind.internal.model;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
@@ -27,12 +28,14 @@ import javax.xml.stream.events.XMLEvent;
  */
 public class ValuePattern extends AbstractSimpleTypePattern {
 
-	public static final ValuePattern INSTANCE = new ValuePattern();
-	
+	public static final ValuePattern INSTANCE = new ValuePattern(null, null);
+
 	/**
-	 * 
+	 * @param schemaType
+	 * @param javaType
 	 */
-	private ValuePattern() {
+	public ValuePattern(QName schemaType, Class<?> javaType) {
+		super(schemaType, javaType);
 	}
 
 	/* (non-Javadoc)

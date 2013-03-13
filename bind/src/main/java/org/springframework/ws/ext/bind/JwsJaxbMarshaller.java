@@ -88,6 +88,8 @@ public class JwsJaxbMarshaller implements Marshaller, SweJaxbConstants {
 
 	private boolean multiRefEncoding = false;
 
+	private boolean sendTypes = false;
+
 	/**
 	 * @param jaxbContext
 	 */
@@ -205,6 +207,8 @@ public class JwsJaxbMarshaller implements Marshaller, SweJaxbConstants {
 			this.encoding = (String) value;
 		else if (SweJaxbConstants.SWE_MARSHALLER_PROPERTY_JAXB_MULTIREFS.equals(name))
 			this.multiRefEncoding = (Boolean) value;
+		else if (SweJaxbConstants.SWE_MARSHALLER_PROPERTY_SEND_TYPES.equals(name))
+			this.sendTypes = (Boolean) value;
 		else
 			this.properties.put(name, value);
 	}
@@ -328,6 +332,7 @@ public class JwsJaxbMarshaller implements Marshaller, SweJaxbConstants {
 			MarshallingContext context = new MarshallingContext();
 			context.setRepairingXmlEventWriter((Boolean) this.xmlOutputFactory.getProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES));
 			context.setMultiRefEncoding(this.multiRefEncoding);
+			context.setSendTypes(this.sendTypes);
 
 			// go!
 			pattern.replay(jaxbElement, writer, context);
@@ -357,9 +362,9 @@ public class JwsJaxbMarshaller implements Marshaller, SweJaxbConstants {
 			clz = ((JAXBElement<?>) jaxbElement).getDeclaredType();
 
 		// pattern (both for root and non-root classes) must be present in context's mapping metadata
-		XmlEventsPattern xmlEventsPattern = this.jaxbContext.patterns.get(clz);
+		XmlEventsPattern pattern = this.jaxbContext.patterns.get(clz);
 
-		if (xmlEventsPattern == null)
+		if (pattern == null)
 			throw new MarshalException("Unable to determine XML Events pattern to marshal object of class " + jaxbElement.getClass().getName());
 
 		// if we marshal XmlRootElement, then return proper pattern
@@ -367,8 +372,10 @@ public class JwsJaxbMarshaller implements Marshaller, SweJaxbConstants {
 			return this.jaxbContext.rootPatterns.get(clz);
 
 		// if we marshal JAXBElement, we create ElementPattern on demand (without caching it!)
-		if (jaxbElement instanceof JAXBElement)
-			return new ElementPattern(((JAXBElement<?>) jaxbElement).getName(), xmlEventsPattern);
+		if (jaxbElement instanceof JAXBElement) {
+			// TODO: use ((JAXBElement<?>) jaxbElement).getDeclaredType() or ((JAXBElement<?>) jaxbElement).getValue().getClass()?
+			return new ElementPattern(pattern.getSchemaType(), ((JAXBElement<?>) jaxbElement).getDeclaredType(), ((JAXBElement<?>) jaxbElement).getName(), pattern);
+		}
 
 		throw new MarshalException("Unable to marshal object of class " + clz.getName()
 				+ ". Only JAXBElements and @XmlRootElement annotated classes may be marshalled.");

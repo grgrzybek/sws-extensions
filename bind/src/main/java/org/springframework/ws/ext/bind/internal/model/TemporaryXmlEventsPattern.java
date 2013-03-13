@@ -16,6 +16,7 @@
 
 package org.springframework.ws.ext.bind.internal.model;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
@@ -26,13 +27,21 @@ import org.springframework.ws.ext.bind.internal.MarshallingContext;
  * <p>An {@link XmlEventsPattern} acting as a temporary mapping of class to a series of XML events. Needed when two classes
  * have properties of one another's class.</p>
  * <p>After the final determination of mapped pattern it will be injected into this pattern. MultiRef Encodings (more likely to have
- * interdependent properties) will <b>not</b> result in replaying this pattern, because multiRefs will be used since first occurence!</p>
+ * interdependent properties) will <b>not</b> result in replaying this pattern, because multiRefs will be used since first occurence.</p>
  *
  * @author Grzegorz Grzybek
  */
-public class TemporaryXmlEventsPattern implements XmlEventsPattern {
+public class TemporaryXmlEventsPattern extends XmlEventsPattern {
 
 	private ContentModelPattern realMapping;
+
+	/**
+	 * @param schemaType
+	 * @param javaType
+	 */
+	public TemporaryXmlEventsPattern(QName schemaType, Class<?> javaType) {
+		super(schemaType, javaType);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#replay(java.lang.Object, javax.xml.stream.XMLEventWriter, org.springframework.ws.ext.bind.internal.MarshallingContext)

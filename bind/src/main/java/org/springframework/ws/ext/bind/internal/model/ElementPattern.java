@@ -21,7 +21,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlValue;
-import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
@@ -37,10 +36,10 @@ import org.springframework.ws.ext.bind.internal.QNames;
  * <li>{@link ContentModelPattern} when it represents non-primitive JavaBean object with properties ({@link XmlElement}, {@link XmlAttribute}, {@link XmlValue}, {@link XmlElementWrapper})</li>
  * <li>{@link ValuePattern} when constructed to marshal {@link JAXBElement}-wrapped primitive type or primitive {@link XmlElement}-annotated properties.</li>
  * </ul></p>
- *
+ * 
  * @author Grzegorz Grzybek
  */
-public class ElementPattern implements XmlEventsPattern {
+public class ElementPattern extends XmlEventsPattern {
 
 	private QName elementName;
 	private StartElement startElementEvent;
@@ -49,12 +48,13 @@ public class ElementPattern implements XmlEventsPattern {
 	private XmlEventsPattern nestedPattern;
 
 	/**
+	 * @param schemaType
+	 * @param javaType
 	 * @param elementName
-	 * @param directAccessor
-	 * @param propertyName
 	 * @param nestedPattern
 	 */
-	public ElementPattern(QName elementName, XmlEventsPattern nestedPattern) {
+	public ElementPattern(QName schemaType, Class<?> javaType, QName elementName, XmlEventsPattern nestedPattern) {
+		super(schemaType, javaType);
 		this.elementName = elementName;
 		this.nestedPattern = nestedPattern;
 
@@ -70,15 +70,9 @@ public class ElementPattern implements XmlEventsPattern {
 		// <elementName>
 		eventWriter.add(this.startElementEvent);
 
-		NamespaceContext nsc = eventWriter.getNamespaceContext();
-		if (!context.isRepairingXmlEventWriter()) {
-			if (nsc.getPrefix(this.elementName.getNamespaceURI()) == null) {
-				eventWriter.add(XML_EVENTS_FACTORY.createNamespace(this.elementName.getNamespaceURI()));
-			}
-		}
+		this.safeRegisterNamespace(context, eventWriter, this.elementName);
 
 		boolean isNil = false;
-		// TODO: handle non "xsi" prefix for "http://www.w3.org/2001/XMLSchema-instance" namespace 
 		if (object instanceof JAXBElement) {
 			// is it xsi:nil?
 			if (((JAXBElement<?>) object).isNil())
@@ -89,11 +83,15 @@ public class ElementPattern implements XmlEventsPattern {
 			isNil = true;
 		}
 
+		if (context.isSendTypes()/* TODO: || must send xsi:type anyway*/) {
+			String qValue = this.safeGetQValue(context, eventWriter, this.getSchemaType());
+			String prefix = this.safeRegisterNamespace(context, eventWriter, QNames.XSI_TYPE);
+			eventWriter.add(XML_EVENTS_FACTORY.createAttribute(prefix, QNames.XSI_TYPE.getNamespaceURI(), QNames.XSI_TYPE.getLocalPart(), qValue));
+		}
+
 		if (isNil) {
-			if (!context.isRepairingXmlEventWriter() && nsc.getPrefix(QNames.XSI_NIL.getNamespaceURI()) == null) {
-				eventWriter.add(XML_EVENTS_FACTORY.createNamespace(QNames.XSI_NIL.getPrefix(), QNames.XSI_NIL.getNamespaceURI()));
-			}
-			eventWriter.add(XML_EVENTS_FACTORY.createAttribute(QNames.XSI_NIL, "true"));
+			String prefix = this.safeRegisterNamespace(context, eventWriter, QNames.XSI_NIL);
+			eventWriter.add(XML_EVENTS_FACTORY.createAttribute(prefix, QNames.XSI_NIL.getNamespaceURI(), QNames.XSI_NIL.getLocalPart(), "true"));
 		} else {
 			if (context.isMultiRefEncoding()) {
 				// choices:

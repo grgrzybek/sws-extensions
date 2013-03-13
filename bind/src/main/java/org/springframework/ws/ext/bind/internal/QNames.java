@@ -35,5 +35,6 @@ public interface QNames {
 	public static final QName SIMPLETYPE_DOUBLE = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "double");
 
 	public static final QName XSI_NIL = new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "nil", "xsi");
+	public static final QName XSI_TYPE = new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type", "xsi");
 
 }

@@ -59,14 +59,6 @@ public class JwsJaxbMarshallerTest {
 		log.info(sw.toString());
 	}
 
-	@Test(expected = JAXBException.class)
-	public void marshalMyClass2() throws Exception {
-		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context2");
-		StringWriter sw = new StringWriter();
-		context.createMarshaller().marshal(new MyClass2(), sw);
-		log.info(sw.toString());
-	}
-
 	@Test
 	public void marshalJAXBElementWithMyClass2() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context2");
@@ -80,7 +72,7 @@ public class JwsJaxbMarshallerTest {
 	public void cantMarshalPrimitive() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		StringWriter sw = new StringWriter();
-		context.createMarshaller().marshal((short) 1, sw);
+		context.createMarshaller().marshal("x", sw);
 	}
 
 	@Test

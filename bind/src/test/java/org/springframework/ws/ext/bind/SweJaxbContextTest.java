@@ -103,4 +103,5 @@ public class SweJaxbContextTest {
 		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context1.ClassWithAttributes.class));
 		assertTrue(patterns.containsKey(org.springframework.ws.ext.bind.context2.MyClass2.class));
 	}
+
 }

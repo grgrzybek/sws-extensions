@@ -30,10 +30,11 @@ public class AttributePattern extends AbstractSimpleTypePattern {
 	private QName attributeName;
 
 	/**
-	 * @param directAccess
-	 * @param propertyName
+	 * @param schemaType
+	 * @param javaType
 	 */
-	public AttributePattern(QName attributeName) {
+	public AttributePattern(QName schemaType, Class<?> javaType, QName attributeName) {
+		super(schemaType, javaType);
 		this.attributeName = attributeName;
 	}
 
