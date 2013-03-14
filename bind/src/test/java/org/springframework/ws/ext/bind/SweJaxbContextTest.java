@@ -65,7 +65,7 @@ public class SweJaxbContextTest {
 	}
 
 	@Test
-	public void useBothJwsAndDefaultImplementationInTheSamePackage() throws Exception {
+	public void useBothOurAndDefaultImplementationInTheSamePackage() throws Exception {
 		// this way we can only get one (default or configured on different levels of properties) implementation - we're using
 		// javax.xml.bind.ContextFinder for this and we can't change its implementation...
 		JAXBContext context = JAXBContext.newInstance(org.springframework.ws.ext.bind.jaxb.context2.MyClassJ2.class);

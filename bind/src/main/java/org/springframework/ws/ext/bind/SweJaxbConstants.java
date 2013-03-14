@@ -67,8 +67,11 @@ public interface SweJaxbConstants {
 	// 3.3.2 boolean (#boolean)
 	public static final QName XSD_BOOLEAN = new QName(Constants.URI_2001_SCHEMA_XSD, "boolean", XSD_PREFIX);
 	// 3.3.3 decimal (#decimal)
+	public static final QName XSD_DECIMAL = new QName(Constants.URI_2001_SCHEMA_XSD, "decimal", XSD_PREFIX);
 	// 3.3.4 float (#float)
+	public static final QName XSD_FLOAT = new QName(Constants.URI_2001_SCHEMA_XSD, "float", XSD_PREFIX);
 	// 3.3.5 double (#double)
+	public static final QName XSD_DOUBLE = new QName(Constants.URI_2001_SCHEMA_XSD, "double", XSD_PREFIX);
 	// 3.3.6 duration (#duration)
 	// 3.3.7 dateTime (#dateTime)
 	// 3.3.8 time (#time)
@@ -99,6 +102,7 @@ public interface SweJaxbConstants {
 	// 3.4.11 ENTITY (#ENTITY)
 	// 3.4.12 ENTITIES (#ENTITIES)
 	// 3.4.13 integer (#integer)
+	public static final QName XSD_INTEGER = new QName(Constants.URI_2001_SCHEMA_XSD, "integer", XSD_PREFIX);
 	// 3.4.14 nonPositiveInteger (#nonPositiveInteger)
 	// 3.4.15 negativeInteger (#negativeInteger)
 	// 3.4.16 long (#long)

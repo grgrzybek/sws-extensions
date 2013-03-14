@@ -19,12 +19,10 @@ package org.springframework.ws.ext.bind;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
@@ -44,14 +42,12 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.XMLEvent;
 
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.format.Formatter;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
 import org.springframework.util.ReflectionUtils.FieldFilter;
 import org.springframework.util.ReflectionUtils.MethodCallback;
+import org.springframework.ws.ext.bind.internal.BuiltInMappings;
 import org.springframework.ws.ext.bind.internal.metadata.PackageMetadata;
 import org.springframework.ws.ext.bind.internal.metadata.PropertyMetadata;
 import org.springframework.ws.ext.bind.internal.model.AttributePattern;
@@ -63,7 +59,8 @@ import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
 import org.springframework.ws.ext.utils.NamespaceUtils;
 
 /**
- * <p></p>
+ * <p>Lightweight implementation of {@link JAXBContext}. Almost everything what JAXB-RI does is implemented using Spring features
+ * (metadata scanning, handling of JavaBeans, conversion, formatting, etc.)</p>
  *
  * @author Grzegorz Grzybek
  */
@@ -76,10 +73,10 @@ public class SweJaxbContext extends JAXBContext {
 	 */
 	Map<Class<?>, XmlEventsPattern> patterns = new LinkedHashMap<Class<?>, XmlEventsPattern>();
 
-	/**
-	 * Mapping of XML Schema types (simple or complex) to OXM metadata.
-	 */
-	Map<QName, XmlEventsPattern> xsdPatterns = new LinkedHashMap<QName, XmlEventsPattern>();
+	// /**
+	// * Mapping of XML Schema types (simple or complex) to OXM metadata.
+	// */
+	// private Map<QName, XmlEventsPattern> xsdPatterns = new LinkedHashMap<QName, XmlEventsPattern>();
 
 	/**
 	 * Mapping of {@link XmlRootElement} annotated classes.
@@ -89,33 +86,26 @@ public class SweJaxbContext extends JAXBContext {
 	/**
 	 * Metadata of packages
 	 */
-	Map<String, PackageMetadata> package2meta = new HashMap<String, PackageMetadata>();
+	private Map<String, PackageMetadata> package2meta = new HashMap<String, PackageMetadata>();
 
 	/**
 	 * Conversion service. To be accessed by marshallers/unmarshallers created by this context.
 	 */
-	FormattingConversionService formattingConversionService = null;
+	private FormattingConversionService formattingConversionService = null;
 
 	/**
-	 * <p>Main initiailzation method of {@link JAXBContext}</p>
-	 * <p>This method:<ul>
-	 * <li>constructs class2Patterns information</li>
-	 * <li>constructs {@link ConversionService} and registers default {@link Converter converters} and/or {@link Formatter formatters}</li>
-	 * <li></li>
-	 * <li></li>
-	 * <li></li>
-	 * <li></li>
-	 * </ul></p>
+	 * <p>Main initiailzation method of {@link JAXBContext} - isn't it clean?</p>
 	 * 
 	 * @param classesToBeBound
 	 * @param properties
 	 */
 	SweJaxbContext(Class<?>[] classesToBeBound, Map<String, ?> properties) {
-
 		this.initializeConversionService();
 
-		this.initializeBuiltInMappings();
+		// built-in
+		BuiltInMappings.initialize(this.patterns, this.formattingConversionService);
 
+		// external
 		for (Class<?> cl : classesToBeBound) {
 			this.patterns.put(cl, this.determineXmlPattern(cl));
 		}
@@ -126,7 +116,7 @@ public class SweJaxbContext extends JAXBContext {
 	 */
 	@Override
 	public Unmarshaller createUnmarshaller() throws JAXBException {
-		return new JwsJaxbUnmarshaller(this);
+		return new SweJaxbUnmarshaller(this);
 	}
 
 	/* (non-Javadoc)
@@ -134,7 +124,7 @@ public class SweJaxbContext extends JAXBContext {
 	 */
 	@Override
 	public Marshaller createMarshaller() throws JAXBException {
-		return new JwsJaxbMarshaller(this);
+		return new SweJaxbMarshaller(this);
 	}
 
 	/* (non-Javadoc)
@@ -145,7 +135,7 @@ public class SweJaxbContext extends JAXBContext {
 		throw new UnsupportedOperationException("Not implemented in " + this.getClass().getName());
 	}
 
-	/* Internal methods */
+	/* Internal (non JAXB) methods */
 
 	/**
 	 * 
@@ -155,208 +145,17 @@ public class SweJaxbContext extends JAXBContext {
 	}
 
 	/**
-	 * <p>Built-in mappings are configured for classes convertible to {@link String}</p>
-	 * <p>See:<ul>
-	 * <li><a href="http://www.w3.org/TR/xmlschema-2/#built-in-datatypes">http://www.w3.org/TR/xmlschema-2/#built-in-datatypes</a></li>
-	 * <li>JAXB 2.2, section 6.2.2.</li>
-	 * </ul></p>
+	 * @return the formattingConversionService
 	 */
-	private void initializeBuiltInMappings() {
-		// see: com.sun.xml.bind.v2.model.impl.RuntimeBuiltinLeafInfoImpl<T> and inner
-		// com.sun.xml.bind.v2.model.impl.RuntimeBuiltinLeafInfoImpl.StringImpl<T> implementations
-
-		// we have two places where XSD -> Java mapping is defined:
-		// - JAX-RPC 1.1 section 4.2.1 Simple Types
-		// - JAXB 2 section 6.2.2 Atomic Datatype
-
-		// XML Schema (1.0) Part 2: Datatypes Second Edition, or/and
-		// W3C XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes
-
-		// 3.2 Special Built-in Datatypes (#special-datatypes)
-		// 3.2.1 anySimpleType (#anySimpleType)
-		// 3.2.2 anyAtomicType (#anyAtomicType)
-
-		// 3.3 Primitive Datatypes (#built-in-primitive-datatypes)
-//		ValuePattern pattern = null;
-
-		// 3.3.1 string (#string)
-		this.patterns.put(String.class, new ValuePattern(SweJaxbConstants.XSD_STRING, java.lang.String.class));
-
-		// 3.3.2 boolean (#boolean)
-		this.patterns.put(Boolean.class, new ValuePattern(SweJaxbConstants.XSD_BOOLEAN, java.lang.Boolean.class));
-		this.formattingConversionService.addFormatterForFieldType(Boolean.class, new Formatter<Boolean>() {
-			@Override
-			public String print(Boolean object, Locale locale) {
-				return Boolean.toString(object);
-			}
-			@Override
-			public Boolean parse(String text, Locale locale) throws ParseException {
-				// TODO: should allow "true", "false", "1", "0"
-				return Boolean.parseBoolean(text);
-			}
-		});
-
-		// 3.3.3 decimal (#decimal)
-		// 3.3.4 float (#float)
-		// 3.3.5 double (#double)
-		// 3.3.6 duration (#duration)
-		// 3.3.7 dateTime (#dateTime)
-		// 3.3.8 time (#time)
-		// 3.3.9 date (#date)
-		// 3.3.10 gYearMonth (#gYearMonth)
-		// 3.3.11 gYear (#gYear)
-		// 3.3.12 gMonthDay (#gMonthDay)
-		// 3.3.13 gDay (#gDay)
-		// 3.3.14 gMonth (#gMonth)
-		// 3.3.15 hexBinary (#hexBinary)
-		// 3.3.16 base64Binary (#base64Binary)
-		// 3.3.17 anyURI (#anyURI)
-		// 3.3.18 QName (#QName)
-		// 3.3.19 NOTATION (#NOTATION)
-
-		// 3.4 Other Built-in Datatypes (#ordinary-built-ins)
-
-		// 3.4.1 normalizedString (#normalizedString)
-		// 3.4.2 token (#token)
-		// 3.4.3 language (#language)
-		// 3.4.4 NMTOKEN (#NMTOKEN)
-		// 3.4.5 NMTOKENS (#NMTOKENS)
-		// 3.4.6 Name (#Name)
-		// 3.4.7 NCName (#NCName)
-		// 3.4.8 ID (#ID)
-		// 3.4.9 IDREF (#IDREF)
-		// 3.4.10 IDREFS (#IDREFS)
-		// 3.4.11 ENTITY (#ENTITY)
-		// 3.4.12 ENTITIES (#ENTITIES)
-		// 3.4.13 integer (#integer)
-		// 3.4.14 nonPositiveInteger (#nonPositiveInteger)
-		// 3.4.15 negativeInteger (#negativeInteger)
-		// 3.4.16 long (#long)
-		// 3.4.17 int (#int)
-		// 3.4.18 short (#short)
-		// 3.4.19 byte (#byte)
-		// 3.4.20 nonNegativeInteger (#nonNegativeInteger)
-		// 3.4.21 unsignedLong (#unsignedLong)
-		// 3.4.22 unsignedInt (#unsignedInt)
-		// 3.4.23 unsignedShort (#unsignedShort)
-		// 3.4.24 unsignedByte (#unsignedByte)
-		// 3.4.25 positiveInteger (#positiveInteger)
-		// 3.4.26 yearMonthDuration (#yearMonthDuration)
-		// 3.4.27 dayTimeDuration (#dayTimeDuration)
-		// 3.4.28 dateTimeStamp (#dateTimeStamp)
-
-		this.patterns.put(Byte.class, ValuePattern.INSTANCE);
-		this.formattingConversionService.addFormatterForFieldType(Byte.class, new Formatter<Byte>() {
-			@Override
-			public String print(Byte object, Locale locale) {
-				return Byte.toString(object);
-			}
-
-			@Override
-			public Byte parse(String text, Locale locale) throws ParseException {
-				return Byte.parseByte(text);
-			}
-		});
-		
-		this.patterns.put(Short.class, ValuePattern.INSTANCE);
-		this.formattingConversionService.addFormatterForFieldType(Short.class, new Formatter<Short>() {
-			@Override
-			public String print(Short object, Locale locale) {
-				return Short.toString(object);
-			}
-
-			@Override
-			public Short parse(String text, Locale locale) throws ParseException {
-				return Short.parseShort(text);
-			}
-		});
-		
-		this.patterns.put(Integer.class, ValuePattern.INSTANCE);
-		this.formattingConversionService.addFormatterForFieldType(Integer.class, new Formatter<Integer>() {
-			@Override
-			public String print(Integer object, Locale locale) {
-				return Integer.toString(object);
-			}
-
-			@Override
-			public Integer parse(String text, Locale locale) throws ParseException {
-				return Integer.parseInt(text);
-			}
-		});
-		
-		this.patterns.put(Long.class, ValuePattern.INSTANCE);
-		this.formattingConversionService.addFormatterForFieldType(Long.class, new Formatter<Long>() {
-			@Override
-			public String print(Long object, Locale locale) {
-				return Long.toString(object);
-			}
-
-			@Override
-			public Long parse(String text, Locale locale) throws ParseException {
-				return Long.parseLong(text);
-			}
-		});
-		
-		this.patterns.put(Float.class, ValuePattern.INSTANCE);
-		this.formattingConversionService.addFormatterForFieldType(Float.class, new Formatter<Float>() {
-			@Override
-			public String print(Float object, Locale locale) {
-				return Float.toString(object);
-			}
-
-			@Override
-			public Float parse(String text, Locale locale) throws ParseException {
-				return Float.parseFloat(text);
-			}
-		});
-		
-		this.patterns.put(Double.class, ValuePattern.INSTANCE);
-		this.formattingConversionService.addFormatterForFieldType(Double.class, new Formatter<Double>() {
-			@Override
-			public String print(Double object, Locale locale) {
-				return Double.toString(object);
-			}
-
-			@Override
-			public Double parse(String text, Locale locale) throws ParseException {
-				return Double.parseDouble(text);
-			}
-		});
-
-		// conversion service
-		for (XmlEventsPattern vp: this.patterns.values())
-			((ValuePattern)vp).setConversionService(this.formattingConversionService);
-
-		// other simple types
-		// JAXB2:
-		/*
-			class [B
-			class java.awt.Image
-			class java.io.File
-			class java.lang.Character
-			class java.lang.Class
-			class java.lang.Void
-			class java.math.BigDecimal
-			class java.math.BigInteger
-			class java.net.URI
-			class java.net.URL
-			class java.util.Calendar
-			class java.util.Date
-			class java.util.GregorianCalendar
-			class java.util.UUID
-			class javax.activation.DataHandler
-			class javax.xml.datatype.Duration
-			class javax.xml.datatype.XMLGregorianCalendar
-			class javax.xml.namespace.QName
-			interface javax.xml.transform.Source
-		 */
+	public FormattingConversionService getFormattingConversionService() {
+		return this.formattingConversionService;
 	}
 
 	/**
 	 * <p>Converts a class and it's metadata into a pattern of static and dynamic {@link XMLEvent XML events}.</p>
 	 * <p>A class which is to be known by this context should be directly convertible to a series of XML events. What is not mandatory here is
 	 * the root element of the marshalled object.</p>
-	 * <p>The produced pattern is <b>not</b> automatically cached in this context's metadata.</p>
+	 * <p>The produced pattern is <b>not</b> automatically cached in this context's metadata - that's the job of invoker.</p>
 	 * 
 	 * @param cl
 	 * @return
@@ -402,17 +201,11 @@ public class SweJaxbContext extends JAXBContext {
 		if (xmlRootElement != null) {
 			// we may produce WrappedEventsPattern now, if the class is annotated with XmlRootElement
 			// TODO: determine QName for ElementPattern
-			this.rootPatterns.put(cl, new ElementPattern(new QName(namespace, cl.getSimpleName()), cl, new QName(xmlRootElement.namespace(), xmlRootElement.name()), mapping));
+			this.rootPatterns.put(cl, new ElementPattern(new QName(namespace, cl.getSimpleName()), cl,
+					new QName(xmlRootElement.namespace(), xmlRootElement.name()), mapping));
 		}
 
 		return mapping;
-	}
-
-	/**
-	 * @return the formattingConversionService
-	 */
-	public FormattingConversionService getFormattingConversionService() {
-		return this.formattingConversionService;
 	}
 
 	/**
@@ -515,8 +308,9 @@ public class SweJaxbContext extends JAXBContext {
 			if (xmlAttribute != null) {
 				String namespace = "##default".equals(xmlAttribute.namespace()) ? this.namespace : xmlAttribute.namespace();
 				String name = "##default".equals(xmlAttribute.name()) ? fieldName : xmlAttribute.name();
-				// TODO: determine QName for AttributePattern
-				AttributePattern attributePattern = new AttributePattern(new QName(namespace, field.getType().getSimpleName()), field.getType(), new QName(namespace, name));
+				// TODO: must be ValuePattern for simple type. Check it
+				XmlEventsPattern attrValuePattern = SweJaxbContext.this.determineXmlPattern(field.getType());
+				AttributePattern attributePattern = new AttributePattern(attrValuePattern.getSchemaType(), field.getType(), new QName(namespace, name));
 				attributePattern.setConversionService(SweJaxbContext.this.formattingConversionService);
 				metadata.setPattern(attributePattern);
 				this.childAttributePatterns.add(metadata);
@@ -537,7 +331,8 @@ public class SweJaxbContext extends JAXBContext {
 				String namespace = xmlElement == null || "##default".equals(xmlElement.namespace()) ? this.namespace : xmlElement.namespace();
 				String name = xmlElement == null || "##default".equals(xmlElement.name()) ? fieldName : xmlElement.name();
 				// TODO: determine QName for ElementPattern - use @XmlType
-				XmlEventsPattern elementPattern = new ElementPattern(new QName(namespace, field.getType().getSimpleName()), field.getType(), new QName(namespace, name), SweJaxbContext.this.determineXmlPattern(field.getType()));
+				XmlEventsPattern nestedPattern = SweJaxbContext.this.determineXmlPattern(field.getType());
+				XmlEventsPattern elementPattern = new ElementPattern(nestedPattern.getSchemaType(), field.getType(), new QName(namespace, name), nestedPattern);
 				metadata.setPattern(elementPattern);
 				this.childPatterns.add(metadata);
 				return;

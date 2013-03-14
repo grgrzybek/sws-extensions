@@ -60,7 +60,7 @@ import org.xml.sax.ContentHandler;
  *
  * @author Grzegorz Grzybek
  */
-public class JwsJaxbMarshaller implements Marshaller, SweJaxbConstants {
+public class SweJaxbMarshaller implements Marshaller, SweJaxbConstants {
 
 	private SweJaxbContext jaxbContext;
 
@@ -93,7 +93,7 @@ public class JwsJaxbMarshaller implements Marshaller, SweJaxbConstants {
 	/**
 	 * @param jaxbContext
 	 */
-	JwsJaxbMarshaller(SweJaxbContext jaxbContext) {
+	SweJaxbMarshaller(SweJaxbContext jaxbContext) {
 		this.jaxbContext = jaxbContext;
 	}
 

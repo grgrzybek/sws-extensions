@@ -47,9 +47,9 @@ import org.springframework.ws.ext.bind.internal.stax.IndentingXMLEventWriter;
  *
  * @author Grzegorz Grzybek
  */
-public class JwsJaxbMarshallerTest {
+public class SweJaxbMarshallerTest {
 
-	private static Logger log = LoggerFactory.getLogger(JwsJaxbMarshallerTest.class.getName());
+	private static Logger log = LoggerFactory.getLogger(SweJaxbMarshallerTest.class.getName());
 
 	@Test(expected = JAXBException.class)
 	public void marshalMyClass1() throws Exception {

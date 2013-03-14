@@ -42,12 +42,12 @@ import org.xml.sax.InputSource;
  *
  * @author Grzegorz Grzybek
  */
-public class JwsJaxbUnmarshaller implements Unmarshaller {
+public class SweJaxbUnmarshaller implements Unmarshaller {
 
 	/**
 	 * @param sweJaxbContext
 	 */
-	JwsJaxbUnmarshaller(SweJaxbContext sweJaxbContext) {
+	SweJaxbUnmarshaller(SweJaxbContext sweJaxbContext) {
 		// TODO Auto-generated constructor stub
 	}
 
