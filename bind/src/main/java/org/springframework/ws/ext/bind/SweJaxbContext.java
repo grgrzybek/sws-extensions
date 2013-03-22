@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -34,9 +35,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchema;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.XMLEvent;
@@ -82,6 +85,11 @@ public class SweJaxbContext extends JAXBContext {
 	 * Mapping of {@link XmlRootElement} annotated classes.
 	 */
 	Map<Class<?>, ElementPattern> rootPatterns = new LinkedHashMap<Class<?>, ElementPattern>();
+
+	/**
+	 * Mapping of QNames of root elements to patterns. It's just another keyset of {@code rootPatterns}
+	 */
+	Map<QName, ElementPattern> rootPatternsForQNames = new LinkedHashMap<QName, ElementPattern>();
 
 	/**
 	 * Metadata of packages
@@ -167,6 +175,8 @@ public class SweJaxbContext extends JAXBContext {
 		// default
 		XmlAccessType xmlAccessType = XmlAccessType.PUBLIC_MEMBER;
 		String namespace = NamespaceUtils.packageNameToNamespace(cl.getPackage());
+		XmlNsForm elementFormDefault = XmlNsForm.UNQUALIFIED; // (XmlNsForm.UNSET = "unqualified" from XML Schema point of view)
+		XmlNsForm attributeFormDefault = XmlNsForm.UNQUALIFIED; // (XmlNsForm.UNSET = "unqualified" from XML Schema point of view)
 
 		// on package
 		if (!this.package2meta.containsKey(cl.getPackage().getName())) {
@@ -178,31 +188,47 @@ public class SweJaxbContext extends JAXBContext {
 
 			xmlAccessType = xmlAccessorType == null || xmlAccessorType.value() == null ? xmlAccessType : xmlAccessorType.value();
 			namespace = xmlSchema == null || xmlSchema.namespace() == null ? namespace : xmlSchema.namespace();
+			elementFormDefault = xmlSchema == null || xmlSchema.elementFormDefault() == null ? elementFormDefault : xmlSchema.elementFormDefault();
+			attributeFormDefault = xmlSchema == null || xmlSchema.attributeFormDefault() == null ? attributeFormDefault : xmlSchema.attributeFormDefault();
 			md.setXmlAccessType(xmlAccessType);
 			md.setNamespace(namespace);
+			md.setElementFormDefault(elementFormDefault);
+			md.setAttributeFormDefault(attributeFormDefault);
 
 			this.package2meta.put(cl.getPackage().getName(), md);
+		} else {
+			PackageMetadata md = this.package2meta.get(cl.getPackage().getName());
+			xmlAccessType = md.getXmlAccessType();
+			namespace = md.getNamespace();
+			elementFormDefault = md.getElementFormDefault();
+			attributeFormDefault = md.getAttributeFormDefault();
 		}
+
 
 		// on class
 		XmlAccessorType xmlAccessorType = AnnotationUtils.findAnnotation(cl, XmlAccessorType.class);
-		if (xmlAccessorType != null) {
+		XmlType xmlType = AnnotationUtils.getAnnotation(cl, XmlType.class);
+		if (xmlAccessorType != null)
 			xmlAccessType = xmlAccessorType.value();
-		}
+		if (xmlType != null)
+			namespace = "##default".equals(xmlType.namespace()) ? namespace : xmlType.namespace();
 
 		// before stepping into the class we'll add DeferredXmlPattern to the mapping to be able to analyze cross-dependent classes
 		// TODO: determine QName for TemporaryXmlEventsPattern
 		TemporaryXmlEventsPattern txp = new TemporaryXmlEventsPattern(null, cl);
 		this.patterns.put(cl, txp);
-		ContentModelPattern mapping = new PropertyCallback(namespace, xmlAccessType).analyze(cl);
+		ContentModelPattern mapping = new PropertyCallback(namespace, xmlAccessType, elementFormDefault, attributeFormDefault).analyze(cl);
 		txp.setRealPattern(mapping);
 
 		XmlRootElement xmlRootElement = AnnotationUtils.findAnnotation(cl, XmlRootElement.class);
 		if (xmlRootElement != null) {
 			// we may produce WrappedEventsPattern now, if the class is annotated with XmlRootElement
 			// TODO: determine QName for ElementPattern
-			this.rootPatterns.put(cl, new ElementPattern(new QName(namespace, cl.getSimpleName()), cl,
-					new QName(xmlRootElement.namespace(), xmlRootElement.name()), mapping));
+			QName rootQName = new QName(xmlRootElement.namespace(), xmlRootElement.name());
+			ElementPattern pattern = new ElementPattern(new QName(namespace, cl.getSimpleName()), cl, rootQName, mapping);
+			this.rootPatterns.put(cl, pattern);
+			this.rootPatternsForQNames.put(rootQName, pattern);
+			
 		}
 
 		return mapping;
@@ -230,12 +256,21 @@ public class SweJaxbContext extends JAXBContext {
 
 		private XmlAccessType accessType;
 
+		@SuppressWarnings("unused")
+		private XmlNsForm elementFormDefault;
+
+		private XmlNsForm attributeFormDefault;
+
 		/**
 		 * @param namespace
+		 * @param attributeFormDefault 
+		 * @param elementFormDefault 
 		 */
-		public PropertyCallback(String namespace, XmlAccessType accessType) {
+		public PropertyCallback(String namespace, XmlAccessType accessType, XmlNsForm elementFormDefault, XmlNsForm attributeFormDefault) {
 			this.namespace = namespace;
 			this.accessType = accessType;
+			this.elementFormDefault = elementFormDefault;
+			this.attributeFormDefault = attributeFormDefault;
 		}
 
 		/**
@@ -258,14 +293,6 @@ public class SweJaxbContext extends JAXBContext {
 
 			// TODO: determine QName for ContentModelPattern
 			return new ContentModelPattern(new QName(this.namespace, cl.getSimpleName()), cl, this.childAttributePatterns);
-
-			// if (this.childAttributePatterns.size() == 0 && this.childPatterns.size() == 1 && this.childPatterns.get(0).isSimpleType()) {
-			// return this.childPatterns.get(0);
-			// }
-			// else {
-			// // nested properties (except "class") - elements and/or attributes or attributes+@XmlValue
-			// // attributes always first
-			// }
 		}
 
 		/* (non-Javadoc)
@@ -273,6 +300,7 @@ public class SweJaxbContext extends JAXBContext {
 		 */
 		@Override
 		public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
+			// TODO: analyze bean properties for XSD Content Model
 		}
 
 		/* (non-Javadoc)
@@ -306,7 +334,16 @@ public class SweJaxbContext extends JAXBContext {
 			// is it an attribute?
 			XmlAttribute xmlAttribute = AnnotationUtils.getAnnotation(field, XmlAttribute.class);
 			if (xmlAttribute != null) {
-				String namespace = "##default".equals(xmlAttribute.namespace()) ? this.namespace : xmlAttribute.namespace();
+				String namespace = XMLConstants.NULL_NS_URI;
+				if (this.attributeFormDefault == XmlNsForm.QUALIFIED) {
+					// the attribute MUST have namespace
+					namespace = "##default".equals(xmlAttribute.namespace()) ? this.namespace : xmlAttribute.namespace();
+				} else {
+					// the attribute MAY have namespace
+					// TODO: handle org.springframework.ws.ext.bind.annotations.XmlAttribute
+					if (!"##default".equals(xmlAttribute.namespace()))
+						namespace = xmlAttribute.namespace();
+				}
 				String name = "##default".equals(xmlAttribute.name()) ? fieldName : xmlAttribute.name();
 				// TODO: must be ValuePattern for simple type. Check it
 				XmlEventsPattern attrValuePattern = SweJaxbContext.this.determineXmlPattern(field.getType());

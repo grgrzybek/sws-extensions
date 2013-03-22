@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a1:root xmlns:a1="urn:test" xmlns:aaa="urn:inside:!!!!!!!!" xmlns:ns2="urn:inside:3" xmlns:ns3="y" a1:str="test">
+	<aaa:custom-element>str</aaa:custom-element>
+	<ns2:custom-element2 str="test" number="42">
+		<aaa:inside-element-with-customized-name>inside</aaa:inside-element-with-customized-name>
+	</ns2:custom-element2>
+</a1:root>

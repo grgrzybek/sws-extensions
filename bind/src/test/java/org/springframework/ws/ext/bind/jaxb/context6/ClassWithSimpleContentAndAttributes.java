@@ -14,42 +14,36 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind.context1;
+package org.springframework.ws.ext.bind.jaxb.context6;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public class ClassWithVeryComplexContent {
+public class ClassWithSimpleContentAndAttributes {
 
-	@XmlAttribute(name = "str-1")
+	@XmlAttribute
 	private String str;
 
-	@XmlElement(name = "custom-element", namespace = "urn:inside:2")
-	private String inside;
-	
-	@XmlElement(name = "custom-element2", namespace = "urn:inside:3")
-	private ClassWithComplexContent inside2;
+	@XmlAttribute
+	private int number;
 
-	/**
-	 * 
-	 */
-	public ClassWithVeryComplexContent() {
-	}
+	@XmlValue
+	private String inside;
 
 	/**
 	 * @param str
+	 * @param number
 	 * @param inside
-	 * @param inside2
 	 */
-	public ClassWithVeryComplexContent(String str, String inside, ClassWithComplexContent inside2) {
+	public ClassWithSimpleContentAndAttributes(String str, int number, String inside) {
 		this.str = str;
+		this.number = number;
 		this.inside = inside;
-		this.inside2 = inside2;
 	}
 
 	/**
@@ -67,6 +61,20 @@ public class ClassWithVeryComplexContent {
 	}
 
 	/**
+	 * @return the number
+	 */
+	public int getNumber() {
+		return this.number;
+	}
+
+	/**
+	 * @param number the number to set
+	 */
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	/**
 	 * @return the inside
 	 */
 	public String getInside() {
@@ -78,20 +86,6 @@ public class ClassWithVeryComplexContent {
 	 */
 	public void setInside(String inside) {
 		this.inside = inside;
-	}
-
-	/**
-	 * @return the inside2
-	 */
-	public ClassWithComplexContent getInside2() {
-		return this.inside2;
-	}
-
-	/**
-	 * @param inside2 the inside2 to set
-	 */
-	public void setInside2(ClassWithComplexContent inside2) {
-		this.inside2 = inside2;
 	}
 
 }

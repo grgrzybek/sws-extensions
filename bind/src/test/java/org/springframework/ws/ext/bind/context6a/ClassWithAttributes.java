@@ -14,42 +14,33 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind.context1;
+package org.springframework.ws.ext.bind.context6a;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlNsForm;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public class ClassWithComplexContent {
+public class ClassWithAttributes {
 
 	@XmlAttribute
+	// TODO: handle declaration of @form attribute of xs:attribute declaration
+	@org.springframework.ws.ext.bind.annotations.XmlAttribute(form = XmlNsForm.QUALIFIED)
 	private String str;
 
 	@XmlAttribute
 	private int number;
 
-	@XmlElement(name = "inside-element-with-customized-name", namespace = "urn:inside:1")
-	private String inside;
-
-	/**
-	 * 
-	 */
-	public ClassWithComplexContent() {
-	}
-
 	/**
 	 * @param str
 	 * @param number
-	 * @param inside
 	 */
-	public ClassWithComplexContent(String str, int number, String inside) {
+	public ClassWithAttributes(String str, int number) {
 		this.str = str;
 		this.number = number;
-		this.inside = inside;
 	}
 
 	/**
@@ -79,19 +70,4 @@ public class ClassWithComplexContent {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-
-	/**
-	 * @return the inside
-	 */
-	public String getInside() {
-		return this.inside;
-	}
-
-	/**
-	 * @param inside the inside to set
-	 */
-	public void setInside(String inside) {
-		this.inside = inside;
-	}
-
 }

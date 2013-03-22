@@ -17,9 +17,13 @@
 package org.springframework.ws.ext.bind.internal.model;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
+
+import org.springframework.ws.ext.bind.internal.MarshallingContext;
+import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
 
 /**
  * <p>ValuePattern generates CHARACTERS {@link XMLEvent}</p>
@@ -39,11 +43,19 @@ public class ValuePattern extends AbstractSimpleTypePattern {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.ext.bind.internal.model.SimpleTypePattern#replayNonNullString(java.lang.String, javax.xml.stream.XMLEventWriter)
+	 * @see org.springframework.ws.ext.bind.internal.model.AbstractSimpleTypePattern#replayNonNullString(java.lang.String, javax.xml.stream.XMLEventWriter, org.springframework.ws.ext.bind.internal.MarshallingContext)
 	 */
 	@Override
-	protected void replayNonNullString(String value, XMLEventWriter eventWriter) throws XMLStreamException {
+	protected void replayNonNullString(String value, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException {
 		eventWriter.add(XML_EVENTS_FACTORY.createCharacters(value));
+	}
+
+	/* (non-Javadoc)
+	 * @see org.springframework.ws.ext.bind.internal.model.AbstractSimpleTypePattern#consumeNonNullString(javax.xml.stream.XMLEventReader, org.springframework.ws.ext.bind.internal.UnmarshallingContext)
+	 */
+	@Override
+	protected String consumeNonNullString(XMLEventReader eventReader, UnmarshallingContext context) throws XMLStreamException {
+		return eventReader.nextEvent().asCharacters().getData();
 	}
 
 	/* (non-Javadoc)

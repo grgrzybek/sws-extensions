@@ -18,6 +18,7 @@ package org.springframework.ws.ext.bind.jaxb;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,6 +27,11 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
 import javax.xml.transform.Result;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
@@ -33,8 +39,12 @@ import javax.xml.transform.stream.StreamSource;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.ws.ext.bind.jaxb.context0.MyProperty1;
 import org.springframework.ws.ext.bind.jaxb.context0.MyProperty2;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.xml.sax.InputSource;
 
 import com.sun.xml.bind.v2.runtime.IllegalAnnotationsException;
 
@@ -134,6 +144,43 @@ public class JaxbTest {
 
 		// and I thought it's illegal...
 		m.marshal(new JAXBElement<String>(new QName("a", "a a"), String.class, "hello"), System.out);
+	}
+
+	@Test
+	public void namespacesOfAttributes() throws Exception {
+		XMLEventReader reader = XMLInputFactory.newFactory().createXMLEventReader(new ClassPathResource("org/springframework/ws/ext/bind/jaxb/context6/1.xml").getInputStream());
+		reader.nextEvent();
+		StartElement start = reader.nextEvent().asStartElement();
+		for (Iterator<?> it = start.getAttributes(); it.hasNext(); ) {
+			System.out.println(((Attribute)it.next()).getName());
+		}
+		System.out.println("---");
+		reader = XMLInputFactory.newFactory().createXMLEventReader(new ClassPathResource("org/springframework/ws/ext/bind/jaxb/context6/2.xml").getInputStream());
+		reader.nextEvent();
+		start = reader.nextEvent().asStartElement();
+		for (Iterator<?> it = start.getAttributes(); it.hasNext(); ) {
+			System.out.println(((Attribute)it.next()).getName());
+		}
+		
+		System.out.println("---");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		Document doc1 = dbf.newDocumentBuilder().parse(new InputSource(new ClassPathResource("org/springframework/ws/ext/bind/jaxb/context6/1.xml").getInputStream()));
+		NamedNodeMap attributes1 = doc1.getDocumentElement().getAttributes();
+		for (int i=0; i<attributes1.getLength(); i++)
+			System.out.println(((org.w3c.dom.Attr)attributes1.item(i)).getName() + " (" + ((org.w3c.dom.Attr)attributes1.item(i)).getNamespaceURI() + ")");
+
+		System.out.println("---");
+		doc1 = dbf.newDocumentBuilder().parse(new InputSource(new ClassPathResource("org/springframework/ws/ext/bind/jaxb/context6/2.xml").getInputStream()));
+		attributes1 = doc1.getDocumentElement().getAttributes();
+		for (int i=0; i<attributes1.getLength(); i++)
+			System.out.println(((org.w3c.dom.Attr)attributes1.item(i)).getName() + " (" + ((org.w3c.dom.Attr)attributes1.item(i)).getNamespaceURI() + ")");
+		
+		System.out.println("---");
+		doc1 = dbf.newDocumentBuilder().parse(new InputSource(new ClassPathResource("org/springframework/ws/ext/bind/jaxb/context6/3.xml").getInputStream()));
+		attributes1 = doc1.getDocumentElement().getAttributes();
+		for (int i=0; i<attributes1.getLength(); i++)
+			System.out.println(((org.w3c.dom.Attr)attributes1.item(i)).getName() + " (" + ((org.w3c.dom.Attr)attributes1.item(i)).getNamespaceURI() + ")");
 	}
 
 }

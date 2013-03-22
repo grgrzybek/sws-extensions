@@ -17,6 +17,7 @@
 package org.springframework.ws.ext.bind;
 
 import java.io.StringWriter;
+import java.util.HashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -29,10 +30,10 @@ import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
 
 import org.codehaus.stax2.XMLOutputFactory2;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ws.ext.bind.context1.ClassWithAttributes;
 import org.springframework.ws.ext.bind.context1.ClassWithComplexContent;
 import org.springframework.ws.ext.bind.context1.ClassWithSimpleContentAndAttributes;
 import org.springframework.ws.ext.bind.context1.ClassWithVeryComplexContent;
@@ -41,6 +42,10 @@ import org.springframework.ws.ext.bind.context2.MyClass2;
 import org.springframework.ws.ext.bind.context5.C1;
 import org.springframework.ws.ext.bind.context5.C2;
 import org.springframework.ws.ext.bind.internal.stax.IndentingXMLEventWriter;
+import org.springframework.ws.ext.bind.jaxb.context6.SingleRootElement;
+
+import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
+import com.sun.xml.bind.v2.ContextFactory;
 
 /**
  * <p></p>
@@ -175,14 +180,6 @@ public class SweJaxbMarshallerTest {
 	}
 
 	@Test
-	public void marshalAttributes() throws Exception {
-		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
-		ClassWithAttributes value = new ClassWithAttributes("test", 42);
-		Marshaller m = context.createMarshaller();
-		m.marshal(new JAXBElement<ClassWithAttributes>(new QName("urn:test", "root"), ClassWithAttributes.class, value), System.out);
-	}
-
-	@Test
 	public void marshalComplexContent() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
 		ClassWithComplexContent value = new ClassWithComplexContent("test", 42, "inside");
@@ -194,10 +191,44 @@ public class SweJaxbMarshallerTest {
 	@Test
 	public void marshalVeryComplexContent() throws Exception {
 		JAXBContext context = JAXBContext.newInstance("org.springframework.ws.ext.bind.context1");
-		ClassWithVeryComplexContent value = new ClassWithVeryComplexContent("test", "str", new ClassWithComplexContent("test", 42, "inside"));
+		ClassWithVeryComplexContent value = new ClassWithVeryComplexContent("test-1", "str", new ClassWithComplexContent("test-2", 42, "inside"));
 		Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		m.marshal(new JAXBElement<ClassWithVeryComplexContent>(new QName("urn:test", "root"), ClassWithVeryComplexContent.class, value), System.out);
+	}
+
+	@Test
+	public void marshalVeryComplexContentRI() throws Exception {
+		JAXBContext context = ContextFactory.createContext(new Class[] { org.springframework.ws.ext.bind.jaxb.context6.ClassWithVeryComplexContent.class,
+				SingleRootElement.class }, new HashMap<String, Object>());
+		org.springframework.ws.ext.bind.jaxb.context6.ClassWithVeryComplexContent value = new org.springframework.ws.ext.bind.jaxb.context6.ClassWithVeryComplexContent(
+				"test", "str", new org.springframework.ws.ext.bind.jaxb.context6.ClassWithComplexContent("test", 42, "inside"));
+		Marshaller m = context.createMarshaller();
+		m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapper() {
+			@Override
+			public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix) {
+				if ("urn:test".equals(namespaceUri))
+					return "";
+				else if ("urn:inside:!!!!!!!!".equals(namespaceUri))
+					return "aaa";
+				else
+					return suggestion;
+			}
+		});
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		m.marshal(new JAXBElement<org.springframework.ws.ext.bind.jaxb.context6.ClassWithVeryComplexContent>(new QName("urn:test", "root", ""),
+				org.springframework.ws.ext.bind.jaxb.context6.ClassWithVeryComplexContent.class, value), System.out);
+	}
+
+	@Test
+	public void marshalAllXmlnsRI() throws Exception {
+		JAXBContext context = ContextFactory.createContext(new Class[] { org.springframework.ws.ext.bind.jaxb.context6.ClassWithVeryComplexContent.class,
+				SingleRootElement.class }, new HashMap<String, Object>());
+		Marshaller m = context.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		// ha - RI blindly puts all known namespace declarations and outputs this:
+		// <ns4:root xmlns="urn:inside:!!!!!!!!" xmlns:ns2="urn:inside:3" xmlns:ns3="y" xmlns:ns4="urn:test">xxx</ns4:root>
+		m.marshal(new JAXBElement<String>(new QName("urn:test", "root", ""), String.class, "xxx"), System.out);
 	}
 
 	@Test
@@ -209,11 +240,12 @@ public class SweJaxbMarshallerTest {
 		m.marshal(new JAXBElement<ClassWithSimpleContentAndAttributes>(new QName("urn:test", "root"), ClassWithSimpleContentAndAttributes.class, value),
 				System.out);
 	}
-	
+
 	@Test
+	@Ignore
 	public void marshalNestedSimpleTypes() throws Exception {
 		JAXBContext context = SweJaxbContextFactory.createContext("org.springframework.ws.ext.bind.context5", null);
-		// possibly multiply-nested @XmlValues are still simpleType...
+		// TODO: possibly multiply-nested @XmlValues are still simpleType...
 		// from XSD point of view, C1 is simpleType
 		C1 c1 = new C1();
 		c1.setC2(new C2());
@@ -222,7 +254,7 @@ public class SweJaxbMarshallerTest {
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		m.marshal(new JAXBElement<C1>(new QName("urn:test", "root"), C1.class, c1), System.out);
 	}
-	
+
 	@Test
 	public void marshalNestedSimpleTypesRi() throws Exception {
 		JAXBContext context = JAXBContext.newInstance(C1.class);

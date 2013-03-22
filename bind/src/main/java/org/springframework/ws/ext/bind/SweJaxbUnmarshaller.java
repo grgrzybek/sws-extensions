@@ -20,20 +20,32 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.MarshalException;
 import javax.xml.bind.PropertyException;
+import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.UnmarshallerHandler;
 import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.attachment.AttachmentUnmarshaller;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.Source;
 import javax.xml.validation.Schema;
 
+import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
+import org.springframework.ws.ext.bind.internal.model.ElementPattern;
+import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
@@ -44,12 +56,34 @@ import org.xml.sax.InputSource;
  */
 public class SweJaxbUnmarshaller implements Unmarshaller {
 
+	private SweJaxbContext jaxbContext;
+
+	private Map<String, Object> properties = new HashMap<String, Object>();
+
+	private AttachmentUnmarshaller attachmentUnmarshaller;
+
+	private Listener listener;
+
+	private Schema schema;
+
+	private Map<Class<?>, XmlAdapter<?, ?>> adapters = new HashMap<Class<?>, XmlAdapter<?, ?>>();
+
+	private ValidationEventHandler validationEventHandler;
+
+	private boolean validating;
+
 	/**
-	 * @param sweJaxbContext
+	 * @param jaxbContext
 	 */
-	SweJaxbUnmarshaller(SweJaxbContext sweJaxbContext) {
-		// TODO Auto-generated constructor stub
+	SweJaxbUnmarshaller(SweJaxbContext jaxbContext) {
+		this.jaxbContext = jaxbContext;
 	}
+
+	/*
+	 * Unmarshal operations.
+	 * 
+	 * The final unmarshal method will convert a series of XMLEvents into a Java object
+	 */
 
 	/* (non-Javadoc)
 	 * @see javax.xml.bind.Unmarshaller#unmarshal(java.io.File)
@@ -155,8 +189,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public Object unmarshal(XMLEventReader reader) throws JAXBException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.unmarshal(reader, null).getValue();
 	}
 
 	/* (non-Javadoc)
@@ -164,9 +197,11 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public <T> JAXBElement<T> unmarshal(XMLEventReader reader, Class<T> declaredType) throws JAXBException {
-		// TODO Auto-generated method stub
-		return null;
+		this.positionReaderAtStartElement(reader);
+		return this.unmarshal0(reader, declaredType);
 	}
+
+	/* Other operations */
 
 	/* (non-Javadoc)
 	 * @see javax.xml.bind.Unmarshaller#getUnmarshallerHandler()
@@ -182,8 +217,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public void setValidating(boolean validating) throws JAXBException {
-		// TODO Auto-generated method stub
-
+		this.validating = validating;
 	}
 
 	/* (non-Javadoc)
@@ -191,8 +225,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public boolean isValidating() throws JAXBException {
-		// TODO Auto-generated method stub
-		return false;
+		return this.validating;
 	}
 
 	/* (non-Javadoc)
@@ -200,8 +233,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public void setEventHandler(ValidationEventHandler handler) throws JAXBException {
-		// TODO Auto-generated method stub
-
+		this.validationEventHandler = handler;
 	}
 
 	/* (non-Javadoc)
@@ -209,8 +241,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public ValidationEventHandler getEventHandler() throws JAXBException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.validationEventHandler;
 	}
 
 	/* (non-Javadoc)
@@ -218,8 +249,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public void setProperty(String name, Object value) throws PropertyException {
-		// TODO Auto-generated method stub
-
+		this.properties.put(name, value);
 	}
 
 	/* (non-Javadoc)
@@ -227,8 +257,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public Object getProperty(String name) throws PropertyException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.properties.get(name);
 	}
 
 	/* (non-Javadoc)
@@ -236,8 +265,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public void setSchema(Schema schema) {
-		// TODO Auto-generated method stub
-
+		this.schema = schema;
 	}
 
 	/* (non-Javadoc)
@@ -245,8 +273,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public Schema getSchema() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.schema;
 	}
 
 	/* (non-Javadoc)
@@ -255,8 +282,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	@Override
 	@SuppressWarnings("rawtypes")
 	public void setAdapter(XmlAdapter adapter) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("What class do you want to set this adapter for? Probably not for " + adapter.getClass() + "...");
 	}
 
 	/* (non-Javadoc)
@@ -265,18 +291,16 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	@Override
 	@SuppressWarnings("rawtypes")
 	public <A extends XmlAdapter> void setAdapter(Class<A> type, A adapter) {
-		// TODO Auto-generated method stub
-
+		this.adapters.put(type, adapter);
 	}
 
 	/* (non-Javadoc)
 	 * @see javax.xml.bind.Unmarshaller#getAdapter(java.lang.Class)
 	 */
 	@Override
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public <A extends XmlAdapter> A getAdapter(Class<A> type) {
-		// TODO Auto-generated method stub
-		return null;
+		return (A) this.adapters.get(type);
 	}
 
 	/* (non-Javadoc)
@@ -284,8 +308,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public void setAttachmentUnmarshaller(AttachmentUnmarshaller au) {
-		// TODO Auto-generated method stub
-
+		this.attachmentUnmarshaller = au;
 	}
 
 	/* (non-Javadoc)
@@ -293,8 +316,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public AttachmentUnmarshaller getAttachmentUnmarshaller() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.attachmentUnmarshaller;
 	}
 
 	/* (non-Javadoc)
@@ -302,8 +324,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public void setListener(Listener listener) {
-		// TODO Auto-generated method stub
-
+		this.listener = listener;
 	}
 
 	/* (non-Javadoc)
@@ -311,8 +332,86 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 */
 	@Override
 	public Listener getListener() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.listener;
+	}
+
+	/* Internal methods */
+
+	/**
+	 * The main unmarshal method.
+	 * 
+	 * @param jaxbElement
+	 * @param writer
+	 */
+	private <T> JAXBElement<T> unmarshal0(XMLEventReader reader, Class<T> declaredType) throws JAXBException {
+		try {
+			StartElement unmarshalledElement = reader.peek().asStartElement();
+			XmlEventsPattern pattern = null;
+
+			if (declaredType == null) {
+				// we can unmarshal to @XmlRootElement annotated classes ONLY
+				pattern = this.determineRootXmlPattern(unmarshalledElement);
+				if (pattern == null)
+					throw new UnmarshalException("Can't unmarshall \"" + unmarshalledElement.getName() + "\" element. Ensure there's proper @XmlRootElement annotated class in this unmarshaller's context.");
+			} else {
+				// we know what class to unmarshal the events into - this class serves as the content model and the events must match this model
+				pattern = this.jaxbContext.patterns.get(declaredType);
+				if (pattern == null)
+					throw new UnmarshalException("Can't unmarshall \"" + unmarshalledElement.getName() + "\" into \"" + declaredType.getName() + "\". There's no mapping of this class to proper content model in this context.");
+				
+				// we'll wrap it inside ElementPattern which will peel the events off of the start and end elemen events
+				pattern = new ElementPattern(pattern.getSchemaType(), declaredType, unmarshalledElement.getName(), pattern);
+			}
+
+			UnmarshallingContext context = new UnmarshallingContext();
+
+			// go!
+			@SuppressWarnings("unchecked")
+			T result = (T) pattern.consume(reader, context);
+
+			// if (context.isMultiRefEncoding())
+			// context.getMultiRefSupport().xyzMultiRefs(writer, context);
+
+			JAXBElement<T> resultingJaxbElement = new JAXBElement<T>(unmarshalledElement.getName(), declaredType, result);
+			resultingJaxbElement.setNil(result == null);
+
+			return resultingJaxbElement;
+		}
+		catch (XMLStreamException e) {
+			throw new UnmarshalException(e);
+		}
+	}
+
+	/**
+	 * Skips first events of {@link XMLEventReader} until End-of-stream or {@link XMLStreamConstants#START_ELEMENT} is found
+	 * 
+	 * @param reader
+	 */
+	private void positionReaderAtStartElement(XMLEventReader reader) throws UnmarshalException {
+		XMLEvent first = null;
+		try {
+			while (true) {
+				if ((first = reader.peek()) == null)
+					throw new UnmarshalException("Can't unmarshal empty sequence of XML Events");
+				if (first.getEventType() == XMLEvent.START_ELEMENT)
+					break;
+				first = reader.nextEvent();
+			}
+		} catch (XMLStreamException e) {
+			throw new UnmarshalException(e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * @param jaxbElement
+	 * @return
+	 * @throws MarshalException
+	 */
+	private XmlEventsPattern determineRootXmlPattern(StartElement startElementEvent) throws MarshalException {
+		QName qName = startElementEvent.getName();
+		// TODO: handle xsi:type
+		/*Attribute xsiType = */startElementEvent.getAttributeByName(SweJaxbConstants.XSI_TYPE);
+		return this.jaxbContext.rootPatternsForQNames.get(qName);
 	}
 
 }

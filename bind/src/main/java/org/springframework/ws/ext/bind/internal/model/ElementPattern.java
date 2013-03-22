@@ -16,6 +16,10 @@
 
 package org.springframework.ws.ext.bind.internal.model;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -25,11 +29,14 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 
 import org.springframework.ws.ext.bind.internal.MarshallingContext;
 import org.springframework.ws.ext.bind.internal.QNames;
+import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
+import org.springframework.ws.ext.bind.internal.stax.AttributesAwareXMLEventReader;
 
 /**
  * <p>{@link ElementPattern} wraps:<ul>
@@ -42,8 +49,6 @@ import org.springframework.ws.ext.bind.internal.QNames;
 public class ElementPattern extends XmlEventsPattern {
 
 	private QName elementName;
-	private StartElement startElementEvent;
-	private EndElement endElementEvent;
 
 	private XmlEventsPattern nestedPattern;
 
@@ -57,9 +62,6 @@ public class ElementPattern extends XmlEventsPattern {
 		super(schemaType, javaType);
 		this.elementName = elementName;
 		this.nestedPattern = nestedPattern;
-
-		this.startElementEvent = XML_EVENTS_FACTORY.createStartElement(this.elementName, null, null);
-		this.endElementEvent = XML_EVENTS_FACTORY.createEndElement(this.elementName, null);
 	}
 
 	/* (non-Javadoc)
@@ -68,9 +70,7 @@ public class ElementPattern extends XmlEventsPattern {
 	@Override
 	public void replay(Object object, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException {
 		// <elementName>
-		eventWriter.add(this.startElementEvent);
-
-		this.safeRegisterNamespace(context, eventWriter, this.elementName);
+		StartElement startElement = this.safeCreateElement(context, eventWriter, this.elementName);
 
 		boolean isNil = false;
 		if (object instanceof JAXBElement) {
@@ -79,7 +79,8 @@ public class ElementPattern extends XmlEventsPattern {
 				isNil = true;
 			// dereference marshalled value
 			object = ((JAXBElement<?>) object).getValue();
-		} else if (object == null) {
+		}
+		else if (object == null) {
 			isNil = true;
 		}
 
@@ -94,34 +95,56 @@ public class ElementPattern extends XmlEventsPattern {
 		if (isNil) {
 			String prefix = this.safeRegisterNamespace(context, eventWriter, QNames.XSI_NIL);
 			eventWriter.add(XML_EVENTS_FACTORY.createAttribute(prefix, QNames.XSI_NIL.getNamespaceURI(), QNames.XSI_NIL.getLocalPart(), "true"));
-		} else {
+		}
+		else {
 			if (context.isMultiRefEncoding()) {
 				// choices:
-				//  - marshal ValuePattern.INSTANCE pattern "inline" or as @href?
-				//  - marshal single references "inline" or as @href to multiRef? - requires deferred marshalling to see wether there will more references
-				//    to this value
-				//  - add xsi:type?
-				
+				// - marshal ValuePattern.INSTANCE pattern "inline" or as @href?
+				// - marshal single references "inline" or as @href to multiRef? - requires deferred marshalling to see wether there will more references
+				// to this value
+				// - add xsi:type?
+
 				// the "href" attribute should be unqualified
 				// TODO: what about @href attributes inside elements in default, non-empty namespace? Like: <a xmlns="b" href="#1" />...
-				
+
 				context.getMultiRefSupport().registerMultiRef(object, eventWriter, this.nestedPattern);
-			} else {
+			}
+			else {
 				// inline children
 				this.nestedPattern.replay(object, eventWriter, context);
 			}
 		}
 
 		// </elementName>
-		eventWriter.add(this.endElementEvent);
+		eventWriter.add(XML_EVENTS_FACTORY.createEndElement(startElement.getName(), null));
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#consume(javax.xml.stream.XMLEventReader)
+	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#consume(javax.xml.stream.XMLEventReader, org.springframework.ws.ext.bind.internal.UnmarshallingContext)
 	 */
 	@Override
-	public Object consume(XMLEventReader eventReader) throws XMLStreamException {
-		return null;
+	public Object consume(XMLEventReader eventReader, UnmarshallingContext context) throws XMLStreamException {
+		// just skip element's START_ELEMENT event
+		StartElement startElement = eventReader.nextEvent().asStartElement();
+		
+		// StartElement may contain attributes - these are NOT availabe as separate events in eventReader.nextEvent()!
+		Iterator<?> attributes = startElement.getAttributes();
+		List<Attribute> attrList = new LinkedList<Attribute>();
+		while (attributes.hasNext()) {
+			Attribute a = (Attribute) attributes.next();
+			attrList.add(a);
+		}
+
+		Object value = this.nestedPattern.consume(new AttributesAwareXMLEventReader(eventReader, attrList), context);
+
+		// skip element's END_ELEMENT event
+		while (eventReader.peek() != null) {
+			XMLEvent ev = eventReader.nextEvent();
+			if (ev.getEventType() == XMLEvent.END_ELEMENT)
+				break;
+		}
+
+		return value;
 	}
 
 	/* (non-Javadoc)
@@ -138,6 +161,13 @@ public class ElementPattern extends XmlEventsPattern {
 	@Override
 	public String toString() {
 		return "Pattern marshalled inside \"" + this.elementName + "\" ELEMENT event";
+	}
+
+	/**
+	 * @return the elementName
+	 */
+	public QName getElementName() {
+		return this.elementName;
 	}
 
 }

@@ -24,6 +24,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ws.ext.bind.internal.MarshallingContext;
+import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
 
 /**
  * <p>{@link AbstractSimpleTypePattern} uses {@link ConversionService} to deal only with {@link String} values.</p>
@@ -49,7 +50,7 @@ public abstract class AbstractSimpleTypePattern extends XmlEventsPattern {
 	@Override
 	public void replay(Object object, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException {
 		if (object != null)
-			this.replayNonNullString(this.conversionService.convert(object, String.class), eventWriter);
+			this.replayNonNullString(this.conversionService.convert(object, String.class), eventWriter, context);
 	}
 
 	/**
@@ -58,15 +59,22 @@ public abstract class AbstractSimpleTypePattern extends XmlEventsPattern {
 	 * @param value
 	 * @param eventWriter
 	 */
-	protected abstract void replayNonNullString(String value, XMLEventWriter eventWriter) throws XMLStreamException;
+	protected abstract void replayNonNullString(String value, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException;
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#consume(javax.xml.stream.XMLEventReader)
+	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#consume(javax.xml.stream.XMLEventReader, org.springframework.ws.ext.bind.internal.UnmarshallingContext)
 	 */
 	@Override
-	public Object consume(XMLEventReader eventReader) throws XMLStreamException {
-		return null;
+	public Object consume(XMLEventReader eventReader, UnmarshallingContext context) throws XMLStreamException {
+		return this.conversionService.convert(this.consumeNonNullString(eventReader, context), this.getJavaType());
 	}
+
+	/**
+	 * @param eventReader
+	 * @param context
+	 * @return
+	 */
+	protected abstract String consumeNonNullString(XMLEventReader eventReader, UnmarshallingContext context) throws XMLStreamException;
 
 	/* (non-Javadoc)
 	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#isSimpleType()

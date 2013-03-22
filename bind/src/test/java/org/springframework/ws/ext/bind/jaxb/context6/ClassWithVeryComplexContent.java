@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind.context1;
+package org.springframework.ws.ext.bind.jaxb.context6;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -24,6 +26,7 @@ import javax.xml.bind.annotation.XmlElement;
  *
  * @author Grzegorz Grzybek
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ClassWithVeryComplexContent {
 
 	@XmlAttribute(name = "str-1")

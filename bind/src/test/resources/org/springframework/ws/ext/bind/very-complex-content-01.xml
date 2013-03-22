@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root xmlns="urn:test" str-1="test-1">
+	<ns1:custom-element xmlns:ns1="urn:inside:2">str</ns1:custom-element>
+	<ns2:custom-element2 xmlns:ns2="urn:inside:3" str="test-2" number="42">
+		<ns3:inside-element-with-customized-name xmlns:ns3="urn:inside:1">inside</ns3:inside-element-with-customized-name>
+	</ns2:custom-element2>
+</root>

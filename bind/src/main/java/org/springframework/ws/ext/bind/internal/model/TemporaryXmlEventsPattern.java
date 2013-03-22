@@ -22,6 +22,7 @@ import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 
 import org.springframework.ws.ext.bind.internal.MarshallingContext;
+import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
 
 /**
  * <p>An {@link XmlEventsPattern} acting as a temporary mapping of class to a series of XML events. Needed when two classes
@@ -52,11 +53,11 @@ public class TemporaryXmlEventsPattern extends XmlEventsPattern {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#consume(javax.xml.stream.XMLEventReader)
+	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#consume(javax.xml.stream.XMLEventReader, org.springframework.ws.ext.bind.internal.UnmarshallingContext)
 	 */
 	@Override
-	public Object consume(XMLEventReader eventReader) throws XMLStreamException {
-		return this.realMapping.consume(eventReader);
+	public Object consume(XMLEventReader eventReader, UnmarshallingContext context) throws XMLStreamException {
+		return this.realMapping.consume(eventReader, context);
 	}
 
 	/* (non-Javadoc)

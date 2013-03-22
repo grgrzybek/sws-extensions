@@ -26,9 +26,12 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Namespace;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import org.springframework.ws.ext.bind.internal.MarshallingContext;
+import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
 
 /**
  * <p>In Object-XML mapping, each object may be converted to a series of {@link XMLEvent XML events}. Some of these events (or of these
@@ -83,10 +86,11 @@ public abstract class XmlEventsPattern {
 	 * <p>Unmarshalling - converts a series of {@link XMLEvent XML events} into a Java object.</p>
 	 * 
 	 * @param eventReader
+	 * @param context
 	 * @return
 	 * @throws XMLStreamException
 	 */
-	public abstract Object consume(XMLEventReader eventReader) throws XMLStreamException;
+	public abstract Object consume(XMLEventReader eventReader, UnmarshallingContext context) throws XMLStreamException;
 
 	/**
 	 * <p>Checks whether this pattern relates to a XML Schema Type derived from xsd:anySimpleType and which outputs only objects
@@ -111,7 +115,7 @@ public abstract class XmlEventsPattern {
 	}
 
 	/**
-	 * <p>Converts {@link QName} into {@code prefix:value} using correct prefix found in namespace context or after register one.</p>
+	 * <p>Converts {@link QName} into {@code prefix:value} using correct prefix found in namespace context or after registering one.</p>
 	 * <p>If {@link QName#getNamespaceURI()} is registered in current namespace context, prefix is chosen - preferably {@link QName#getPrefix()}.</p>
 	 * 
 	 * @param qName.getPrefix()
@@ -120,7 +124,7 @@ public abstract class XmlEventsPattern {
 	 * @return
 	 */
 	protected String safeGetQValue(MarshallingContext context, XMLEventWriter eventWriter, QName qName) throws XMLStreamException {
-		// DESIGNFLAW: find a better way to force register namespace
+		// DESIGNFLAW: find a better way to force register namespace - repairing writer doesn't repair QName values, only QName names
 		boolean repairingXmlEventWriter = context.isRepairingXmlEventWriter();
 		context.setRepairingXmlEventWriter(false);
 		String prefix = this.safeRegisterNamespace(context, eventWriter, qName);
@@ -130,46 +134,113 @@ public abstract class XmlEventsPattern {
 	}
 
 	/**
-	 * Safely registers namespace (if necessary {@link XMLEventWriter} may have {@link XMLOutputFactory#IS_REPAIRING_NAMESPACES} set)
-	 * and returns its prefix.
+	 * <p>A method which creates an element. The namespace is looked up in {@link NamespaceContext}, proper prefix is used (or generated). The
+	 * namespace is then declared (unless we have {@link XMLOutputFactory#IS_REPAIRING_NAMESPACES})</p>
+	 * 
+	 * @param context
+	 * @param eventWriter
+	 * @param qName
+	 * @return
+	 * @throws XMLStreamException
+	 */
+	protected StartElement safeCreateElement(MarshallingContext context, XMLEventWriter eventWriter, QName qName) throws XMLStreamException {
+		Namespace namespace = this.safePrepareNamespace(context, eventWriter, qName, NamespaceRegistration.NO);
+
+		// the namespace MAY NOT be registered yet (but it MAY be)
+		StartElement element = XML_EVENTS_FACTORY.createStartElement(namespace.getPrefix(), qName.getNamespaceURI(), qName.getLocalPart(), null, null);
+		eventWriter.add(element);
+
+		// register namespace if necessary
+		if (!context.isRepairingXmlEventWriter() && eventWriter.getPrefix(namespace.getNamespaceURI()) == null)
+			eventWriter.add(namespace);
+		
+		return element;
+	}
+
+	/**
+	 * Safely registers namespace (if necessary - {@link XMLEventWriter} may have {@link XMLOutputFactory#IS_REPAIRING_NAMESPACES} set
+	 * or the namespace may already be registered) and returns its prefix.
 	 * 
 	 * @param context
 	 * @param eventWriter
 	 * @param qName
 	 */
 	protected String safeRegisterNamespace(MarshallingContext context, XMLEventWriter eventWriter, QName qName) throws XMLStreamException {
-		NamespaceContext nsc = eventWriter.getNamespaceContext();
-		boolean prefixFound = false;
-		String foundPrefix = null;
+		Namespace namespace = this.safePrepareNamespace(context, eventWriter, qName, NamespaceRegistration.IF_NECESSARY);
 
+		return namespace.getPrefix();
+	}
+
+	/**
+	 * <p>Prepares {@link Namespace} to be added to {@link XMLEventWriter} and possibly declares it in {@link XMLEventWriter} if it's not already
+	 * registered.</p>
+	 * <p>This method always returns {@link Namespace} representing the {@link QName qName} parameter.</p>
+	 * 
+	 * @param context
+	 * @param eventWriter
+	 * @param qName
+	 * @return
+	 */
+	protected Namespace safePrepareNamespace(MarshallingContext context, XMLEventWriter eventWriter, QName qName, NamespaceRegistration register) throws XMLStreamException {
+		NamespaceContext nsc = eventWriter.getNamespaceContext();
+
+		boolean prefixFound = false;
+		// non null foundPrefix may be qName.getPrefix() or other (from NamespaceContext)
+		String bestPrefix = null;
+		String namespaceURI = qName.getNamespaceURI();
+
+		Namespace result = null;
 		@SuppressWarnings("unchecked")
-		Iterator<String> prefixes = nsc.getPrefixes(qName.getNamespaceURI());
+		Iterator<String> prefixes = nsc.getPrefixes(namespaceURI);
 		while (prefixes.hasNext()) {
 			prefixFound = true;
 			String prefix = prefixes.next();
-			foundPrefix = prefix;
+			bestPrefix = prefix;
 			if (prefix.equals(qName.getPrefix()))
 				break;
 		}
 
-		if (!prefixFound && !context.isRepairingXmlEventWriter()) {
-			// there may be another namespace bound to qName.getPrefix()
-			foundPrefix = qName.getPrefix();
-			String alreadyBoundNamespace = nsc.getNamespaceURI(foundPrefix);
-			if ("".equals(foundPrefix) && XMLConstants.NULL_NS_URI.equals(alreadyBoundNamespace)) {
-				// the default namespace is not bound
-				eventWriter.add(XML_EVENTS_FACTORY.createNamespace(qName.getNamespaceURI()));
-			} else {
-				// unbound prefixes should return XMLConstants.NULL_NS_URI, but Woodstox returns null
-				if (alreadyBoundNamespace != null && !XMLConstants.NULL_NS_URI.equals(alreadyBoundNamespace) && !alreadyBoundNamespace.equals(qName.getNamespaceURI())) {
-					// get random prefix
-					foundPrefix = context.newPrefix();
-				}
-				eventWriter.add(XML_EVENTS_FACTORY.createNamespace(foundPrefix, qName.getNamespaceURI()));
-			}
+		if (context.isRepairingXmlEventWriter()) {
+			// never register, return desired namespace and leave reparation to XMLEventWriter
+			if (bestPrefix == null)
+				return XML_EVENTS_FACTORY.createNamespace(namespaceURI);
+			else
+				return XML_EVENTS_FACTORY.createNamespace(bestPrefix, namespaceURI);
 		}
 
-		return foundPrefix;
+		if (register == NamespaceRegistration.IF_DEFAULT_PREFIX && XMLConstants.DEFAULT_NS_PREFIX.equals(bestPrefix)) {
+			// force registration of probably already registered namespace under new prefix
+			prefixFound = false;
+		}
+
+		if (prefixFound) {
+			// nothing to register
+			return XML_EVENTS_FACTORY.createNamespace(bestPrefix, namespaceURI);
+		} else {
+			// new namespace, but there may be a conflicting namespace bound to qName.getPrefix()
+			bestPrefix = qName.getPrefix();
+			while (true) {
+				String existingNamespace = nsc.getNamespaceURI(bestPrefix);
+				// Woodstox returns XMLConstants.NULL_NS_URI for unbound XMLConstants.DEFAULT_NS_PREFIX - OK
+				// Woodstox returns null for unbound non XMLConstants.DEFAULT_NS_PREFIX - wrong - should return XMLConstants.NULL_NS_URI also
+				if (XMLConstants.DEFAULT_NS_PREFIX.equals(bestPrefix) && XMLConstants.NULL_NS_URI.equals(existingNamespace)) {
+					// no conflict
+					break;
+				}
+				if (existingNamespace == null || existingNamespace.equals(namespaceURI)) {
+					// no conflict
+					break;
+				}
+				// TODO: conflict only if the declaration is at the same level! Use SWE_MARSHALLER_REUSE_PREFIXES property to determine the behavior
+				bestPrefix = context.newPrefix();
+			}
+			result = XML_EVENTS_FACTORY.createNamespace(bestPrefix, namespaceURI);
+			
+			if (register != NamespaceRegistration.NO)
+				eventWriter.add(result);
+		}
+		
+		return result;
 	}
 
 }

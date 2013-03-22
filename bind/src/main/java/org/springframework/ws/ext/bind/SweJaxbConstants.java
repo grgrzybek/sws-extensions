@@ -16,6 +16,7 @@
 
 package org.springframework.ws.ext.bind;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.apache.ws.commons.schema.constants.Constants;
@@ -29,7 +30,7 @@ public interface SweJaxbConstants {
 
 	// JAXB Context properties
 
-	static final String SWE_CONTEXT_PROPERTY_PREFIX = SweJaxbContext.class.getPackage().getName();
+	static final String SWE_CONTEXT_PROPERTY_PREFIX = "swe.jaxb";
 
 	/**
 	 * <p>If the value of this property is true, we try to be as much JAXB compliant as its ... reasonable. Otherwise we try to be pragmatic.</p>
@@ -41,17 +42,24 @@ public interface SweJaxbConstants {
 
 	// JAXB Marshaller properties
 
+	public static final QName XSI_TYPE = new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type", "xsi");
+	
 	/**
 	 * The name of the property used to specify whether or not we're doing multiRef encoding (Soap 1.1 Section 5 Encoding) during marshalling.
 	 * This should be detected by Unmarshaller however.
 	 */
-	public static final String SWE_MARSHALLER_PROPERTY_JAXB_MULTIREFS = "swe.jaxb.marshaller.multirefs";
+	public static final String SWE_MARSHALLER_PROPERTY_JAXB_MULTIREFS = SWE_CONTEXT_PROPERTY_PREFIX + ".marshaller.multirefs";
 
 	/**
 	 * <p>The name of the property used to specify whether or not we add {@code xsi:type="QName"} were it MUST NOT be explicit.</p>
 	 * <p>{@code xsi:type="QName"} should be explicit e.g., in case of using derived type.</p>
 	 */
-	public static final String SWE_MARSHALLER_PROPERTY_SEND_TYPES = "swe.jaxb.marshaller.types";
+	public static final String SWE_MARSHALLER_PROPERTY_SEND_TYPES = SWE_CONTEXT_PROPERTY_PREFIX + ".marshaller.types";
+
+	/**
+	 * TODO: generate new prefix for conflicting namespace or redefine namespace?
+	 */
+	public static final String SWE_MARSHALLER_REUSE_PREFIXES = SWE_CONTEXT_PROPERTY_PREFIX + ".marshaller.prefixes.reuse";
 
 	// JAXB Unmarshaller properties
 

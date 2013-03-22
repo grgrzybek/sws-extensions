@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.bind.context1;
+package org.springframework.ws.ext.bind.jaxb.context6;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public class ClassWithComplexContent {
+public class ClassWithAttributes {
 
 	@XmlAttribute
 	private String str;
@@ -32,24 +31,13 @@ public class ClassWithComplexContent {
 	@XmlAttribute
 	private int number;
 
-	@XmlElement(name = "inside-element-with-customized-name", namespace = "urn:inside:1")
-	private String inside;
-
-	/**
-	 * 
-	 */
-	public ClassWithComplexContent() {
-	}
-
 	/**
 	 * @param str
 	 * @param number
-	 * @param inside
 	 */
-	public ClassWithComplexContent(String str, int number, String inside) {
+	public ClassWithAttributes(String str, int number) {
 		this.str = str;
 		this.number = number;
-		this.inside = inside;
 	}
 
 	/**
@@ -79,19 +67,4 @@ public class ClassWithComplexContent {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-
-	/**
-	 * @return the inside
-	 */
-	public String getInside() {
-		return this.inside;
-	}
-
-	/**
-	 * @param inside the inside to set
-	 */
-	public void setInside(String inside) {
-		this.inside = inside;
-	}
-
 }

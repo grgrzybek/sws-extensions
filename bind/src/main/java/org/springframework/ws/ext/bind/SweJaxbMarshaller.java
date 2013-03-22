@@ -330,6 +330,7 @@ public class SweJaxbMarshaller implements Marshaller, SweJaxbConstants {
 				writer.add(XmlEventsPattern.XML_EVENTS_FACTORY.createStartDocument(this.encoding, "1.0", true));
 
 			MarshallingContext context = new MarshallingContext();
+			// TODO: correctly handle internal xmlOutputFactory's IS_REPAIRING_NAMESPACES property!
 			context.setRepairingXmlEventWriter((Boolean) this.xmlOutputFactory.getProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES));
 			context.setMultiRefEncoding(this.multiRefEncoding);
 			context.setSendTypes(this.sendTypes);
