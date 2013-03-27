@@ -32,16 +32,25 @@ import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
  *
  * @author Grzegorz Grzybek
  */
-public class TemporaryXmlEventsPattern extends XmlEventsPattern {
+public class TemporaryXmlEventsPattern<T> extends XmlEventsPattern<T> {
 
-	private ContentModelPattern realMapping;
+	private ContentModelPattern<T> realMapping;
 
 	/**
 	 * @param schemaType
 	 * @param javaType
 	 */
-	public TemporaryXmlEventsPattern(QName schemaType, Class<?> javaType) {
+	private TemporaryXmlEventsPattern(QName schemaType, Class<T> javaType) {
 		super(schemaType, javaType);
+	}
+
+	/**
+	 * @param schemaType
+	 * @param javaType
+	 * @return
+	 */
+	public static <T> TemporaryXmlEventsPattern<T> newTemporaryXmlEventsPattern(QName schemaType, Class<T> javaType) {
+		return new TemporaryXmlEventsPattern<T>(schemaType, javaType);
 	}
 
 	/* (non-Javadoc)
@@ -71,7 +80,7 @@ public class TemporaryXmlEventsPattern extends XmlEventsPattern {
 	/**
 	 * @param mapping
 	 */
-	public void setRealPattern(ContentModelPattern mapping) {
+	public void setRealPattern(ContentModelPattern<T> mapping) {
 		this.realMapping = mapping;
 	}
 

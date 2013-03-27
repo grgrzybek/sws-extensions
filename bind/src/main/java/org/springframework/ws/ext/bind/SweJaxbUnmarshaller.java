@@ -343,9 +343,11 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 * @param jaxbElement
 	 * @param writer
 	 */
+	@SuppressWarnings("unchecked")
 	private <T> JAXBElement<T> unmarshal0(XMLEventReader reader, Class<T> declaredType) throws JAXBException {
 		try {
 			StartElement unmarshalledElement = reader.peek().asStartElement();
+			@SuppressWarnings("rawtypes")
 			XmlEventsPattern pattern = null;
 
 			if (declaredType == null) {
@@ -360,13 +362,12 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 					throw new UnmarshalException("Can't unmarshall \"" + unmarshalledElement.getName() + "\" into \"" + declaredType.getName() + "\". There's no mapping of this class to proper content model in this context.");
 				
 				// we'll wrap it inside ElementPattern which will peel the events off of the start and end elemen events
-				pattern = new ElementPattern(pattern.getSchemaType(), declaredType, unmarshalledElement.getName(), pattern);
+				pattern = ElementPattern.newElementPattern(pattern.getSchemaType(), declaredType, unmarshalledElement.getName(), pattern);
 			}
 
 			UnmarshallingContext context = new UnmarshallingContext();
 
 			// go!
-			@SuppressWarnings("unchecked")
 			T result = (T) pattern.consume(reader, context);
 
 			// if (context.isMultiRefEncoding())
@@ -407,7 +408,7 @@ public class SweJaxbUnmarshaller implements Unmarshaller {
 	 * @return
 	 * @throws MarshalException
 	 */
-	private XmlEventsPattern determineRootXmlPattern(StartElement startElementEvent) throws MarshalException {
+	private XmlEventsPattern<?> determineRootXmlPattern(StartElement startElementEvent) throws MarshalException {
 		QName qName = startElementEvent.getName();
 		// TODO: handle xsi:type
 		/*Attribute xsiType = */startElementEvent.getAttributeByName(SweJaxbConstants.XSI_TYPE);

@@ -16,6 +16,9 @@
 
 package org.springframework.ws.ext.bind.internal.model;
 
+import java.text.ParseException;
+import java.util.Locale;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
@@ -23,6 +26,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.format.Formatter;
 import org.springframework.ws.ext.bind.internal.MarshallingContext;
 import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
 
@@ -32,15 +36,16 @@ import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
  *
  * @author Grzegorz Grzybek
  */
-public abstract class AbstractSimpleTypePattern extends XmlEventsPattern {
+public abstract class AbstractSimpleTypePattern<T> extends XmlEventsPattern<T> {
 
-	private ConversionService conversionService;
+//	private ConversionService conversionService;
+	private Formatter<T> formatter;
 
 	/**
 	 * @param schemaType
 	 * @param javaType
 	 */
-	protected AbstractSimpleTypePattern(QName schemaType, Class<?> javaType) {
+	protected AbstractSimpleTypePattern(QName schemaType, Class<T> javaType) {
 		super(schemaType, javaType);
 	}
 
@@ -49,8 +54,11 @@ public abstract class AbstractSimpleTypePattern extends XmlEventsPattern {
 	 */
 	@Override
 	public void replay(Object object, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException {
-		if (object != null)
-			this.replayNonNullString(this.conversionService.convert(object, String.class), eventWriter, context);
+		if (object != null) {
+			@SuppressWarnings("unchecked")
+			String value = this.formatter == null ? object.toString() : this.formatter.print((T) object, Locale.getDefault());
+			this.replayNonNullString(value, eventWriter, context);
+		}
 	}
 
 	/**
@@ -64,9 +72,18 @@ public abstract class AbstractSimpleTypePattern extends XmlEventsPattern {
 	/* (non-Javadoc)
 	 * @see org.springframework.ws.ext.bind.internal.model.XmlEventsPattern#consume(javax.xml.stream.XMLEventReader, org.springframework.ws.ext.bind.internal.UnmarshallingContext)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object consume(XMLEventReader eventReader, UnmarshallingContext context) throws XMLStreamException {
-		return this.conversionService.convert(this.consumeNonNullString(eventReader, context), this.getJavaType());
+	public T consume(XMLEventReader eventReader, UnmarshallingContext context) throws XMLStreamException {
+		String value = this.consumeNonNullString(eventReader, context);
+		if (this.formatter == null)
+			return (T) value;
+		try {
+			return this.formatter.parse(value, Locale.getDefault());
+		}
+		catch (ParseException e) {
+			throw new XMLStreamException(e.getMessage(), e);
+		}
 	}
 
 	/**
@@ -84,13 +101,20 @@ public abstract class AbstractSimpleTypePattern extends XmlEventsPattern {
 		return true;
 	}
 
+//	/**
+//	 * {@link AbstractSimpleTypePattern} uses {@link ConversionService} to marshal only {@link String} values
+//	 * 
+//	 * @param conversionService
+//	 */
+//	public void setConversionService(ConversionService conversionService) {
+//		this.conversionService = conversionService;
+//	}
+
 	/**
-	 * {@link AbstractSimpleTypePattern} uses {@link ConversionService} to marshal only {@link String} values
-	 * 
-	 * @param conversionService
+	 * @param formatter the formatter to set
 	 */
-	public void setConversionService(ConversionService conversionService) {
-		this.conversionService = conversionService;
+	public void setFormatter(Formatter<T> formatter) {
+		this.formatter = formatter;
 	}
 
 	/* (non-Javadoc)

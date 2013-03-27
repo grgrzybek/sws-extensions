@@ -321,7 +321,7 @@ public class SweJaxbMarshaller implements Marshaller, SweJaxbConstants {
 	 * @param writer
 	 */
 	private void marshal0(Object jaxbElement, XMLEventWriter writer) throws JAXBException {
-		XmlEventsPattern pattern = this.determineXmlPattern(jaxbElement);
+		XmlEventsPattern<?> pattern = this.determineXmlPattern(jaxbElement);
 		try {
 			if (this.formatting)
 				writer = new IndentingXMLEventWriter(writer);
@@ -357,12 +357,14 @@ public class SweJaxbMarshaller implements Marshaller, SweJaxbConstants {
 	 * @return
 	 * @throws MarshalException 
 	 */
-	private XmlEventsPattern determineXmlPattern(Object jaxbElement) throws MarshalException {
+	@SuppressWarnings("unchecked")
+	private XmlEventsPattern<?> determineXmlPattern(Object jaxbElement) throws MarshalException {
 		Class<?> clz = jaxbElement.getClass();
 		if (jaxbElement instanceof JAXBElement)
 			clz = ((JAXBElement<?>) jaxbElement).getDeclaredType();
 
 		// pattern (both for root and non-root classes) must be present in context's mapping metadata
+		@SuppressWarnings("rawtypes")
 		XmlEventsPattern pattern = this.jaxbContext.patterns.get(clz);
 
 		if (pattern == null)
@@ -375,7 +377,7 @@ public class SweJaxbMarshaller implements Marshaller, SweJaxbConstants {
 		// if we marshal JAXBElement, we create ElementPattern on demand (without caching it!)
 		if (jaxbElement instanceof JAXBElement) {
 			// TODO: use ((JAXBElement<?>) jaxbElement).getDeclaredType() or ((JAXBElement<?>) jaxbElement).getValue().getClass()?
-			return new ElementPattern(pattern.getSchemaType(), ((JAXBElement<?>) jaxbElement).getDeclaredType(), ((JAXBElement<?>) jaxbElement).getName(), pattern);
+			return ElementPattern.newElementPattern(pattern.getSchemaType(), ((JAXBElement<?>) jaxbElement).getDeclaredType(), ((JAXBElement<?>) jaxbElement).getName(), pattern);
 		}
 
 		throw new MarshalException("Unable to marshal object of class " + clz.getName()

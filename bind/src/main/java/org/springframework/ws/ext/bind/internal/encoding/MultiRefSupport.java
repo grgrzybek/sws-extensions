@@ -123,7 +123,7 @@ public interface MultiRefSupport {
 	 * @param eventWriter
 	 * @param nestedPattern
 	 */
-	public void registerMultiRef(Object object, XMLEventWriter eventWriter, XmlEventsPattern nestedPattern) throws XMLStreamException;
+	public void registerMultiRef(Object object, XMLEventWriter eventWriter, XmlEventsPattern<?> nestedPattern) throws XMLStreamException;
 
 	/**
 	 * @param eventWriter
@@ -142,5 +142,5 @@ public interface MultiRefSupport {
 	 * @param accessorName
 	 * @return
 	 */
-	public XmlEventsPattern adaptPattern(XmlEventsPattern pattern, String accessorName);
+	public <T> XmlEventsPattern<T> adaptPattern(XmlEventsPattern<T> pattern, String accessorName);
 }

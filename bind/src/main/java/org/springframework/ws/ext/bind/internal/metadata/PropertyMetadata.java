@@ -16,6 +16,8 @@
 
 package org.springframework.ws.ext.bind.internal.metadata;
 
+import java.lang.reflect.Field;
+
 import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
 
 /**
@@ -32,7 +34,10 @@ public class PropertyMetadata {
 	private boolean directProperty;
 
 	/** {@link XmlEventsPattern} to which a given property maps. */
-	private XmlEventsPattern pattern;
+	private XmlEventsPattern<?> pattern;
+
+	/** {@link Field} for direct access */
+	private Field field;
 
 	/**
 	 * @param propertyName
@@ -48,7 +53,7 @@ public class PropertyMetadata {
 	 * @param directProperty
 	 * @param pattern
 	 */
-	public PropertyMetadata(String propertyName, boolean directProperty, XmlEventsPattern pattern) {
+	public PropertyMetadata(String propertyName, boolean directProperty, XmlEventsPattern<?> pattern) {
 		this.propertyName = propertyName;
 		this.directProperty = directProperty;
 		this.pattern = pattern;
@@ -57,14 +62,14 @@ public class PropertyMetadata {
 	/**
 	 * @return the pattern
 	 */
-	public XmlEventsPattern getPattern() {
+	public XmlEventsPattern<?> getPattern() {
 		return this.pattern;
 	}
 
 	/**
 	 * @param pattern the pattern to set
 	 */
-	public void setPattern(XmlEventsPattern pattern) {
+	public void setPattern(XmlEventsPattern<?> pattern) {
 		this.pattern = pattern;
 	}
 
@@ -80,6 +85,33 @@ public class PropertyMetadata {
 	 */
 	public boolean isDirectProperty() {
 		return this.directProperty;
+	}
+
+	/**
+	 * @param field
+	 */
+	public void setField(Field field) {
+		this.field = field;
+	}
+
+	/**
+	 * @return the field
+	 */
+	public Field getField() {
+		return this.field;
+	}
+
+	/**
+	 * @param object 
+	 * @return
+	 */
+	public Object getFieldValue(Object object) {
+		try {
+			return this.field.get(object);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
 	}
 
 }

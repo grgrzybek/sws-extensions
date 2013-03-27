@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.format.Formatter;
-import org.springframework.format.support.FormattingConversionService;
 import org.springframework.ws.ext.bind.SweJaxbConstants;
 import org.springframework.ws.ext.bind.internal.model.ValuePattern;
 import org.springframework.ws.ext.bind.internal.model.XmlEventsPattern;
@@ -41,9 +40,8 @@ public abstract class BuiltInMappings {
 
 	/**
 	 * @param patterns
-	 * @param formattingConversionService
 	 */
-	public static void initialize(Map<Class<?>, XmlEventsPattern> patterns, FormattingConversionService formattingConversionService) {
+	public static <T> void initialize(Map<Class<?>, XmlEventsPattern<?>> patterns) {
 		// see: com.sun.xml.bind.v2.model.impl.RuntimeBuiltinLeafInfoImpl<T> and inner
 		// com.sun.xml.bind.v2.model.impl.RuntimeBuiltinLeafInfoImpl.StringImpl<T> implementations
 
@@ -64,68 +62,80 @@ public abstract class BuiltInMappings {
 		// ValuePattern pattern = null;
 
 		// 3.3.1 string (#string)
-		patterns.put(String.class, new ValuePattern(SweJaxbConstants.XSD_STRING, String.class));
+		patterns.put(String.class, ValuePattern.newValuePattern(SweJaxbConstants.XSD_STRING, String.class));
 
 		// 3.3.2 boolean (#boolean)
-		patterns.put(Boolean.class, new ValuePattern(SweJaxbConstants.XSD_BOOLEAN, Boolean.class));
-		patterns.put(Boolean.TYPE, new ValuePattern(SweJaxbConstants.XSD_BOOLEAN, Boolean.class));
-		formattingConversionService.addFormatterForFieldType(Boolean.class, new Formatter<Boolean>() {
-			@Override
-			public String print(Boolean object, Locale locale) {
-				return Boolean.toString(object);
-			}
+		{
+			ValuePattern<Boolean> vp = ValuePattern.newValuePattern(SweJaxbConstants.XSD_BOOLEAN, Boolean.class);
+			patterns.put(Boolean.class, vp);
+			patterns.put(Boolean.TYPE, vp);
+			vp.setFormatter(new Formatter<Boolean>() {
+				@Override
+				public String print(Boolean object, Locale locale) {
+					return Boolean.toString(object);
+				}
 
-			@Override
-			public Boolean parse(String text, Locale locale) throws ParseException {
-				// TODO: should allow "true", "false", "1", "0"
-				return Boolean.parseBoolean(text);
-			}
-		});
+				@Override
+				public Boolean parse(String text, Locale locale) throws ParseException {
+					// TODO: should allow "true", "false", "1", "0"
+					return Boolean.parseBoolean(text);
+				}
+			});
+		}
 
 		// 3.3.3 decimal (#decimal)
-		patterns.put(BigDecimal.class, new ValuePattern(SweJaxbConstants.XSD_DECIMAL, BigDecimal.class));
-		formattingConversionService.addFormatterForFieldType(BigDecimal.class, new Formatter<BigDecimal>() {
-			@Override
-			public String print(BigDecimal object, Locale locale) {
-				return object.toPlainString();
-			}
+		{
+			ValuePattern<BigDecimal> vp = ValuePattern.newValuePattern(SweJaxbConstants.XSD_DECIMAL, BigDecimal.class);
+			patterns.put(BigDecimal.class, vp);
+			vp.setFormatter(new Formatter<BigDecimal>() {
+				@Override
+				public String print(BigDecimal object, Locale locale) {
+					return object.toPlainString();
+				}
 
-			@Override
-			public BigDecimal parse(String text, Locale locale) throws ParseException {
-				// TODO: should allow (\+|-)?([0-9]+(\.[0-9]*)?|\.[0-9]+)
-				return new BigDecimal(text);
-			}
-		});
+				@Override
+				public BigDecimal parse(String text, Locale locale) throws ParseException {
+					// TODO: should allow (\+|-)?([0-9]+(\.[0-9]*)?|\.[0-9]+)
+					return new BigDecimal(text);
+				}
+			});
+		}
 
 		// 3.3.4 float (#float)
-		patterns.put(Float.class, new ValuePattern(SweJaxbConstants.XSD_FLOAT, Float.class));
-		formattingConversionService.addFormatterForFieldType(Float.class, new Formatter<Float>() {
-			@Override
-			public String print(Float object, Locale locale) {
-				return Float.toString(object);
-			}
+		{
+			ValuePattern<Float> vp = ValuePattern.newValuePattern(SweJaxbConstants.XSD_FLOAT, Float.class);
+			patterns.put(Float.class, vp);
+			vp.setFormatter(new Formatter<Float>() {
+				@Override
+				public String print(Float object, Locale locale) {
+					return Float.toString(object);
+				}
 
-			@Override
-			public Float parse(String text, Locale locale) throws ParseException {
-				// TODO: should allow (\+|-)?([0-9]+(\.[0-9]*)?|\.[0-9]+)([Ee](\+|-)?[0-9]+)?|(\+|-)?INF|NaN
-				return Float.parseFloat(text);
-			}
-		});
+				@Override
+				public Float parse(String text, Locale locale) throws ParseException {
+					// TODO: should allow (\+|-)?([0-9]+(\.[0-9]*)?|\.[0-9]+)([Ee](\+|-)?[0-9]+)?|(\+|-)?INF|NaN
+					return Float.parseFloat(text);
+				}
+			});
+		}
 
 		// 3.3.5 double (#double)
-		patterns.put(Double.class, new ValuePattern(SweJaxbConstants.XSD_DOUBLE, Double.class));
-		formattingConversionService.addFormatterForFieldType(Double.class, new Formatter<Double>() {
-			@Override
-			public String print(Double object, Locale locale) {
-				return Double.toString(object);
-			}
+		{
+			ValuePattern<Double> vp = ValuePattern.newValuePattern(SweJaxbConstants.XSD_DOUBLE, Double.class);
+			patterns.put(Double.class, vp);
+			vp.setFormatter(new Formatter<Double>() {
+				@Override
+				public String print(Double object, Locale locale) {
+					return Double.toString(object);
+				}
 
-			@Override
-			public Double parse(String text, Locale locale) throws ParseException {
-				// TODO: should allow (\+|-)?([0-9]+(\.[0-9]*)?|\.[0-9]+)([Ee](\+|-)?[0-9]+)?|(\+|-)?INF|NaN
-				return Double.parseDouble(text);
-			}
-		});
+				@Override
+				public Double parse(String text, Locale locale) throws ParseException {
+					// TODO: should allow (\+|-)?([0-9]+(\.[0-9]*)?|\.[0-9]+)([Ee](\+|-)?[0-9]+)?|(\+|-)?INF|NaN
+					return Double.parseDouble(text);
+				}
+			});
+		}
 
 		// 3.3.6 duration (#duration)
 		// 3.3.7 dateTime (#dateTime)
@@ -173,62 +183,62 @@ public abstract class BuiltInMappings {
 		// 3.4.27 dayTimeDuration (#dayTimeDuration)
 		// 3.4.28 dateTimeStamp (#dateTimeStamp)
 
-		patterns.put(Byte.class, ValuePattern.INSTANCE);
-		formattingConversionService.addFormatterForFieldType(Byte.class, new Formatter<Byte>() {
-			@Override
-			public String print(Byte object, Locale locale) {
-				return Byte.toString(object);
-			}
+//		patterns.put(Byte.class, ValuePattern.INSTANCE);
+//		formatters.put(Byte.class, new Formatter<Byte>() {
+//			@Override
+//			public String print(Byte object, Locale locale) {
+//				return Byte.toString(object);
+//			}
+//
+//			@Override
+//			public Byte parse(String text, Locale locale) throws ParseException {
+//				return Byte.parseByte(text);
+//			}
+//		});
 
-			@Override
-			public Byte parse(String text, Locale locale) throws ParseException {
-				return Byte.parseByte(text);
-			}
-		});
+//		patterns.put(Short.class, ValuePattern.INSTANCE);
+//		formatters.put(Short.class, new Formatter<Short>() {
+//			@Override
+//			public String print(Short object, Locale locale) {
+//				return Short.toString(object);
+//			}
+//
+//			@Override
+//			public Short parse(String text, Locale locale) throws ParseException {
+//				return Short.parseShort(text);
+//			}
+//		});
 
-		patterns.put(Short.class, ValuePattern.INSTANCE);
-		formattingConversionService.addFormatterForFieldType(Short.class, new Formatter<Short>() {
-			@Override
-			public String print(Short object, Locale locale) {
-				return Short.toString(object);
-			}
+//		patterns.put(Integer.class, new ValuePattern<Object>(SweJaxbConstants.XSD_INTEGER, Integer.class));
+//		patterns.put(Integer.TYPE, new ValuePattern<Object>(SweJaxbConstants.XSD_INTEGER, Integer.class));
+//		formatters.put(Integer.class, new Formatter<Integer>() {
+//			@Override
+//			public String print(Integer object, Locale locale) {
+//				return Integer.toString(object);
+//			}
+//
+//			@Override
+//			public Integer parse(String text, Locale locale) throws ParseException {
+//				return Integer.parseInt(text);
+//			}
+//		});
 
-			@Override
-			public Short parse(String text, Locale locale) throws ParseException {
-				return Short.parseShort(text);
-			}
-		});
-
-		patterns.put(Integer.class, new ValuePattern(SweJaxbConstants.XSD_INTEGER, Integer.class));
-		patterns.put(Integer.TYPE, new ValuePattern(SweJaxbConstants.XSD_INTEGER, Integer.class));
-		formattingConversionService.addFormatterForFieldType(Integer.class, new Formatter<Integer>() {
-			@Override
-			public String print(Integer object, Locale locale) {
-				return Integer.toString(object);
-			}
-
-			@Override
-			public Integer parse(String text, Locale locale) throws ParseException {
-				return Integer.parseInt(text);
-			}
-		});
-
-		patterns.put(Long.class, ValuePattern.INSTANCE);
-		formattingConversionService.addFormatterForFieldType(Long.class, new Formatter<Long>() {
-			@Override
-			public String print(Long object, Locale locale) {
-				return Long.toString(object);
-			}
-
-			@Override
-			public Long parse(String text, Locale locale) throws ParseException {
-				return Long.parseLong(text);
-			}
-		});
-
-		// conversion service
-		for (XmlEventsPattern vp : patterns.values())
-			((ValuePattern) vp).setConversionService(formattingConversionService);
+//		patterns.put(Long.class, ValuePattern.INSTANCE);
+//		formatters.put(Long.class, new Formatter<Long>() {
+//			@Override
+//			public String print(Long object, Locale locale) {
+//				return Long.toString(object);
+//			}
+//
+//			@Override
+//			public Long parse(String text, Locale locale) throws ParseException {
+//				return Long.parseLong(text);
+//			}
+//		});
+		//
+		// // conversion service
+		// for (XmlEventsPattern vp : patterns.values())
+		// ((ValuePattern) vp).setConversionService(formattingConversionService);
 
 		// other simple types
 		// JAXB2:

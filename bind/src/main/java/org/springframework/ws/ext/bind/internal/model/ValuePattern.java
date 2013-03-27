@@ -30,16 +30,24 @@ import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
  *
  * @author Grzegorz Grzybek
  */
-public class ValuePattern extends AbstractSimpleTypePattern {
+public class ValuePattern<T> extends AbstractSimpleTypePattern<T> {
 
-	public static final ValuePattern INSTANCE = new ValuePattern(null, null);
+	public static final ValuePattern<Object> INSTANCE = newValuePattern(null, Object.class);
+	
+	/**
+	 * @param schemaType
+	 * @param javaType
+	 */
+	private ValuePattern(QName schemaType, Class<T> javaType) {
+		super(schemaType, javaType);
+	}
 
 	/**
 	 * @param schemaType
 	 * @param javaType
 	 */
-	public ValuePattern(QName schemaType, Class<?> javaType) {
-		super(schemaType, javaType);
+	public static <T> ValuePattern<T> newValuePattern(QName schemaType, Class<T> javaType) {
+		return new ValuePattern<T>(schemaType, javaType);
 	}
 
 	/* (non-Javadoc)

@@ -28,7 +28,7 @@ public class MultiRef {
 	private int id;
 	private int systemIdentity;
 	private Object value;
-	private XmlEventsPattern pattern;
+	private XmlEventsPattern<?> pattern;
 	private boolean done = false;
 
 	/**
@@ -70,14 +70,14 @@ public class MultiRef {
 	/**
 	 * @return the pattern
 	 */
-	public XmlEventsPattern getPattern() {
+	public XmlEventsPattern<?> getPattern() {
 		return this.pattern;
 	}
 
 	/**
 	 * @param pattern the pattern to set
 	 */
-	public void setPattern(XmlEventsPattern pattern) {
+	public void setPattern(XmlEventsPattern<?> pattern) {
 		this.pattern = pattern;
 	}
 

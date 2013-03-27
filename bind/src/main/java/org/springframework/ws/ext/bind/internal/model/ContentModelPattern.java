@@ -57,7 +57,7 @@ import org.springframework.ws.ext.bind.internal.metadata.PropertyMetadataValue;
  *
  * @author Grzegorz Grzybek
  */
-public class ContentModelPattern extends XmlEventsPattern {
+public class ContentModelPattern<T> extends XmlEventsPattern<T> {
 
 	private List<PropertyMetadata> contentModel = new LinkedList<PropertyMetadata>();
 
@@ -71,6 +71,9 @@ public class ContentModelPattern extends XmlEventsPattern {
 	// optimizations to check wether to create particular PropertyAccessor
 	private boolean hasFieldProperties = false;
 
+//	// a fieldName -> Field mapping for faster DirectFieldAccessor
+//	private Map<String, Field> contentModelDirectFieldMap = null;
+
 	/**
 	 * <p>Initializes content model with a sequence (XSD's sequence, choice or all) of properties, each related to a given bean property and
 	 * mapping to a given {@link XmlEventsPattern}.</p>
@@ -79,19 +82,29 @@ public class ContentModelPattern extends XmlEventsPattern {
 	 * @param javaType
 	 * @param contentModel
 	 */
-	public ContentModelPattern(QName schemaType, Class<?> javaType, List<PropertyMetadata> contentModel) {
+	private ContentModelPattern(QName schemaType, Class<T> javaType, List<PropertyMetadata> contentModel) {
 		super(schemaType, javaType);
 		this.contentModel = contentModel;
 		for (PropertyMetadata pm : contentModel) {
 			if (pm.isDirectProperty())
 				this.hasFieldProperties = true;
 			if (pm.getPattern() instanceof AttributePattern)
-				this.attributes.put(((AttributePattern)pm.getPattern()).getAttributeName(), pm);
+				this.attributes.put(((AttributePattern<?>)pm.getPattern()).getAttributeName(), pm);
 			else if (pm.getPattern() instanceof ElementPattern)
-				this.elements.put(((ElementPattern)pm.getPattern()).getElementName(), pm);
+				this.elements.put(((ElementPattern<?>)pm.getPattern()).getElementName(), pm);
 			else if (pm.getPattern() instanceof ValuePattern)
 				this.value = pm;
 		}
+	}
+
+	/**
+	 * @param schemaType
+	 * @param javaType
+	 * @param contentModel
+	 * @return
+	 */
+	public static <T> ContentModelPattern<T> newContentModelPattern(QName schemaType, Class<T> javaType, List<PropertyMetadata> contentModel) {
+		return new ContentModelPattern<T>(schemaType, javaType, contentModel);
 	}
 
 	/* (non-Javadoc)
@@ -101,33 +114,37 @@ public class ContentModelPattern extends XmlEventsPattern {
 	public void replay(Object object, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException {
 		// nested patterns will extract configured property (field or getter) from this beanWrapper.
 		// in order to minimize a number of PropertyAccessor instances we will create them here and reuse for each direct/child property
-		PropertyAccessor directFieldAccessor = null;
+//		FastDirectFieldAccessor directFieldAccessor = null;
 		PropertyAccessor beanPropertyAccessor = null;
-		if (this.hasFieldProperties) {
-			// we'll get to the wrapped instance through DirectFieldAccessor
-			// we create it here, because there may be more field properties to be marshalled
-			directFieldAccessor = PropertyAccessorFactory.forDirectFieldAccess(object);
-		}
-		else {
+//		if (this.hasFieldProperties) {
+//			// we'll get to the wrapped instance through DirectFieldAccessor
+//			// we create it here, because there may be more field properties to be marshalled
+//			directFieldAccessor = new FastDirectFieldAccessor(this.contentModelDirectFieldMap, object);
+//		}
+//		else {
 			// if there are no JAXB mapped fields, there should be JAXB mapped properties. Otherwise this would be a very strange JAXB class...
 			beanPropertyAccessor = new BeanWrapperImpl(false);
 			((BeanWrapperImpl) beanPropertyAccessor).setWrappedInstance(object);
-		}
+//		}
 
 		// each nested pattern is related to some property of the marshalled object
 		// this is the main responsibility of this pattern (ContentModelPattern)
 		// the order of properties is determined by this.contentModel, not by the order of bean properties
 		for (PropertyMetadata pm : this.contentModel) {
 			boolean direct = pm.isDirectProperty();
-			PropertyAccessor propertyAccessor = direct ? directFieldAccessor : beanPropertyAccessor;
-			object = propertyAccessor.getPropertyValue(pm.getPropertyName());
+//			PropertyAccessor propertyAccessor = direct ? directFieldAccessor : beanPropertyAccessor;
+			Object value = null;
+			if (direct)
+				value = pm.getFieldValue(object);
+			else
+				;
 
 			// for multi-ref encoding every property is an element - @XmlValue and @XmlAttribute too!
 			if (context.isMultiRefEncoding()) {
 				context.getMultiRefSupport().adaptPattern(pm.getPattern(), pm.getPropertyName()).replay(object, eventWriter, context);
 			}
 			else {
-				pm.getPattern().replay(object, eventWriter, context);
+				pm.getPattern().replay(value, eventWriter, context);
 			}
 		}
 	}
@@ -262,5 +279,12 @@ public class ContentModelPattern extends XmlEventsPattern {
 	public String toString() {
 		return "A sequence of " + this.contentModel.size() + " nested property patterns";
 	}
+
+//	/**
+//	 * @param fieldMap
+//	 */
+//	public void setFieldsMap(Map<String, Field> fieldMap) {
+//		this.contentModelDirectFieldMap = fieldMap;
+//	}
 
 }

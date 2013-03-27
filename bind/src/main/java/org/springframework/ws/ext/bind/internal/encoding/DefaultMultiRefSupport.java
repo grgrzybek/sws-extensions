@@ -43,7 +43,7 @@ public class DefaultMultiRefSupport implements MultiRefSupport {
 	 * @see org.springframework.ws.ext.bind.internal.encoding.MultiRefSupport#registerMultiRef(java.lang.Object, javax.xml.stream.XMLEventWriter, org.springframework.ws.ext.bind.internal.model.XmlEventsPattern)
 	 */
 	@Override
-	public void registerMultiRef(Object object, XMLEventWriter eventWriter, XmlEventsPattern nestedPattern) throws XMLStreamException {
+	public void registerMultiRef(Object object, XMLEventWriter eventWriter, XmlEventsPattern<?> nestedPattern) throws XMLStreamException {
 		// object may have been already registered
 		MultiRef mr = new MultiRef(object);
 		int sysId = mr.getSystemIdentity();
@@ -71,6 +71,8 @@ public class DefaultMultiRefSupport implements MultiRefSupport {
 				emptyPass = false;
 				eventWriter.add(XmlEventsPattern.XML_EVENTS_FACTORY.createStartElement(new QName("", "mr"), null, null));
 				eventWriter.add(XmlEventsPattern.XML_EVENTS_FACTORY.createAttribute("id", "id" + mr.getId()));
+//				eventWriter.add(XmlEventsPattern.XML_EVENTS_FACTORY.createAttribute(SweJaxbConstants.XSI_TYPE, "id", "id" + mr.getId()));
+				
 				mr.getPattern().replay(mr.getValue(), eventWriter, context);
 				mr.setDone(true);
 				eventWriter.add(XmlEventsPattern.XML_EVENTS_FACTORY.createEndElement(new QName("", "mr"), null));
@@ -84,9 +86,9 @@ public class DefaultMultiRefSupport implements MultiRefSupport {
 	 * @see org.springframework.ws.ext.bind.internal.encoding.MultiRefSupport#adaptPattern(org.springframework.ws.ext.bind.internal.model.XmlEventsPattern, java.lang.String)
 	 */
 	@Override
-	public XmlEventsPattern adaptPattern(XmlEventsPattern pattern, String accessorName) {
+	public <T> XmlEventsPattern<T> adaptPattern(XmlEventsPattern<T> pattern, String accessorName) {
 		if (pattern instanceof AbstractSimpleTypePattern) {
-			return new ElementPattern(pattern.getSchemaType(), pattern.getJavaType(), new QName("", accessorName), ValuePattern.INSTANCE);
+			return ElementPattern.newElementPattern(pattern.getSchemaType(), pattern.getJavaType(), new QName("", accessorName), ValuePattern.newValuePattern(pattern.getSchemaType(), pattern.getJavaType()));
 		} else {
 			return pattern;
 		}

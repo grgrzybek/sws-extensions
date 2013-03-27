@@ -46,11 +46,11 @@ import org.springframework.ws.ext.bind.internal.stax.AttributesAwareXMLEventRead
  * 
  * @author Grzegorz Grzybek
  */
-public class ElementPattern extends XmlEventsPattern {
+public class ElementPattern<T> extends XmlEventsPattern<T> {
 
 	private QName elementName;
 
-	private XmlEventsPattern nestedPattern;
+	private XmlEventsPattern<T> nestedPattern;
 
 	/**
 	 * @param schemaType
@@ -58,10 +58,22 @@ public class ElementPattern extends XmlEventsPattern {
 	 * @param elementName
 	 * @param nestedPattern
 	 */
-	public ElementPattern(QName schemaType, Class<?> javaType, QName elementName, XmlEventsPattern nestedPattern) {
+	private ElementPattern(QName schemaType, Class<T> javaType, QName elementName, XmlEventsPattern<T> nestedPattern) {
 		super(schemaType, javaType);
 		this.elementName = elementName;
 		this.nestedPattern = nestedPattern;
+	}
+	
+	/**
+	 * DESIGNFLAW: very ugly usage of type arguments!
+	 * @param schemaType
+	 * @param javaType
+	 * @param elementName
+	 * @param nestedPattern
+	 * @return
+	 */
+	public static <T> ElementPattern<T> newElementPattern(QName schemaType, Class<T> javaType, QName elementName, XmlEventsPattern<T> nestedPattern) {
+		return new ElementPattern<T>(schemaType, javaType, elementName, nestedPattern);
 	}
 
 	/* (non-Javadoc)

@@ -56,18 +56,18 @@ import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
  *
  * @author Grzegorz Grzybek
  */
-public abstract class XmlEventsPattern {
+public abstract class XmlEventsPattern<T> {
 
 	public static final XMLEventFactory XML_EVENTS_FACTORY = XMLEventFactory.newInstance();
 
 	private QName schemaType;
-	private Class<?> javaType;
+	private Class<T> javaType;
 
 	/**
 	 * @param schemaType
 	 * @param javaType
 	 */
-	protected XmlEventsPattern(QName schemaType, Class<?> javaType) {
+	protected XmlEventsPattern(QName schemaType, Class<T> javaType) {
 		this.schemaType = schemaType;
 		this.javaType = javaType;
 	}
@@ -110,7 +110,7 @@ public abstract class XmlEventsPattern {
 	/**
 	 * @return the javaType
 	 */
-	public Class<?> getJavaType() {
+	public Class<T> getJavaType() {
 		return this.javaType;
 	}
 

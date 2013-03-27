@@ -45,7 +45,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.XMLEvent;
 
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.format.support.FormattingConversionService;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
 import org.springframework.util.ReflectionUtils.FieldFilter;
@@ -74,7 +73,7 @@ public class SweJaxbContext extends JAXBContext {
 	 * Mapping of Java classes to OXM metadata. This metadata is about how Java class maps to a given XML Schema type (simple or complex).
 	 * This mapping doesn't deal with XML Schema elements - these are determined for each marshal operation, not at the creation time.
 	 */
-	Map<Class<?>, XmlEventsPattern> patterns = new LinkedHashMap<Class<?>, XmlEventsPattern>();
+	Map<Class<?>, XmlEventsPattern<?>> patterns = new LinkedHashMap<Class<?>, XmlEventsPattern<?>>();
 
 	// /**
 	// * Mapping of XML Schema types (simple or complex) to OXM metadata.
@@ -84,22 +83,27 @@ public class SweJaxbContext extends JAXBContext {
 	/**
 	 * Mapping of {@link XmlRootElement} annotated classes.
 	 */
-	Map<Class<?>, ElementPattern> rootPatterns = new LinkedHashMap<Class<?>, ElementPattern>();
+	Map<Class<?>, ElementPattern<?>> rootPatterns = new LinkedHashMap<Class<?>, ElementPattern<?>>();
 
 	/**
 	 * Mapping of QNames of root elements to patterns. It's just another keyset of {@code rootPatterns}
 	 */
-	Map<QName, ElementPattern> rootPatternsForQNames = new LinkedHashMap<QName, ElementPattern>();
+	Map<QName, ElementPattern<?>> rootPatternsForQNames = new LinkedHashMap<QName, ElementPattern<?>>();
 
 	/**
 	 * Metadata of packages
 	 */
 	private Map<String, PackageMetadata> package2meta = new HashMap<String, PackageMetadata>();
 
-	/**
-	 * Conversion service. To be accessed by marshallers/unmarshallers created by this context.
-	 */
-	private FormattingConversionService formattingConversionService = null;
+//	/**
+//	 * A map of cached metadata for faster version of {@link DirectFieldAccessor}s
+//	 */
+//	private Map<Class<?>, Map<String, Field>> directFieldsMap = new HashMap<Class<?>, Map<String, Field>>();
+
+//	/**
+//	 * Conversion service. To be accessed by marshallers/unmarshallers created by this context.
+//	 */
+//	private FormattingConversionService formattingConversionService = null;
 
 	/**
 	 * <p>Main initiailzation method of {@link JAXBContext} - isn't it clean?</p>
@@ -111,7 +115,7 @@ public class SweJaxbContext extends JAXBContext {
 		this.initializeConversionService();
 
 		// built-in
-		BuiltInMappings.initialize(this.patterns, this.formattingConversionService);
+		BuiltInMappings.initialize(this.patterns/*, this.formattingConversionService*/);
 
 		// external
 		for (Class<?> cl : classesToBeBound) {
@@ -149,15 +153,15 @@ public class SweJaxbContext extends JAXBContext {
 	 * 
 	 */
 	private void initializeConversionService() {
-		this.formattingConversionService = new FormattingConversionService();
+//		this.formattingConversionService = new FormattingConversionService();
 	}
 
-	/**
-	 * @return the formattingConversionService
-	 */
-	public FormattingConversionService getFormattingConversionService() {
-		return this.formattingConversionService;
-	}
+//	/**
+//	 * @return the formattingConversionService
+//	 */
+//	public FormattingConversionService getFormattingConversionService() {
+//		return this.formattingConversionService;
+//	}
 
 	/**
 	 * <p>Converts a class and it's metadata into a pattern of static and dynamic {@link XMLEvent XML events}.</p>
@@ -168,9 +172,12 @@ public class SweJaxbContext extends JAXBContext {
 	 * @param cl
 	 * @return
 	 */
-	private XmlEventsPattern determineXmlPattern(Class<?> cl) {
-		if (this.patterns.containsKey(cl))
-			return this.patterns.get(cl);
+	private <T> XmlEventsPattern<T> determineXmlPattern(Class<T> cl) {
+		if (this.patterns.containsKey(cl)) {
+			@SuppressWarnings("unchecked")
+			XmlEventsPattern<T> pattern = (XmlEventsPattern<T>) this.patterns.get(cl);
+			return pattern;
+		}
 
 		// default
 		XmlAccessType xmlAccessType = XmlAccessType.PUBLIC_MEMBER;
@@ -196,14 +203,14 @@ public class SweJaxbContext extends JAXBContext {
 			md.setAttributeFormDefault(attributeFormDefault);
 
 			this.package2meta.put(cl.getPackage().getName(), md);
-		} else {
+		}
+		else {
 			PackageMetadata md = this.package2meta.get(cl.getPackage().getName());
 			xmlAccessType = md.getXmlAccessType();
 			namespace = md.getNamespace();
 			elementFormDefault = md.getElementFormDefault();
 			attributeFormDefault = md.getAttributeFormDefault();
 		}
-
 
 		// on class
 		XmlAccessorType xmlAccessorType = AnnotationUtils.findAnnotation(cl, XmlAccessorType.class);
@@ -215,20 +222,24 @@ public class SweJaxbContext extends JAXBContext {
 
 		// before stepping into the class we'll add DeferredXmlPattern to the mapping to be able to analyze cross-dependent classes
 		// TODO: determine QName for TemporaryXmlEventsPattern
-		TemporaryXmlEventsPattern txp = new TemporaryXmlEventsPattern(null, cl);
+		TemporaryXmlEventsPattern<T> txp = TemporaryXmlEventsPattern.newTemporaryXmlEventsPattern(null, cl);
 		this.patterns.put(cl, txp);
-		ContentModelPattern mapping = new PropertyCallback(namespace, xmlAccessType, elementFormDefault, attributeFormDefault).analyze(cl);
+		PropertyCallback pc = new PropertyCallback(namespace, xmlAccessType, elementFormDefault, attributeFormDefault);
+		ContentModelPattern<T> mapping = pc.analyze(cl);
 		txp.setRealPattern(mapping);
+//
+//		// the map of (already accessible) fields is cached once here
+//		this.directFieldsMap.put(cl, pc.getFieldMap());
 
 		XmlRootElement xmlRootElement = AnnotationUtils.findAnnotation(cl, XmlRootElement.class);
 		if (xmlRootElement != null) {
 			// we may produce WrappedEventsPattern now, if the class is annotated with XmlRootElement
 			// TODO: determine QName for ElementPattern
 			QName rootQName = new QName(xmlRootElement.namespace(), xmlRootElement.name());
-			ElementPattern pattern = new ElementPattern(new QName(namespace, cl.getSimpleName()), cl, rootQName, mapping);
+			ElementPattern<?> pattern = ElementPattern.newElementPattern(new QName(namespace, cl.getSimpleName()), cl, rootQName, mapping);
 			this.rootPatterns.put(cl, pattern);
 			this.rootPatternsForQNames.put(rootQName, pattern);
-			
+
 		}
 
 		return mapping;
@@ -251,6 +262,9 @@ public class SweJaxbContext extends JAXBContext {
 		private final List<PropertyMetadata> childAttributePatterns = new LinkedList<PropertyMetadata>();
 
 		private final List<PropertyMetadata> childPatterns = new LinkedList<PropertyMetadata>();
+		
+//		/** Metadata used by faster {@link DirectFieldAccessor}s */
+//		private final Map<String, Field> fieldMap = new HashMap<String, Field>();
 
 		private String namespace;
 
@@ -279,7 +293,7 @@ public class SweJaxbContext extends JAXBContext {
 		 * @param cl
 		 * @return
 		 */
-		public ContentModelPattern analyze(Class<?> cl) {
+		public <T> ContentModelPattern<T> analyze(Class<T> cl) {
 			ReflectionUtils.doWithFields(cl, this, new FieldFilter() {
 				@Override
 				public boolean matches(Field field) {
@@ -292,7 +306,8 @@ public class SweJaxbContext extends JAXBContext {
 			this.childAttributePatterns.addAll(this.childPatterns);
 
 			// TODO: determine QName for ContentModelPattern
-			return new ContentModelPattern(new QName(this.namespace, cl.getSimpleName()), cl, this.childAttributePatterns);
+			ContentModelPattern<T> contentModelPattern = ContentModelPattern.newContentModelPattern(new QName(this.namespace, cl.getSimpleName()), cl, this.childAttributePatterns);
+			return contentModelPattern;
 		}
 
 		/* (non-Javadoc)
@@ -311,6 +326,8 @@ public class SweJaxbContext extends JAXBContext {
 			String fieldName = field.getName();
 			// metadata for a field
 			PropertyMetadata metadata = new PropertyMetadata(fieldName, true);
+			ReflectionUtils.makeAccessible(field);
+			metadata.setField(field);
 
 			if (AnnotationUtils.getAnnotation(field, XmlTransient.class) != null)
 				return;
@@ -324,8 +341,8 @@ public class SweJaxbContext extends JAXBContext {
 				// this class should have no child @XmlElements
 				// TODO: make possible to handle properties which are classes with @XmlValue property (possibly nested)
 				// TODO: determine QName for ValuePattern
-				ValuePattern valuePattern = new ValuePattern(null, field.getType());
-				valuePattern.setConversionService(SweJaxbContext.this.formattingConversionService);
+				ValuePattern<?> valuePattern = ValuePattern.newValuePattern(null, field.getType());
+//				valuePattern.setConversionService(SweJaxbContext.this.formattingConversionService);
 				metadata.setPattern(valuePattern);
 				this.childPatterns.add(metadata);
 				return;
@@ -338,7 +355,8 @@ public class SweJaxbContext extends JAXBContext {
 				if (this.attributeFormDefault == XmlNsForm.QUALIFIED) {
 					// the attribute MUST have namespace
 					namespace = "##default".equals(xmlAttribute.namespace()) ? this.namespace : xmlAttribute.namespace();
-				} else {
+				}
+				else {
 					// the attribute MAY have namespace
 					// TODO: handle org.springframework.ws.ext.bind.annotations.XmlAttribute
 					if (!"##default".equals(xmlAttribute.namespace()))
@@ -346,9 +364,9 @@ public class SweJaxbContext extends JAXBContext {
 				}
 				String name = "##default".equals(xmlAttribute.name()) ? fieldName : xmlAttribute.name();
 				// TODO: must be ValuePattern for simple type. Check it
-				XmlEventsPattern attrValuePattern = SweJaxbContext.this.determineXmlPattern(field.getType());
-				AttributePattern attributePattern = new AttributePattern(attrValuePattern.getSchemaType(), field.getType(), new QName(namespace, name));
-				attributePattern.setConversionService(SweJaxbContext.this.formattingConversionService);
+				XmlEventsPattern<?> attrValuePattern = SweJaxbContext.this.determineXmlPattern(field.getType());
+				AttributePattern<?> attributePattern = AttributePattern.newAttributePattern(attrValuePattern.getSchemaType(), field.getType(), new QName(namespace, name));
+//				attributePattern.setConversionService(SweJaxbContext.this.formattingConversionService);
 				metadata.setPattern(attributePattern);
 				this.childAttributePatterns.add(metadata);
 				return;
@@ -368,8 +386,10 @@ public class SweJaxbContext extends JAXBContext {
 				String namespace = xmlElement == null || "##default".equals(xmlElement.namespace()) ? this.namespace : xmlElement.namespace();
 				String name = xmlElement == null || "##default".equals(xmlElement.name()) ? fieldName : xmlElement.name();
 				// TODO: determine QName for ElementPattern - use @XmlType
+				@SuppressWarnings("rawtypes")
 				XmlEventsPattern nestedPattern = SweJaxbContext.this.determineXmlPattern(field.getType());
-				XmlEventsPattern elementPattern = new ElementPattern(nestedPattern.getSchemaType(), field.getType(), new QName(namespace, name), nestedPattern);
+				@SuppressWarnings("unchecked")
+				XmlEventsPattern<?> elementPattern = ElementPattern.newElementPattern(nestedPattern.getSchemaType(), field.getType(), new QName(namespace, name), nestedPattern);
 				metadata.setPattern(elementPattern);
 				this.childPatterns.add(metadata);
 				return;

@@ -33,7 +33,7 @@ import org.springframework.ws.ext.bind.internal.UnmarshallingContext;
  *
  * @author Grzegorz Grzybek
  */
-public class AttributePattern extends AbstractSimpleTypePattern {
+public class AttributePattern<T> extends AbstractSimpleTypePattern<T> {
 
 	private QName attributeName;
 
@@ -41,9 +41,17 @@ public class AttributePattern extends AbstractSimpleTypePattern {
 	 * @param schemaType
 	 * @param javaType
 	 */
-	public AttributePattern(QName schemaType, Class<?> javaType, QName attributeName) {
+	private AttributePattern(QName schemaType, Class<T> javaType, QName attributeName) {
 		super(schemaType, javaType);
 		this.attributeName = attributeName;
+	}
+	
+	/**
+	 * @param schemaType
+	 * @param javaType
+	 */
+	public static <T> AttributePattern<T> newAttributePattern(QName schemaType, Class<T> javaType, QName attributeName) {
+		return new AttributePattern<T>(schemaType, javaType, attributeName);
 	}
 
 	/* (non-Javadoc)
