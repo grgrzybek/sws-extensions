@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- WSDL 2.0 Document -->
+<description targetNamespace="urn:test:1"
+	xml:id="1"
+	xmlns="http://www.w3.org/ns/wsdl"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:wsdli="http://www.w3.org/ns/wsdl-instance"
+	xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
+	xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc"
+	xmlns:wsoap="http://www.w3.org/ns/wsdl/soap"
+	xmlns:whttp="http://www.w3.org/ns/wsdl/http"
+	xmlns:env="http://www.w3.org/2003/05/soap-envelope"
+	xmlns:tns="urn:test:1"
+	xmlns:types="urn:test:2"
+	xsi:schemaLocation="
+		http://www.w3.org/ns/wsdl http://www.w3.org/2002/ws/desc/ns/wsdl20.xsd
+		http://www.w3.org/ns/wsdl-instance http://www.w3.org/2002/ws/desc/ns/wsdl-instance.xsd
+		http://www.w3.org/ns/wsdl-extensions http://www.w3.org/2002/ws/desc/ns/wsdl-extensions.xsd
+		http://www.w3.org/ns/wsdl/rpc http://www.w3.org/2002/ws/desc/ns/rpc.xsd
+		http://www.w3.org/ns/wsdl/soap http://www.w3.org/2002/ws/desc/ns/soap.xsd
+		http://www.w3.org/ns/wsdl/http http://www.w3.org/2002/ws/desc/ns/http.xsd
+		http://www.w3.org/2003/05/soap-envelope http://www.w3.org/2003/05/soap-envelope">
+
+	<!-- Zero or more documentation element information items -->
+	<documentation></documentation>
+	<documentation></documentation>
+
+	<!-- Zero or more include element information items -->
+	<include location=""></include>
+	<!-- Zero or more import element information items -->
+	<import namespace="" location=""></import>
+
+	<!-- Zero or more namespace-qualified element information items whose [namespace name] is NOT "http://www.w3.org/ns/wsdl" -->
+	<tns:x></tns:x>
+
+	<!-- An OPTIONAL types element information item -->
+	<types>
+		<xs:schema targetNamespace="urn:test:2" elementFormDefault="qualified"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:types="urn:test:2">
+			<xs:element name="operation" type="xs:string" />
+			<xs:element name="operationResponse" type="xs:string" />
+			<xs:element name="generalFault" type="xs:string" />
+		</xs:schema>
+	</types>
+
+	<!-- WHAT -->
+	<!-- Zero or more interface element information items -->
+	<!-- An interface is a set of operations -->
+	<interface name="A" styleDefault="http://www.w3.org/ns/wsdl/style/iri" extends="tns:B tns:C">
+		<documentation></documentation>
+		<!-- Zero or more fault element information items -->
+		<!-- A fault is an event that occurs during the execution of a message exchange that disrupts the normal flow of messages. -->
+		<fault name="error" element="types:generalFault" />
+		<fault name="failure" element="#any">
+			<documentation></documentation>
+		</fault>
+		<!-- Zero or more operation element information items -->
+		<!-- An operation is a sequence of input and output messages -->
+		<!-- An operation is an interaction with the service consisting of a set of (ordinary and fault) messages exchanged between the service and the other parties involved in the interaction. -->
+		<!-- The sequencing and cardinality of the messages involved in a particular interaction is governed by the message exchange pattern used by the operation -->
+		<operation name="operation" pattern="http://www.w3.org/ns/wsdl/in-out" style="http://www.w3.org/ns/wsdl/style/iri" wsdlx:safe="true">
+			<!-- OPTIONAL: A set of Interface Message Reference components for the ordinary messages the operation accepts or sends -->
+			<input element="types:operation" messageLabel="In" />
+			<output element="types:operationResponse" messageLabel="Out" />
+			<!-- OPTIONAL:  A set of Interface Fault Reference components for the fault messages the operation accepts or sends -->
+			<outfault ref="tns:error" messageLabel="Out" />
+		</operation>
+		<!-- Zero or more namespace-qualified element information items whose [namespace name] is NOT "http://www.w3.org/ns/wsdl" -->
+	</interface>
+
+	<!-- HOW -->
+	<!-- Zero or more binding element information items -->
+	<binding name="B" type="http://www.w3.org/ns/wsdl/soap" interface="tns:A" wsoap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP/">
+		<operation ref="tns:operation" wsoap:mep="http://www.w3.org/2003/05/soap/mep/soap-response" />
+		<fault ref="tns:error" wsoap:code="soap:Sender" />
+	</binding>
+
+	<!-- WHERE -->
+	<!-- Zero or more service element information items -->
+	<service name="a" interface="tns:A">
+		<endpoint name="b" binding="tns:B" address="http://greath.example.com/2004/reservation">
+		</endpoint>
+	</service>
+
+	<!-- Zero or more namespace-qualified element information items whose [namespace name] is NOT "http://www.w3.org/ns/wsdl" -->
+
+</description>
