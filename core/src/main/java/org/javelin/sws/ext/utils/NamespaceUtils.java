@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.ws.ext.utils;
+package org.javelin.sws.ext.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

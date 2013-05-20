@@ -4,8 +4,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.springframework.ws</groupId>
-	<artifactId>spring-ws-extensions-parent</artifactId>
+	<groupId>org.javelin.sws.extensions</groupId>
+	<artifactId>sws-extensions-parent</artifactId>
 	<version>0.1.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -178,16 +178,16 @@
 	
 			<!-- Spring-Ws-Extensions -->
 	
-			<dependency>
+			<!--dependency>
 				<groupId>org.springframework.ws</groupId>
-				<artifactId>spring-ws-extensions-core</artifactId>
+				<artifactId>sws-extensions-core</artifactId>
 				<version>0.1.0.BUILD-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.ws</groupId>
-				<artifactId>spring-ws-extensions-bind</artifactId>
+				<artifactId>sws-extensions-bind</artifactId>
 				<version>0.1.0.BUILD-SNAPSHOT</version>
-			</dependency>
+			</dependency-->
 
 			<!-- Test -->
 
