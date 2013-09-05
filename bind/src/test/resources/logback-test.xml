@@ -8,7 +8,7 @@
 		</encoder>
 	</appender>
 
-	<logger name="org.springframework.ws.ext" level="TRACE" />
+	<logger name="org.javelin.sws.ext" level="TRACE" />
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />

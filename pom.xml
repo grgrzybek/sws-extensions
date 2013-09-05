@@ -4,8 +4,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.springframework.ws</groupId>
-	<artifactId>spring-ws-extensions</artifactId>
+	<groupId>org.javelin.sws.extensions</groupId>
+	<artifactId>sws-extensions</artifactId>
 	<version>0.1.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
