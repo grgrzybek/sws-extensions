@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+td  { border: 1px solid #ccc; font-size: 9px }
+td.code  { font-family: monospace; white-space: pre; padding: 0 5px }
+div.p0   { width: 1px;  -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: black }
+div.p10  { width: 10%;  background-color: #e22; -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: white }
+div.p20  { width: 20%;  background-color: #e52; -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: white }
+div.p30  { width: 30%;  background-color: #e82; -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: white }
+div.p40  { width: 40%;  background-color: #ea2; -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: white }
+div.p50  { width: 50%;  background-color: #ed2; -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: white }
+div.p60  { width: 60%;  background-color: #de2; -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: white }
+div.p70  { width: 70%;  background-color: #ae2; -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: white }
+div.p80  { width: 80%;  background-color: #8e2; -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: white }
+div.p90  { width: 90%;  background-color: #5e2; -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: white }
+div.p100 { width: 100%; background-color: #2e2; -moz-box-sizing: padding-box; -webkit-box-sizing: padding-box; text-align: center; padding: 1px; color: white }
+p, dl { width: 720px; margin: 1em auto }
+dt { float: left; font-weight: bold }
+</style>
+</head>
+<body>
+	<p>
+	This table presents the progress of implementing sws-extension-bind - a custom JAXB2 implementation. The progress is not objective. JAXB2 tries to mix two <em>categories</em>: Java values
+	convertible to/from XML instances and Java types representing XSD Schema Components.
+	</p>
+	<dl>
+		<dt>XML</dt><dd>how much information from particular annotation is used to properly map between Java objects/values and XML instances (documents, fragments).</dd>
+		<dt>XSD</dt><dd>how much information from particular annotation is used to model XML Schema Components' (mainly simple/complex type definitions) properties.</dd>
+	</dl>
+	<table style="border: 0; margin: 1em auto; table-layout: fixed">
+		<col span="3" width="240px" />
+		<thead>
+			<tr>
+				<th>JAXB2 Annotation</th><th>XML</th><th>XSD</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="code">XmlAccessorOrder</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlAccessorType</td><td>
+					<div class="p90">90%</div>
+				</td><td>
+					<div class="p70">70%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlAnyAttribute</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlAnyElement</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlAttachmentRef</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlAttribute</td><td>
+					<div class="p60">60%</div>
+				</td><td>
+					<div class="p30">30%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlElement</td><td>
+					<div class="p60">60%</div>
+				</td><td>
+					<div class="p30">30%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlElementDecl</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlElementRef</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlElementRefs</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlElements</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlElementWrapper</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlEnum</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlEnumValue</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlID</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlIDREF</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlInlineBinaryData</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlList</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlMimeType</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlMixed</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlNs</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlRegistry</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlRootElement</td><td>
+					<div class="p90">90%</div>
+				</td><td>
+					<div class="p10">10%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlSchema</td><td>
+					<div class="p30">30%</div>
+				</td><td>
+					<div class="p40">40%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlSchemaType</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlSchemaTypes</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlSeeAlso</td><td>
+					<div class="p0">0%</div>
+				</td><td>
+					<div class="p0">0%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlTransient</td><td>
+					<div class="p90">90%</div>
+				</td><td>
+					<div class="p80">80%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlType</td><td>
+					<div class="p80">80%</div>
+				</td><td>
+					<div class="p30">30%</div>
+				</td>
+			</tr><tr>
+				<td class="code">XmlValue</td><td>
+					<div class="p50">50%</div>
+				</td><td>
+					<div class="p50">50%</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
