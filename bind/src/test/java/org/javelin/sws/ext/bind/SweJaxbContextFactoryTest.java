@@ -41,18 +41,18 @@ import org.springframework.util.ClassUtils;
 public class SweJaxbContextFactoryTest {
 
 	@Test(expected = JAXBException.class)
-	public void illegalPackageForJaxbRi() throws Exception {
+	public void nonExistingPackageForJaxbRi() throws Exception {
 		JAXBContext.newInstance("a.b.c");
 	}
 	
-	@Test(expected = JAXBException.class)
-	public void emptyPackageForJaxbRi() throws Exception {
-		JAXBContext.newInstance("");
-	}
-
 	@Test
 	public void nonExistingPackage() throws Exception {
 		SweJaxbContextFactory.createContext("a.b.c", null);
+	}
+
+	@Test(expected = JAXBException.class)
+	public void defaultPackageForJaxbRi() throws Exception {
+		JAXBContext.newInstance("");
 	}
 
 	@Test
@@ -61,14 +61,32 @@ public class SweJaxbContextFactoryTest {
 		// but we may marshal objects of built-in classes - XSD simple types
 		ctx.createMarshaller().marshal(new JAXBElement<String>(new QName("urn:test", "str"), String.class, "content"), System.out);
 	}
+
+	@Test
+	public void emptySetOfClassesForJaxbRi() throws Exception {
+		JAXBContext ctx = JAXBContext.newInstance();
+		System.out.println(ctx.toString());
+		ctx.createMarshaller().marshal(new JAXBElement<String>(new QName("urn:test", "str"), String.class, "content"), System.out);
+	}
 	
+	@Test
+	public void emptySetOfClasses() throws Exception {
+		JAXBContext ctx = SweJaxbContextFactory.createContext(new Class[] {}, null);
+		ctx.createMarshaller().marshal(new JAXBElement<String>(new QName("urn:test", "str"), String.class, "content"), System.out);
+	}
+	
+	@Test
+	public void scanExceptionClassForJaxbRi() throws Exception {
+		JAXBContext ctx = JAXBContext.newInstance(IllegalArgumentException.class);
+		System.out.println(ctx.toString());
+		ctx.createMarshaller().marshal(new JAXBElement<IllegalArgumentException>(new QName("urn:test", "e"), IllegalArgumentException.class, new IllegalArgumentException("exception")), System.out);
+	}
+
 	@Test
 	public void nonDefaultClassLoader() throws Exception {
 		// parent-last class loader
 		// see org.apache.cocoon.servlet.ParanoidClassLoader
-		URLClassLoader cl = new URLClassLoader(new URL[] {
-				new File("target/test-classes").getCanonicalFile().toURI().toURL()
-		}) {
+		URLClassLoader cl = new URLClassLoader(new URL[] { new File("target/test-classes").getCanonicalFile().toURI().toURL() }) {
 			@Override
 			protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 				Class<?> c = this.findLoadedClass(name);
@@ -79,7 +97,8 @@ public class SweJaxbContextFactoryTest {
 					catch (ClassNotFoundException e) {
 						if (this.getParent() != null) {
 							c = this.getParent().loadClass(name);
-						} else {
+						}
+						else {
 							throw e;
 						}
 					}
@@ -94,13 +113,15 @@ public class SweJaxbContextFactoryTest {
 		@SuppressWarnings("unchecked")
 		Map<Class<?>, TypedPattern<?>> patterns = (Map<Class<?>, TypedPattern<?>>) ReflectionTestUtils.getField(ctx, "patterns");
 		Class<?> mc = null;
-		for (Class<?> c: patterns.keySet()) {
+		for (Class<?> c : patterns.keySet()) {
 			if (c.getName().equals("org.javelin.sws.ext.bind.context2.MyClass2"))
 				mc = c;
 		}
 		assertSame(mc.getClassLoader(), cl);
 		Class<?> c1 = ClassUtils.resolveClassName("org.javelin.sws.ext.bind.context2.MyClass2", this.getClass().getClassLoader());
 		assertFalse(patterns.containsKey(c1));
+		Class<?> c2 = ClassUtils.resolveClassName("org.javelin.sws.ext.bind.context2.MyClass2", cl);
+		assertTrue(patterns.containsKey(c2));
 	}
 
 }

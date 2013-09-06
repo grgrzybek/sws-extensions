@@ -31,11 +31,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlNsForm;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.namespace.QName;
 
-import org.javelin.sws.ext.bind.SweJaxbContext;
+import org.javelin.sws.ext.bind.TypedPatternRegistry;
 import org.javelin.sws.ext.bind.internal.model.AttributePattern;
 import org.javelin.sws.ext.bind.internal.model.ComplexTypePattern;
 import org.javelin.sws.ext.bind.internal.model.ElementPattern;
@@ -48,6 +49,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
 import org.springframework.util.ReflectionUtils.FieldFilter;
+import org.springframework.util.ReflectionUtils.MethodCallback;
 import org.springframework.util.StringUtils;
 
 /**
@@ -67,23 +69,23 @@ import org.springframework.util.StringUtils;
  * @author Grzegorz Grzybek
  * @param <T> a type of bean containing analyzed properties
  */
-public class PropertyCallback<T> implements FieldCallback {
+public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 
 	private static Logger log = LoggerFactory.getLogger(PropertyCallback.class.getName());
 
 	/* Initialization data */
-	private String namespace;
 
-	private Class<T> declaringClass;
+	private Class<T> clazz;
+
+	private QName typeName;
 
 	private XmlAccessType accessType;
 
-	@SuppressWarnings("unused")
 	private XmlNsForm elementFormDefault;
 
 	private XmlNsForm attributeFormDefault;
 
-	private SweJaxbContext context;
+	private TypedPatternRegistry patternRegistry;
 
 	/* Post-analysis data */
 
@@ -93,18 +95,22 @@ public class PropertyCallback<T> implements FieldCallback {
 	// list of properties mapped to XML Elements (or text of mixed content). non-empty = complex content
 	private final List<PropertyMetadata<T, ?>> childElementMetadata = new LinkedList<PropertyMetadata<T, ?>>();
 
-	// at most one property mapped to simple characters content
+	// at most one property mapped to simple characters content. non-null means there must be no childElementMetadata
 	private PropertyMetadata<T, ?> valueMetadata = null;
 
 	/**
-	 * @param namespace
-	 * @param attributeFormDefault 
-	 * @param elementFormDefault 
+	 * @param patternRegistry
+	 * @param clazz
+	 * @param typeName
+	 * @param accessType
+	 * @param elementFormDefault
+	 * @param attributeFormDefault
 	 */
-	public PropertyCallback(SweJaxbContext context, Class<T> declaringClass, String namespace, XmlAccessType accessType, XmlNsForm elementFormDefault, XmlNsForm attributeFormDefault) {
-		this.context = context;
-		this.declaringClass = declaringClass;
-		this.namespace = namespace;
+	public PropertyCallback(TypedPatternRegistry patternRegistry, Class<T> clazz, QName typeName, XmlAccessType accessType, XmlNsForm elementFormDefault,
+			XmlNsForm attributeFormDefault) {
+		this.patternRegistry = patternRegistry;
+		this.clazz = clazz;
+		this.typeName = typeName;
 		this.accessType = accessType;
 		this.elementFormDefault = elementFormDefault;
 		this.attributeFormDefault = attributeFormDefault;
@@ -114,15 +120,16 @@ public class PropertyCallback<T> implements FieldCallback {
 	 * <p>Reads class' metadata and returns a {@link XmlEventsPattern pattern of XML events} which may be used to marshal
 	 * an object of the analyzed class.<?p>
 	 * 
-	 * @param cl
-	 * @param typeName
 	 * @return
 	 */
-	public TypedPattern<T> analyze(Class<T> cl, QName typeName) {
-		log.trace("Analyzing {} class with {} type name", cl.getName(), typeName);
+	public TypedPattern<T> analyze() {
+		if (this.patternRegistry.hasPatternForClass(this.clazz))
+			return this.patternRegistry.determineXmlPattern(this.clazz);
+
+		log.trace("Analyzing {} class with {} type name", this.clazz.getName(), this.typeName);
 
 		// analyze fields
-		ReflectionUtils.doWithFields(cl, this, new FieldFilter() {
+		ReflectionUtils.doWithFields(this.clazz, this, new FieldFilter() {
 			@Override
 			public boolean matches(Field field) {
 				return !Modifier.isStatic(field.getModifiers());
@@ -130,7 +137,7 @@ public class PropertyCallback<T> implements FieldCallback {
 		});
 		// analyze get/set methods
 		try {
-			BeanInfo beanInfo = Introspector.getBeanInfo(cl);
+			BeanInfo beanInfo = Introspector.getBeanInfo(this.clazz);
 			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
 			for (PropertyDescriptor pd : propertyDescriptors) {
 				if (pd.getReadMethod() != null && pd.getWriteMethod() != null) {
@@ -149,9 +156,9 @@ public class PropertyCallback<T> implements FieldCallback {
 			// we have a special case, where Java class becomes simpleType:
 			//  - formatting the analyzed class is really formatting the value
 			//  - the type information of the analyzed class is not changed!
-			log.trace("Changing {} class' pattern to SimpleContentPattern", cl.getName());
+			log.trace("Changing {} class' pattern to SimpleContentPattern", this.clazz.getName());
 
-			SimpleContentPattern<T> valuePattern = SimpleContentPattern.newValuePattern(typeName, cl);
+			SimpleContentPattern<T> valuePattern = SimpleContentPattern.newValuePattern(this.typeName, this.clazz);
 			SimpleContentPattern<?> simpleTypePattern = (SimpleContentPattern<?>) this.valueMetadata.getPattern();
 			valuePattern.setFormatter(PeelingFormatter.newPeelingFormatter(this.valueMetadata, simpleTypePattern.getFormatter()));
 			result = valuePattern;
@@ -167,24 +174,29 @@ public class PropertyCallback<T> implements FieldCallback {
 			if (this.valueMetadata != null)
 				this.childAttributeMetadata.add(this.valueMetadata);
 
-			result = ComplexTypePattern.newContentModelPattern(typeName, cl, this.childAttributeMetadata);
+			result = ComplexTypePattern.newContentModelPattern(this.typeName, this.clazz, this.childAttributeMetadata);
 		}
 
-		log.trace("-> Class {} was mapped to {} with {} XSD type", cl.getName(), result, typeName);
+		if (log.isTraceEnabled())
+			log.trace("-> Class {} was mapped to {} with {} XSD type", this.clazz.getName(), result, this.typeName);
+
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Like {@link MethodCallback#doWith(Method)}, but for two methods.
+	 * 
 	 * @see org.springframework.util.ReflectionUtils.MethodCallback#doWith(java.lang.reflect.Method)
 	 */
 	public void doWith(Method getter, Method setter) throws IllegalArgumentException, IllegalAccessException {
 		if (log.isTraceEnabled())
-			log.trace(" - Analyzing pair of methods: {}.{}/{}.{}", getter.getDeclaringClass().getSimpleName(), getter.getName(), setter.getDeclaringClass().getSimpleName(), setter.getName());
+			log.trace(" - Analyzing pair of methods: {}.{}/{}.{}", getter.getDeclaringClass().getSimpleName(), getter.getName(), setter.getDeclaringClass()
+					.getSimpleName(), setter.getName());
 
 		// TODO: properly handle class hierarchies
 		String propertyName = StringUtils.uncapitalize(getter.getName().substring(3));
 		// metadata for getter/setter
-		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.declaringClass, getter.getReturnType(), propertyName, false);
+		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.clazz, getter.getReturnType(), propertyName, false);
 		metadata.setAccessorMethods(getter, setter);
 		this.doWithPropertySafe(metadata);
 	}
@@ -197,7 +209,7 @@ public class PropertyCallback<T> implements FieldCallback {
 		log.trace("- Analyzing field: {}.{}", field.getDeclaringClass().getSimpleName(), field.getName());
 		String fieldName = field.getName();
 		// metadata for a field
-		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.declaringClass, field.getType(), fieldName, true);
+		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.clazz, field.getType(), fieldName, true);
 		ReflectionUtils.makeAccessible(field);
 		metadata.setField(field);
 		this.doWithPropertySafe(metadata);
@@ -214,8 +226,20 @@ public class PropertyCallback<T> implements FieldCallback {
 		if (AnnotationUtils.getAnnotation(property, XmlTransient.class) != null)
 			return;
 
-		// a pattern for property's class
-		TypedPattern<P> pattern = this.context.determineXmlPattern(metadata.getPropertyClass());
+		XmlSchemaType xmlSchemaType = AnnotationUtils.getAnnotation(property, XmlSchemaType.class);
+		// a pattern for property's class - force creating
+		TypedPattern<P> pattern = null;
+		if (xmlSchemaType != null) {
+			// the schema type determines the pattern - if it is not present in the registry, it will be after determining it on the basis of Java class
+			// of the property
+			QName typeName = new QName(xmlSchemaType.namespace(), xmlSchemaType.name());
+			pattern = this.patternRegistry.findTypedPattern(typeName, metadata.getPropertyClass());
+			if (log.isTraceEnabled() && pattern != null)
+				log.trace("-- @XmlSchemaType points to {}", pattern.toString());
+		}
+
+		if (pattern == null)
+			pattern = this.patternRegistry.determineXmlPattern(metadata.getPropertyClass());
 
 		// is it value?
 		XmlValue xmlValue = AnnotationUtils.getAnnotation(property, XmlValue.class);
@@ -244,7 +268,7 @@ public class PropertyCallback<T> implements FieldCallback {
 			String namespace = XMLConstants.NULL_NS_URI;
 			if (this.attributeFormDefault == XmlNsForm.QUALIFIED) {
 				// the attribute MUST have namespace
-				namespace = "##default".equals(xmlAttribute.namespace()) ? this.namespace : xmlAttribute.namespace();
+				namespace = "##default".equals(xmlAttribute.namespace()) ? this.typeName.getNamespaceURI() : xmlAttribute.namespace();
 			}
 			else {
 				// the attribute MAY have namespace
@@ -260,7 +284,8 @@ public class PropertyCallback<T> implements FieldCallback {
 			QName attributeQName = new QName(namespace, name);
 
 			if (log.isTraceEnabled())
-				log.trace("-- @XmlAttribute property \"{}\" of type {} mapped to {} attribute {}", metadata.getPropertyName(), pattern.getJavaType().getName(), attributeQName, pattern.toString());
+				log.trace("-- @XmlAttribute property \"{}\" of type {} mapped to {} attribute {}", metadata.getPropertyName(), pattern.getJavaType().getName(),
+						attributeQName, pattern.toString());
 
 			metadata.setPattern(AttributePattern.newAttributePattern(attributeQName, (SimpleContentPattern<P>) pattern));
 			this.childAttributeMetadata.add(metadata);
@@ -281,16 +306,27 @@ public class PropertyCallback<T> implements FieldCallback {
 		}
 
 		if (xmlElement != null || isElement) {
-			String namespace = xmlElement == null || "##default".equals(xmlElement.namespace()) ? this.namespace : xmlElement.namespace();
+			String namespace = XMLConstants.NULL_NS_URI;
+			if (this.elementFormDefault == XmlNsForm.QUALIFIED) {
+				// the element MUST have namespace
+				namespace = xmlElement == null || "##default".equals(xmlElement.namespace()) ? this.typeName.getNamespaceURI() : xmlElement.namespace();
+			}
+			else {
+				// the element MAY have namespace
+				if (xmlElement != null && !"##default".equals(xmlElement.namespace()))
+					namespace = xmlElement.namespace();
+			}
 			String name = xmlElement == null || "##default".equals(xmlElement.name()) ? metadata.getPropertyName() : xmlElement.name();
 			QName elementQName = new QName(namespace, name);
 
 			if (log.isTraceEnabled())
-				log.trace("-- @XmlElement property \"{}\" of type {} mapped to {} element with {}", metadata.getPropertyName(), pattern.getJavaType().getName(), elementQName, pattern.toString());
+				log.trace("-- @XmlElement property \"{}\" of type {} mapped to {} element with {}", metadata.getPropertyName(), pattern.getJavaType().getName(),
+						elementQName, pattern.toString());
 
 			metadata.setPattern(ElementPattern.newElementPattern(elementQName, pattern));
 			this.childElementMetadata.add(metadata);
 			return;
 		}
 	}
+
 }

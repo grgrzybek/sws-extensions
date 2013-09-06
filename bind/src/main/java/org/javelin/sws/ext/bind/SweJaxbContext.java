@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchema;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.namespace.QName;
-import javax.xml.stream.events.XMLEvent;
 
+import org.apache.ws.commons.schema.XmlSchemaType;
 import org.javelin.sws.ext.bind.internal.BuiltInMappings;
 import org.javelin.sws.ext.bind.internal.metadata.JaxbMetadata;
 import org.javelin.sws.ext.bind.internal.metadata.PropertyCallback;
@@ -64,7 +64,7 @@ import org.springframework.core.annotation.AnnotationUtils;
  * @author Grzegorz Grzybek
  */
 @SuppressWarnings("deprecation")
-public class SweJaxbContext extends JAXBContext {
+public class SweJaxbContext extends JAXBContext implements TypedPatternRegistry {
 
 	private static Logger log = LoggerFactory.getLogger(SweJaxbContext.class.getName());
 
@@ -75,12 +75,18 @@ public class SweJaxbContext extends JAXBContext {
 	Map<Class<?>, TypedPattern<?>> patterns = new LinkedHashMap<Class<?>, TypedPattern<?>>();
 
 	/**
-	 * Mapping of {@link XmlRootElement} annotated classes.
+	 * Mapping of XSD type QNames to {@link TypedPattern}s. This is useful for finding patterns for Java properties annotated
+	 * with {@link XmlSchemaType} annotation.
+	 */
+	Map<QName, TypedPattern<?>> patternsForTypeQNames = new LinkedHashMap<QName, TypedPattern<?>>();
+
+	/**
+	 * Mapping of {@link XmlRootElement} annotated classes to element patterns.
 	 */
 	Map<Class<?>, ElementPattern<?>> rootPatterns = new LinkedHashMap<Class<?>, ElementPattern<?>>();
 
 	/**
-	 * Mapping of QNames of root elements to patterns. It's just another keyset of {@code rootPatterns}.
+	 * Mapping of QNames of root elements to element patterns. It's just another keyset of {@code rootPatterns}.
 	 */
 	Map<QName, ElementPattern<?>> rootPatternsForQNames = new LinkedHashMap<QName, ElementPattern<?>>();
 
@@ -97,11 +103,13 @@ public class SweJaxbContext extends JAXBContext {
 	 */
 	SweJaxbContext(Class<?>[] classesToBeBound, Map<String, ?> properties) {
 		// built-in types
-		BuiltInMappings.initialize(this.patterns);
+		BuiltInMappings.initialize(this.patterns, this.patternsForTypeQNames);
 
 		// external types
 		for (Class<?> cl : classesToBeBound) {
-			this.patterns.put(cl, this.determineXmlPattern(cl));
+			TypedPattern<?> pattern = this.determineXmlPattern(cl);
+			this.patterns.put(pattern.getJavaType(), pattern);
+			this.patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
 		}
 	}
 
@@ -129,22 +137,29 @@ public class SweJaxbContext extends JAXBContext {
 		throw new UnsupportedOperationException("Not implemented in " + this.getClass().getName());
 	}
 
-	/* Internal (non JAXB) methods */
+	/* TypedPatternRegistry */
 
-	/**
-	 * <p>Converts a class and it's (JAXB2) metadata into a <i>pattern</i> of static and dynamic {@link XMLEvent XML events}.</p>
-	 * 
-	 * <p>A class which is to be known by this context should be directly convertible to a series of XML events. What is not mandatory here is
-	 * the root element of the marshalled object.</p>
-	 * 
-	 * <p>The produced pattern is <b>not</b> automatically cached in this context's metadata - that's the job of caller. It however
-	 * cache the metadata for {@link XmlRootElement} annotated classes.</p>
-	 * 
-	 * <p>DESIGNFLAW: probably introduce some kind of TypedPatternRegistry interface</p>
-	 * 
-	 * @param cl
-	 * @return
+	/* (non-Javadoc)
+	 * @see org.javelin.sws.ext.bind.TypedPatternRegistry#hasPatternForClass(java.lang.Class)
 	 */
+	@Override
+	public boolean hasPatternForClass(Class<?> clazz) {
+		return this.patterns.containsKey(clazz) && !(this.patterns.get(clazz) instanceof TemporaryTypedPattern);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.javelin.sws.ext.bind.TypedPatternRegistry#findTypedPattern(javax.xml.namespace.QName, java.lang.Class)
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> TypedPattern<T> findTypedPattern(QName typeName, Class<T> clazz) {
+		return (TypedPattern<T>) this.patternsForTypeQNames.get(typeName);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.javelin.sws.ext.bind.TypedPatternRegistry#determineXmlPattern(java.lang.Class)
+	 */
+	@Override
 	public <T> TypedPattern<T> determineXmlPattern(Class<T> cl) {
 		if (this.patterns.containsKey(cl)) {
 			@SuppressWarnings("unchecked")
@@ -188,8 +203,8 @@ public class SweJaxbContext extends JAXBContext {
 		this.patterns.put(cl, txp);
 
 		// this is where the magic happens
-		PropertyCallback<T> pc = new PropertyCallback<T>(this, cl, namespace, xmlAccessType, meta.getElementForm(), meta.getAttributeForm());
-		TypedPattern<T> mapping = pc.analyze(cl, typeName);
+		PropertyCallback<T> pc = new PropertyCallback<T>(this, cl, typeName, xmlAccessType, meta.getElementForm(), meta.getAttributeForm());
+		TypedPattern<T> mapping = pc.analyze();
 		txp.setRealPattern(mapping);
 
 		// cache known global elements

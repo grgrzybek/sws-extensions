@@ -22,7 +22,7 @@ import java.util.Locale;
 import org.springframework.format.Formatter;
 
 /**
- * <p>A wrapper formatter which prints the object by printing the nested property of that object</p>
+ * <p>A wrapper formatter which prints the object by printing the nested property of that object using delegate {@link Formatter}</p>
  *
  * @author Grzegorz Grzybek
  * @param <T> a type of formatted object

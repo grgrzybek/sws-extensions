@@ -57,7 +57,7 @@ public class JaxbPerformanceTest {
 			m.marshal(new JAXBElement<MyClass>(new QName("urn:test", "root"), MyClass.class, root), XMLOutputFactory.newFactory().createXMLEventWriter(new ByteArrayOutputStream()));
 //			m.marshal(new JAXBElement<MyClass>(new QName("urn:test", "root"), MyClass.class, root), new ByteArrayOutputStream());
 		}
-		System.out.println("RI: " + (((System.currentTimeMillis() - ms))));
+		System.out.println("RI: " + (System.currentTimeMillis() - ms));
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class JaxbPerformanceTest {
 			m.marshal(new JAXBElement<MyClass>(new QName("urn:test", "root"), MyClass.class, root), XMLOutputFactory.newFactory().createXMLEventWriter(new ByteArrayOutputStream()));
 //			m.marshal(new JAXBElement<MyClass>(new QName("urn:test", "root"), MyClass.class, root), new ByteArrayOutputStream());
 		}
-		System.out.println("SWE: " + (((System.currentTimeMillis() - ms))));
+		System.out.println("SWE: " + (System.currentTimeMillis() - ms));
 	}
 
 }

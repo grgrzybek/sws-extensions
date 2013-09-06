@@ -85,8 +85,10 @@ public interface SweJaxbConstants {
 	public static final QName XSD_DOUBLE = new QName(Constants.URI_2001_SCHEMA_XSD, "double", XSD_PREFIX);
 	// 3.3.6 duration (#duration)
 	// 3.3.7 dateTime (#dateTime)
+	public static final QName XSD_DATETIME = new QName(Constants.URI_2001_SCHEMA_XSD, "dateTime", XSD_PREFIX);
 	// 3.3.8 time (#time)
 	// 3.3.9 date (#date)
+	public static final QName XSD_DATE = new QName(Constants.URI_2001_SCHEMA_XSD, "date", XSD_PREFIX);
 	// 3.3.10 gYearMonth (#gYearMonth)
 	// 3.3.11 gYear (#gYear)
 	// 3.3.12 gMonthDay (#gMonthDay)

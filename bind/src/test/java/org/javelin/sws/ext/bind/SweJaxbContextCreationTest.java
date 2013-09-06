@@ -33,7 +33,7 @@ import org.springframework.test.util.ReflectionTestUtils;
  *
  * @author Grzegorz Grzybek
  */
-public class SweJaxbContextTest {
+public class SweJaxbContextCreationTest {
 
 	@Test
 	public void useDefaultImplementation() throws Exception {
@@ -82,7 +82,7 @@ public class SweJaxbContextTest {
 		Map<Class<?>, Object> mapping = (Map<Class<?>, Object>) ReflectionTestUtils.getField(context, "patterns");
 		assertTrue(mapping.size() > 0);
 	}
-	
+
 	@Test
 	public void nestedPackageNotScanned() throws Exception {
 		JAXBContext ctx = SweJaxbContextFactory.createContext("org.javelin.sws.ext.bind.context4", null);
@@ -93,7 +93,7 @@ public class SweJaxbContextTest {
 		// not package-scanned but analyzed as a XmlAccessType.FIELD property of MyClass1 
 		assertTrue(patterns.containsKey(org.javelin.sws.ext.bind.context4.nested.MyClass2.class));
 	}
-	
+
 	@Test
 	public void twoPackages() throws Exception {
 		JAXBContext ctx = SweJaxbContextFactory.createContext("org.javelin.sws.ext.bind.context1:org.javelin.sws.ext.bind.context2", null);

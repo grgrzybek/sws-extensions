@@ -73,6 +73,7 @@ public class ComplexTypePattern<T> extends TypedPattern<T> {
 	// for unmarshaller we may encounter nested (in relation to content model) attributes, elements and text
 	private Map<QName, PropertyMetadata<T, ?>> attributes = new HashMap<QName, PropertyMetadata<T, ?>>();
 
+	// TODO: optimize namespace prefix creation - pull namespace declarations from child elements to containing element?
 	private Map<QName, PropertyMetadata<T, ?>> elements = new HashMap<QName, PropertyMetadata<T, ?>>();
 
 	// optimization to check wether to create particular PropertyAccessor

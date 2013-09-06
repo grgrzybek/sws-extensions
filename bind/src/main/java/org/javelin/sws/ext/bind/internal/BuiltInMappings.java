@@ -21,9 +21,15 @@ import java.text.ParseException;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import org.javelin.sws.ext.bind.SweJaxbConstants;
 import org.javelin.sws.ext.bind.internal.model.SimpleContentPattern;
 import org.javelin.sws.ext.bind.internal.model.TypedPattern;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.format.Formatter;
 
 /**
@@ -41,7 +47,7 @@ public abstract class BuiltInMappings {
 	/**
 	 * @param patterns
 	 */
-	public static <T> void initialize(Map<Class<?>, TypedPattern<?>> patterns) {
+	public static <T> void initialize(Map<Class<?>, TypedPattern<?>> patterns, Map<QName, TypedPattern<?>> patternsForTypeQNames) {
 		// see: com.sun.xml.bind.v2.model.impl.RuntimeBuiltinLeafInfoImpl<T> and inner
 		// com.sun.xml.bind.v2.model.impl.RuntimeBuiltinLeafInfoImpl.StringImpl<T> implementations
 
@@ -62,14 +68,19 @@ public abstract class BuiltInMappings {
 		// SimpleContentPattern pattern = null;
 
 		// 3.3.1 string (#string)
-		patterns.put(String.class, SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_STRING, String.class));
+		{
+			SimpleContentPattern<String> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_STRING, String.class);
+			patterns.put(pattern.getJavaType(), pattern);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+		}
 
 		// 3.3.2 boolean (#boolean)
 		{
-			SimpleContentPattern<Boolean> vp = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_BOOLEAN, Boolean.class);
-			patterns.put(Boolean.class, vp);
-			patterns.put(Boolean.TYPE, vp);
-			vp.setFormatter(new Formatter<Boolean>() {
+			SimpleContentPattern<Boolean> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_BOOLEAN, Boolean.class);
+			patterns.put(Boolean.TYPE, pattern);
+			patterns.put(pattern.getJavaType(), pattern);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<Boolean>() {
 				@Override
 				public String print(Boolean object, Locale locale) {
 					return Boolean.toString(object);
@@ -85,9 +96,10 @@ public abstract class BuiltInMappings {
 
 		// 3.3.3 decimal (#decimal)
 		{
-			SimpleContentPattern<BigDecimal> vp = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_DECIMAL, BigDecimal.class);
-			patterns.put(BigDecimal.class, vp);
-			vp.setFormatter(new Formatter<BigDecimal>() {
+			SimpleContentPattern<BigDecimal> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_DECIMAL, BigDecimal.class);
+			patterns.put(pattern.getJavaType(), pattern);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<BigDecimal>() {
 				@Override
 				public String print(BigDecimal object, Locale locale) {
 					return object.toPlainString();
@@ -103,9 +115,11 @@ public abstract class BuiltInMappings {
 
 		// 3.3.4 float (#float)
 		{
-			SimpleContentPattern<Float> vp = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_FLOAT, Float.class);
-			patterns.put(Float.class, vp);
-			vp.setFormatter(new Formatter<Float>() {
+			SimpleContentPattern<Float> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_FLOAT, Float.class);
+			patterns.put(Float.TYPE, pattern);
+			patterns.put(pattern.getJavaType(), pattern);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<Float>() {
 				@Override
 				public String print(Float object, Locale locale) {
 					return Float.toString(object);
@@ -121,10 +135,11 @@ public abstract class BuiltInMappings {
 
 		// 3.3.5 double (#double)
 		{
-			SimpleContentPattern<Double> vp = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_DOUBLE, Double.class);
-			patterns.put(Double.class, vp);
-			patterns.put(Double.TYPE, vp);
-			vp.setFormatter(new Formatter<Double>() {
+			SimpleContentPattern<Double> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_DOUBLE, Double.class);
+			patterns.put(Double.TYPE, pattern);
+			patterns.put(pattern.getJavaType(), pattern);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<Double>() {
 				@Override
 				public String print(Double object, Locale locale) {
 					return Double.toString(object);
@@ -140,8 +155,49 @@ public abstract class BuiltInMappings {
 
 		// 3.3.6 duration (#duration)
 		// 3.3.7 dateTime (#dateTime)
+		{
+			SimpleContentPattern<DateTime> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_DATETIME, DateTime.class);
+			patterns.put(pattern.getJavaType(), pattern);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<DateTime>() {
+				private final DateTimeFormatter DTMS = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
+				private final DateTimeFormatter DT = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ");
+				private final DateTimeFormatter DTZMS = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+				private final DateTimeFormatter DTZ = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+				@Override
+				public DateTime parse(String text, Locale locale) throws ParseException {
+					return null;
+				}
+
+				@Override
+				public String print(DateTime object, Locale locale) {
+					if (object.getMillisOfSecond() == 0) {
+						return object.getZone() == DateTimeZone.UTC ? DTZ.print(object) : DT.print(object);
+					} else {
+						return object.getZone() == DateTimeZone.UTC ? DTZMS.print(object) : DTMS.print(object);
+					}
+				}
+			});
+		}
 		// 3.3.8 time (#time)
 		// 3.3.9 date (#date)
+		{
+			SimpleContentPattern<DateTime> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_DATE, DateTime.class);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<DateTime>() {
+				private final DateTimeFormatter DT = DateTimeFormat.forPattern("yyyy-MM-ddZZ");
+				private final DateTimeFormatter DTZ = DateTimeFormat.forPattern("yyyy-MM-dd'Z'");
+				@Override
+				public DateTime parse(String text, Locale locale) throws ParseException {
+					return null;
+				}
+				
+				@Override
+				public String print(DateTime object, Locale locale) {
+					return object.getZone() == DateTimeZone.UTC ? DTZ.print(object) : DT.print(object);
+				}
+			});
+		}
 		// 3.3.10 gYearMonth (#gYearMonth)
 		// 3.3.11 gYear (#gYear)
 		// 3.3.12 gMonthDay (#gMonthDay)
@@ -172,15 +228,16 @@ public abstract class BuiltInMappings {
 		// 3.4.15 negativeInteger (#negativeInteger)
 		// 3.4.16 long (#long)
 		{
-			SimpleContentPattern<Long> vp = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_LONG, Long.class);
-			patterns.put(Long.class, vp);
-			patterns.put(Long.TYPE, vp);
-			vp.setFormatter(new Formatter<Long>() {
+			SimpleContentPattern<Long> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_LONG, Long.class);
+			patterns.put(Long.TYPE, pattern);
+			patterns.put(pattern.getJavaType(), pattern);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<Long>() {
 				@Override
 				public String print(Long object, Locale locale) {
 					return Long.toString(object);
 				}
-				
+
 				@Override
 				public Long parse(String text, Locale locale) throws ParseException {
 					return Long.parseLong(text);
@@ -189,10 +246,11 @@ public abstract class BuiltInMappings {
 		}
 		// 3.4.17 int (#int)
 		{
-			SimpleContentPattern<Integer> vp = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_INT, Integer.class);
-			patterns.put(Integer.class, vp);
-			patterns.put(Integer.TYPE, vp);
-			vp.setFormatter(new Formatter<Integer>() {
+			SimpleContentPattern<Integer> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_INT, Integer.class);
+			patterns.put(Integer.TYPE, pattern);
+			patterns.put(pattern.getJavaType(), pattern);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<Integer>() {
 				@Override
 				public String print(Integer object, Locale locale) {
 					return Integer.toString(object);
@@ -206,15 +264,16 @@ public abstract class BuiltInMappings {
 		}
 		// 3.4.18 short (#short)
 		{
-			SimpleContentPattern<Short> vp = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_SHORT, Short.class);
-			patterns.put(Short.class, vp);
-			patterns.put(Short.TYPE, vp);
-			vp.setFormatter(new Formatter<Short>() {
+			SimpleContentPattern<Short> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_SHORT, Short.class);
+			patterns.put(Short.TYPE, pattern);
+			patterns.put(pattern.getJavaType(), pattern);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<Short>() {
 				@Override
 				public String print(Short object, Locale locale) {
 					return Short.toString(object);
 				}
-				
+
 				@Override
 				public Short parse(String text, Locale locale) throws ParseException {
 					return Short.parseShort(text);
@@ -223,15 +282,16 @@ public abstract class BuiltInMappings {
 		}
 		// 3.4.19 byte (#byte)
 		{
-			SimpleContentPattern<Byte> vp = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_BYTE, Byte.class);
-			patterns.put(Byte.class, vp);
-			patterns.put(Byte.TYPE, vp);
-			vp.setFormatter(new Formatter<Byte>() {
+			SimpleContentPattern<Byte> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_BYTE, Byte.class);
+			patterns.put(Byte.TYPE, pattern);
+			patterns.put(pattern.getJavaType(), pattern);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<Byte>() {
 				@Override
 				public String print(Byte object, Locale locale) {
 					return Byte.toString(object);
 				}
-				
+
 				@Override
 				public Byte parse(String text, Locale locale) throws ParseException {
 					return Byte.parseByte(text);
@@ -249,9 +309,10 @@ public abstract class BuiltInMappings {
 		// 3.4.28 dateTimeStamp (#dateTimeStamp)
 
 		// other simple types
-		// JAXB2:
+		// JAXB2 (static):
 		/*
 			class [B
+			class char
 			class java.awt.Image
 			class java.io.File
 			class java.lang.Character
@@ -270,6 +331,13 @@ public abstract class BuiltInMappings {
 			class javax.xml.datatype.XMLGregorianCalendar
 			class javax.xml.namespace.QName
 			interface javax.xml.transform.Source
+			class void
+		 */
+		// JAXB2 (additional mappings available at runtime):
+		/*
+		 * class com.sun.xml.bind.api.CompositeStructure
+		 * class java.lang.Object
+		 * class javax.xml.bind.JAXBElement
 		 */
 	}
 
