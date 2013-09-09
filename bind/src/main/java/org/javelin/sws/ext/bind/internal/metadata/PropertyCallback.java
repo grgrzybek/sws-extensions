@@ -30,6 +30,7 @@ import javax.xml.XMLConstants;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlTransient;
@@ -123,8 +124,10 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 	 * @return
 	 */
 	public TypedPattern<T> analyze() {
-		if (this.patternRegistry.hasPatternForClass(this.clazz))
-			return this.patternRegistry.determineXmlPattern(this.clazz);
+		TypedPattern<T> result = this.patternRegistry.findPatternByClass(this.clazz);
+
+		if (result != null)
+			return result;
 
 		log.trace("Analyzing {} class with {} type name", this.clazz.getName(), this.typeName);
 
@@ -149,8 +152,6 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 		catch (Exception e) {
 			throw new RuntimeException("TODO: " + e.getMessage(), e);
 		}
-
-		TypedPattern<T> result = null;
 
 		if (this.valueMetadata != null && this.childElementMetadata.size() == 0 && this.childAttributeMetadata.size() == 0) {
 			// we have a special case, where Java class becomes simpleType:
@@ -233,13 +234,13 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 			// the schema type determines the pattern - if it is not present in the registry, it will be after determining it on the basis of Java class
 			// of the property
 			QName typeName = new QName(xmlSchemaType.namespace(), xmlSchemaType.name());
-			pattern = this.patternRegistry.findTypedPattern(typeName, metadata.getPropertyClass());
+			pattern = this.patternRegistry.findPatternByType(typeName, metadata.getPropertyClass());
 			if (log.isTraceEnabled() && pattern != null)
 				log.trace("-- @XmlSchemaType points to {}", pattern.toString());
 		}
 
 		if (pattern == null)
-			pattern = this.patternRegistry.determineXmlPattern(metadata.getPropertyClass());
+			pattern = this.patternRegistry.determineAndCacheXmlPattern(metadata.getPropertyClass());
 
 		// is it value?
 		XmlValue xmlValue = AnnotationUtils.getAnnotation(property, XmlValue.class);
@@ -323,7 +324,20 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 				log.trace("-- @XmlElement property \"{}\" of type {} mapped to {} element with {}", metadata.getPropertyName(), pattern.getJavaType().getName(),
 						elementQName, pattern.toString());
 
-			metadata.setPattern(ElementPattern.newElementPattern(elementQName, pattern));
+			ElementPattern<P> elementPattern = ElementPattern.newElementPattern(elementQName, pattern);
+			XmlElementWrapper xmlElementWrapper = AnnotationUtils.getAnnotation(property, XmlElementWrapper.class);
+			if (xmlElementWrapper != null) {
+				if (!"##default".equals(xmlElementWrapper.namespace()))
+					namespace = xmlElementWrapper.namespace();
+				name = !"##default".equals(xmlElementWrapper.name()) ? xmlElementWrapper.name() : metadata.getPropertyName();
+
+				// TODO: Handle @XmlElementWrapper for collection properties
+				// TODO: JAXB2 doesn't allow this, but maybe it's a good idea to be able to wrap non-collection properties also?
+				// TODO: maybe it's a good idea to create @XmlElementWrappers class (aggregating multime @XmlElementWrapper annotations?)
+//				elementPattern = ElementPattern.newElementPattern(new QName(namespace, name), pattern);
+			}
+
+			metadata.setPattern(elementPattern);
 			this.childElementMetadata.add(metadata);
 			return;
 		}

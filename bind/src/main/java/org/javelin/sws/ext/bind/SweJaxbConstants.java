@@ -87,13 +87,19 @@ public interface SweJaxbConstants {
 	// 3.3.7 dateTime (#dateTime)
 	public static final QName XSD_DATETIME = new QName(Constants.URI_2001_SCHEMA_XSD, "dateTime", XSD_PREFIX);
 	// 3.3.8 time (#time)
+	public static final QName XSD_TIME = new QName(Constants.URI_2001_SCHEMA_XSD, "time", XSD_PREFIX);
 	// 3.3.9 date (#date)
 	public static final QName XSD_DATE = new QName(Constants.URI_2001_SCHEMA_XSD, "date", XSD_PREFIX);
 	// 3.3.10 gYearMonth (#gYearMonth)
+	public static final QName XSD_GYEARMONTH = new QName(Constants.URI_2001_SCHEMA_XSD, "gYearMonth", XSD_PREFIX);
 	// 3.3.11 gYear (#gYear)
+	public static final QName XSD_GYEAR = new QName(Constants.URI_2001_SCHEMA_XSD, "gYear", XSD_PREFIX);
 	// 3.3.12 gMonthDay (#gMonthDay)
+	public static final QName XSD_GMONTHDAY = new QName(Constants.URI_2001_SCHEMA_XSD, "gMonthDay", XSD_PREFIX);
 	// 3.3.13 gDay (#gDay)
+	public static final QName XSD_GDAY = new QName(Constants.URI_2001_SCHEMA_XSD, "gDay", XSD_PREFIX);
 	// 3.3.14 gMonth (#gMonth)
+	public static final QName XSD_GMONTH = new QName(Constants.URI_2001_SCHEMA_XSD, "gMonth", XSD_PREFIX);
 	// 3.3.15 hexBinary (#hexBinary)
 	// 3.3.16 base64Binary (#base64Binary)
 	// 3.3.17 anyURI (#anyURI)

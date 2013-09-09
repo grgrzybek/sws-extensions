@@ -36,6 +36,7 @@ import org.javelin.sws.ext.bind.SweJaxbContextFactory;
 import org.javelin.sws.ext.bind.TypedPatternRegistry;
 import org.javelin.sws.ext.bind.internal.metadata.PropertyCallback;
 import org.javelin.sws.ext.bind.internal.model.context1.MyDate;
+import org.javelin.sws.ext.bind.internal.model.context1.MyTime;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
@@ -84,7 +85,7 @@ public class AnalyzeSimpleTypesTest {
 	@Test
 	public void analyzeXsDateTime() throws Exception {
 		TypedPatternRegistry context = (TypedPatternRegistry) SweJaxbContextFactory.createContext("", null);
-		TypedPattern<DateTime> pattern = context.determineXmlPattern(DateTime.class);
+		TypedPattern<DateTime> pattern = context.determineAndCacheXmlPattern(DateTime.class);
 		assertNotNull(pattern);
 		assertThat(pattern.getJavaType(), equalTo(DateTime.class));
 		assertThat(pattern.getSchemaType(), equalTo(new QName(Constants.URI_2001_SCHEMA_XSD, "dateTime")));
@@ -95,11 +96,11 @@ public class AnalyzeSimpleTypesTest {
 		this.before();
 		pattern.replayValue(new DateTime().withDate(2000, 1, 1).withTime(10, 20, 30, 0).withZone(DateTimeZone.forID("CET")), this.writer, null);
 		assertThat(this.simpleResult(), equalTo("2000-01-01T10:20:30+01:00"));
-		
+
 		this.before();
 		pattern.replayValue(new DateTime().withDate(2000, 1, 1).withTime(10, 20, 30, 433).withZone(DateTimeZone.UTC), this.writer, null);
 		assertThat(this.simpleResult(), equalTo("2000-01-01T09:20:30.433Z"));
-		
+
 		this.before();
 		pattern.replayValue(new DateTime().withDate(2000, 1, 1).withTime(10, 20, 30, 0).withZone(DateTimeZone.UTC), this.writer, null);
 		assertThat(this.simpleResult(), equalTo("2000-01-01T09:20:30Z"));
@@ -108,14 +109,27 @@ public class AnalyzeSimpleTypesTest {
 	@Test
 	public void analyzeXsDate() throws Exception {
 		TypedPatternRegistry context = (TypedPatternRegistry) SweJaxbContextFactory.createContext("org.javelin.sws.ext.bind.internal.model.context1", null);
-		TypedPattern<MyDate> pattern = context.determineXmlPattern(MyDate.class);
-		
+		TypedPattern<MyDate> pattern = context.determineAndCacheXmlPattern(MyDate.class);
+
 		pattern.replayValue(new MyDate(new DateTime().withDate(2000, 1, 1).withTime(10, 20, 30, 40).withZone(DateTimeZone.forID("CET"))), this.writer, null);
 		assertThat(this.simpleResult(), equalTo("2000-01-01+01:00"));
-		
+
 		this.before();
 		pattern.replayValue(new MyDate(new DateTime().withDate(2000, 1, 1).withTime(10, 20, 30, 40).withZone(DateTimeZone.UTC)), this.writer, null);
 		assertThat(this.simpleResult(), equalTo("2000-01-01Z"));
+	}
+
+	@Test
+	public void analyzeXsTime() throws Exception {
+		TypedPatternRegistry context = (TypedPatternRegistry) SweJaxbContextFactory.createContext("org.javelin.sws.ext.bind.internal.model.context1", null);
+		TypedPattern<MyTime> pattern = context.determineAndCacheXmlPattern(MyTime.class);
+
+		pattern.replayValue(new MyTime(new DateTime().withDate(2000, 1, 1).withTime(10, 20, 30, 40).withZone(DateTimeZone.forID("CET"))), this.writer, null);
+		assertThat(this.simpleResult(), equalTo("10:20:30.040"));
+
+		this.before();
+		pattern.replayValue(new MyTime(new DateTime().withDate(2000, 1, 1).withTime(10, 20, 30, 0).withZone(DateTimeZone.UTC)), this.writer, null);
+		assertThat(this.simpleResult(), equalTo("09:20:30"));
 	}
 
 	/**

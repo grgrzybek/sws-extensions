@@ -29,8 +29,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchema;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.namespace.QName;
+import javax.xml.stream.events.XMLEvent;
 
 import org.apache.ws.commons.schema.XmlSchemaType;
 import org.javelin.sws.ext.bind.internal.BuiltInMappings;
@@ -107,9 +109,7 @@ public class SweJaxbContext extends JAXBContext implements TypedPatternRegistry 
 
 		// external types
 		for (Class<?> cl : classesToBeBound) {
-			TypedPattern<?> pattern = this.determineXmlPattern(cl);
-			this.patterns.put(pattern.getJavaType(), pattern);
-			this.patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			this.determineAndCacheXmlPattern(cl);
 		}
 	}
 
@@ -139,12 +139,13 @@ public class SweJaxbContext extends JAXBContext implements TypedPatternRegistry 
 
 	/* TypedPatternRegistry */
 
-	/* (non-Javadoc)
-	 * @see org.javelin.sws.ext.bind.TypedPatternRegistry#hasPatternForClass(java.lang.Class)
-	 */
 	@Override
-	public boolean hasPatternForClass(Class<?> clazz) {
-		return this.patterns.containsKey(clazz) && !(this.patterns.get(clazz) instanceof TemporaryTypedPattern);
+	@SuppressWarnings("unchecked")
+	public <T> TypedPattern<T> findPatternByClass(Class<T> clazz) {
+		TypedPattern<T> pattern = (TypedPattern<T>) this.patterns.get(clazz);
+		if (pattern != null && !(pattern instanceof TemporaryTypedPattern))
+			return pattern;
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -152,20 +153,30 @@ public class SweJaxbContext extends JAXBContext implements TypedPatternRegistry 
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> TypedPattern<T> findTypedPattern(QName typeName, Class<T> clazz) {
+	public <T> TypedPattern<T> findPatternByType(QName typeName, Class<T> clazz) {
 		return (TypedPattern<T>) this.patternsForTypeQNames.get(typeName);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.javelin.sws.ext.bind.TypedPatternRegistry#determineXmlPattern(java.lang.Class)
+	/**
+	 * <p>Get a representation of a class and it's (JAXB2) metadata as a <i>pattern</i> of static and dynamic {@link XMLEvent XML events}.</p>
+	 * 
+	 * <p>A class which is to be known by the registry should be directly convertible to a series of XML events. What is not mandatory here is
+	 * the root element of the marshalled object.</p>
+	 * 
+	 * <p>The produced pattern is automatically cached in the registry. Also the metadata for {@link XmlRootElement} annotated classes is cached.</p>
+	 * 
+	 * @param cl
+	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> TypedPattern<T> determineXmlPattern(Class<T> cl) {
+	public <T> TypedPattern<T> determineAndCacheXmlPattern(Class<T> cl) {
+		// DESIGNFLAW: some check are done using map, some - using TypedPatternRegistry
 		if (this.patterns.containsKey(cl)) {
-			@SuppressWarnings("unchecked")
-			TypedPattern<T> pattern = (TypedPattern<T>) this.patterns.get(cl);
-			return pattern;
+			return (TypedPattern<T>) this.patterns.get(cl);
 		}
+		
+		TypedPattern<T> pattern = null;
 
 		log.trace("Mapping {} class to TypedPattern", cl.getName());
 
@@ -202,10 +213,10 @@ public class SweJaxbContext extends JAXBContext implements TypedPatternRegistry 
 		TemporaryTypedPattern<T> txp = TemporaryTypedPattern.newTemporaryTypedPattern(typeName, cl);
 		this.patterns.put(cl, txp);
 
-		// this is where the magic happens
 		PropertyCallback<T> pc = new PropertyCallback<T>(this, cl, typeName, xmlAccessType, meta.getElementForm(), meta.getAttributeForm());
-		TypedPattern<T> mapping = pc.analyze();
-		txp.setRealPattern(mapping);
+		// this is where the magic happens
+		pattern = pc.analyze();
+		txp.setRealPattern(pattern);
 
 		// cache known global elements
 		XmlRootElement xmlRootElement = AnnotationUtils.findAnnotation(cl, XmlRootElement.class);
@@ -214,11 +225,24 @@ public class SweJaxbContext extends JAXBContext implements TypedPatternRegistry 
 			String rootElementName = "##default".equals(xmlRootElement.name()) ? cl.getSimpleName() : xmlRootElement.name();
 			QName rootQName = new QName(rootElementNamespace, rootElementName);
 
-			ElementPattern<?> pattern = ElementPattern.newElementPattern(rootQName, mapping);
-			this.rootPatterns.put(cl, pattern);
-			this.rootPatternsForQNames.put(rootQName, pattern);
+			ElementPattern<?> elementPattern = ElementPattern.newElementPattern(rootQName, pattern);
+			this.rootPatterns.put(cl, elementPattern);
+			this.rootPatternsForQNames.put(rootQName, elementPattern);
 		}
 
-		return mapping;
+		this.patterns.put(pattern.getJavaType(), pattern);
+		this.patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+
+		// see also
+		XmlSeeAlso xmlSeeAlso = AnnotationUtils.findAnnotation(cl, XmlSeeAlso.class);
+		if (xmlSeeAlso != null) {
+			for (Class<?> c : xmlSeeAlso.value()) {
+				log.trace("Analyzing @XmlSeeAlso class {}", c.getName());
+				this.determineAndCacheXmlPattern(c);
+			}
+		}
+
+		return pattern;
 	}
+
 }

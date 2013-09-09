@@ -30,12 +30,23 @@ import org.javelin.sws.ext.bind.internal.model.TypedPattern;
 public interface TypedPatternRegistry {
 
 	/**
-	 * Checks whether a registry has mapping of Java class into a recipe for (un)marshalling values of this class from/to a series of XML events
+	 * <p>Finds a representation of a class and it's (JAXB2) metadata as a <i>pattern</i> of static and dynamic {@link XMLEvent XML events}. If no
+	 * pattern is found, {@code null} is returned</p>
 	 * 
 	 * @param clazz
 	 * @return
 	 */
-	public boolean hasPatternForClass(Class<?> clazz);
+	public <T> TypedPattern<T> findPatternByClass(Class<T> clazz);
+
+	/**
+	 * <p>Get a representation of a XSD type as a <i>pattern</i> of static and dynamic {@link XMLEvent XML events}. It returns {@code null}
+	 * if such mapping is not (yet) present.</p>
+	 * 
+	 * @param typeName
+	 * @param cl parameter for generic type deduction
+	 * @return
+	 */
+	public <T> TypedPattern<T> findPatternByType(QName typeName, Class<T> cl);
 
 	/**
 	 * <p>Get a representation of a class and it's (JAXB2) metadata as a <i>pattern</i> of static and dynamic {@link XMLEvent XML events}.</p>
@@ -43,22 +54,13 @@ public interface TypedPatternRegistry {
 	 * <p>A class which is to be known by the registry should be directly convertible to a series of XML events. What is not mandatory here is
 	 * the root element of the marshalled object.</p>
 	 * 
-	 * <p>The produced pattern is <b>not</b> automatically cached in the registry - that's the job of caller. It however
-	 * cache the metadata for {@link XmlRootElement} annotated classes.</p>
+	 * <p>The produced pattern is automatically cached in the registry. Also the metadata for {@link XmlRootElement} annotated classes is cached.</p>
+	 * 
+	 * <p>DESIGNFLAW: this should not be a part of this interface</p>
 	 * 
 	 * @param cl
 	 * @return
 	 */
-	public abstract <T> TypedPattern<T> determineXmlPattern(Class<T> cl);
-
-	/**
-	 * <p>Get a representation of a XSD type as a <i>pattern</i> of static and dynamic {@link XMLEvent XML events}. It returns {@code null}
-	 * if such mapping is not (yet) present.</p>
-	 * 
-	 * @param typeName
-	 * @param cl
-	 * @return
-	 */
-	public <T> TypedPattern<T> findTypedPattern(QName typeName, Class<T> cl);
+	public <T> TypedPattern<T> determineAndCacheXmlPattern(Class<T> cl);
 
 }

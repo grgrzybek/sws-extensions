@@ -65,7 +65,6 @@ public abstract class BuiltInMappings {
 		// 3.2.2 anyAtomicType (#anyAtomicType)
 
 		// 3.3 Primitive Datatypes (#built-in-primitive-datatypes)
-		// SimpleContentPattern pattern = null;
 
 		// 3.3.1 string (#string)
 		{
@@ -180,6 +179,27 @@ public abstract class BuiltInMappings {
 			});
 		}
 		// 3.3.8 time (#time)
+		{
+			SimpleContentPattern<DateTime> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_TIME, DateTime.class);
+			patternsForTypeQNames.put(pattern.getSchemaType(), pattern);
+			pattern.setFormatter(new Formatter<DateTime>() {
+				private final DateTimeFormatter TMS = DateTimeFormat.forPattern("HH:mm:ss.SSS");
+				private final DateTimeFormatter T = DateTimeFormat.forPattern("HH:mm:ss");
+				@Override
+				public DateTime parse(String text, Locale locale) throws ParseException {
+					return null;
+				}
+				
+				@Override
+				public String print(DateTime object, Locale locale) {
+					// TODO: should allow (([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]+)?|(24:00:00(\.0+)?))(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?
+					if (object.getMillisOfSecond() == 0)
+						return T.print(object);
+					else
+						return TMS.print(object);
+				}
+			});
+		}
 		// 3.3.9 date (#date)
 		{
 			SimpleContentPattern<DateTime> pattern = SimpleContentPattern.newValuePattern(SweJaxbConstants.XSD_DATE, DateTime.class);
