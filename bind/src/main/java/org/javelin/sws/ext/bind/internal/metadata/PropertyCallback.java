@@ -16,9 +16,7 @@
 
 package org.javelin.sws.ext.bind.internal.metadata;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -51,6 +49,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
 import org.springframework.util.ReflectionUtils.FieldFilter;
 import org.springframework.util.ReflectionUtils.MethodCallback;
+import org.springframework.util.ReflectionUtils.MethodFilter;
 import org.springframework.util.StringUtils;
 
 /**
@@ -70,7 +69,7 @@ import org.springframework.util.StringUtils;
  * @author Grzegorz Grzybek
  * @param <T> a type of bean containing analyzed properties
  */
-public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
+public class PropertyCallback<T> implements FieldCallback, MethodCallback {
 
 	private static Logger log = LoggerFactory.getLogger(PropertyCallback.class.getName());
 
@@ -138,20 +137,26 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 				return !Modifier.isStatic(field.getModifiers());
 			}
 		});
-		// analyze get/set methods
-		try {
-			BeanInfo beanInfo = Introspector.getBeanInfo(this.clazz);
-			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-			for (PropertyDescriptor pd : propertyDescriptors) {
-				if (pd.getReadMethod() != null && pd.getWriteMethod() != null) {
-					// like MethodCallback, but for a pair of methods
-					this.doWith(pd.getReadMethod(), pd.getWriteMethod());
+
+		// analyze get/set methods - even private ones!
+		ReflectionUtils.doWithMethods(this.clazz, this, new MethodFilter() {
+			@Override
+			public boolean matches(Method method) {
+				boolean match = true;
+				// is it getter?
+				match &= method.getName().startsWith("get");
+				match &= method.getParameterTypes().length == 0;
+				match &= method.getReturnType() != Void.class;
+				// is there a setter?
+				if (match) {
+					Method setter = ReflectionUtils.findMethod(clazz, method.getName().replaceFirst("^get", "set"), method.getReturnType());
+					// TODO: maybe allow non-void returning setters as Spring-Framework already does? Now: yes
+					match = setter != null;
 				}
+				
+				return match;
 			}
-		}
-		catch (Exception e) {
-			throw new RuntimeException("TODO: " + e.getMessage(), e);
-		}
+		});
 
 		if (this.valueMetadata != null && this.childElementMetadata.size() == 0 && this.childAttributeMetadata.size() == 0) {
 			// we have a special case, where Java class becomes simpleType:
@@ -189,7 +194,10 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 	 * 
 	 * @see org.springframework.util.ReflectionUtils.MethodCallback#doWith(java.lang.reflect.Method)
 	 */
-	public void doWith(Method getter, Method setter) throws IllegalArgumentException, IllegalAccessException {
+	@Override
+	public void doWith(Method getter) throws IllegalArgumentException, IllegalAccessException {
+		Method setter = ReflectionUtils.findMethod(clazz, getter.getName().replaceFirst("^get", "set"), getter.getReturnType());
+
 		if (log.isTraceEnabled())
 			log.trace(" - Analyzing pair of methods: {}.{}/{}.{}", getter.getDeclaringClass().getSimpleName(), getter.getName(), setter.getDeclaringClass()
 					.getSimpleName(), setter.getName());
@@ -197,7 +205,7 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 		// TODO: properly handle class hierarchies
 		String propertyName = StringUtils.uncapitalize(getter.getName().substring(3));
 		// metadata for getter/setter
-		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.clazz, getter.getReturnType(), propertyName, false);
+		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.clazz, getter.getReturnType(), propertyName, PropertyKind.BEAN);
 		metadata.setAccessorMethods(getter, setter);
 		this.doWithPropertySafe(metadata);
 	}
@@ -210,7 +218,7 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 		log.trace("- Analyzing field: {}.{}", field.getDeclaringClass().getSimpleName(), field.getName());
 		String fieldName = field.getName();
 		// metadata for a field
-		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.clazz, field.getType(), fieldName, true);
+		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.clazz, field.getType(), fieldName, PropertyKind.FIELD);
 		ReflectionUtils.makeAccessible(field);
 		metadata.setField(field);
 		this.doWithPropertySafe(metadata);
@@ -222,12 +230,12 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 	 */
 	private <P> void doWithPropertySafe(PropertyMetadata<T, P> metadata) throws IllegalArgumentException, IllegalAccessException {
 
-		AnnotatedElement property = metadata.getProperty();
+		AnnotatedElement[] accessors = metadata.getAccessors();
 
-		if (AnnotationUtils.getAnnotation(property, XmlTransient.class) != null)
+		if (this.findJaxbAnnotation(accessors, XmlTransient.class) != null)
 			return;
 
-		XmlSchemaType xmlSchemaType = AnnotationUtils.getAnnotation(property, XmlSchemaType.class);
+		XmlSchemaType xmlSchemaType = this.findJaxbAnnotation(accessors, XmlSchemaType.class);
 		// a pattern for property's class - force creating
 		TypedPattern<P> pattern = null;
 		if (xmlSchemaType != null) {
@@ -243,7 +251,7 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 			pattern = this.patternRegistry.determineAndCacheXmlPattern(metadata.getPropertyClass());
 
 		// is it value?
-		XmlValue xmlValue = AnnotationUtils.getAnnotation(property, XmlValue.class);
+		XmlValue xmlValue = this.findJaxbAnnotation(accessors, XmlValue.class);
 		if (xmlValue != null) {
 			// the field's class must be a simpleType, i.e., a type convertible to String, which is either:
 			//  - a type registered in org.javelin.sws.ext.bind.internal.BuiltInMappings.initialize()
@@ -264,7 +272,7 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 		}
 
 		// is it an attribute?
-		XmlAttribute xmlAttribute = AnnotationUtils.getAnnotation(property, XmlAttribute.class);
+		XmlAttribute xmlAttribute = this.findJaxbAnnotation(accessors, XmlAttribute.class);
 		if (xmlAttribute != null) {
 			String namespace = XMLConstants.NULL_NS_URI;
 			if (this.attributeFormDefault == XmlNsForm.QUALIFIED) {
@@ -294,16 +302,23 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 		}
 
 		// is it an element?
-		XmlElement xmlElement = AnnotationUtils.getAnnotation(property, XmlElement.class);
+		XmlElement xmlElement = this.findJaxbAnnotation(accessors, XmlElement.class);
 
 		// field is also an element when told so using XmlAccessorType
 		boolean isElement = false;
 
-		if (property instanceof Field) {
+		if (accessors[0] instanceof Field) {
 			if (this.accessType == XmlAccessType.FIELD)
 				isElement = true;
-			else if (this.accessType == XmlAccessType.PUBLIC_MEMBER && Modifier.isPublic(((Field) property).getModifiers()))
+			else if (this.accessType == XmlAccessType.PUBLIC_MEMBER && Modifier.isPublic(((Field) accessors[0]).getModifiers()))
 				isElement = true;
+		} else if (accessors[0] instanceof Method) {
+			if (this.accessType == XmlAccessType.PROPERTY)
+				isElement = true;
+			else if (this.accessType == XmlAccessType.PUBLIC_MEMBER && Modifier.isPublic(((Method) accessors[0]).getModifiers())) {
+				// TODO: what if getter is private and setter is public?
+				isElement = true;
+			}
 		}
 
 		if (xmlElement != null || isElement) {
@@ -325,22 +340,41 @@ public class PropertyCallback<T> implements FieldCallback/*, MethodCallback*/{
 						elementQName, pattern.toString());
 
 			ElementPattern<P> elementPattern = ElementPattern.newElementPattern(elementQName, pattern);
-			XmlElementWrapper xmlElementWrapper = AnnotationUtils.getAnnotation(property, XmlElementWrapper.class);
+			XmlElementWrapper xmlElementWrapper = this.findJaxbAnnotation(accessors, XmlElementWrapper.class);
 			if (xmlElementWrapper != null) {
 				if (!"##default".equals(xmlElementWrapper.namespace()))
 					namespace = xmlElementWrapper.namespace();
 				name = !"##default".equals(xmlElementWrapper.name()) ? xmlElementWrapper.name() : metadata.getPropertyName();
 
+				// XmlElementWrapper creates (in XSD Category) a new complex, anonymous, nested (inside element declaration) type
+				// DESIGNFLAW: XmlElementWrapper works, but not as clean as it should
+				PropertyMetadata<P, ?> md = PropertyMetadata.newPropertyMetadata(pattern.getJavaType(), Object.class, "", PropertyKind.PASSTHROUGH);
+				md.setPattern(elementPattern);
+				ComplexTypePattern<P> newAnonymousType = ComplexTypePattern.newContentModelPattern(null, pattern.getJavaType(), md);
 				// TODO: Handle @XmlElementWrapper for collection properties
 				// TODO: JAXB2 doesn't allow this, but maybe it's a good idea to be able to wrap non-collection properties also?
 				// TODO: maybe it's a good idea to create @XmlElementWrappers class (aggregating multime @XmlElementWrapper annotations?)
-//				elementPattern = ElementPattern.newElementPattern(new QName(namespace, name), pattern);
+				elementPattern = ElementPattern.newElementPattern(new QName(namespace, name), newAnonymousType);
 			}
 
 			metadata.setPattern(elementPattern);
 			this.childElementMetadata.add(metadata);
 			return;
 		}
+	}
+
+	/**
+	 * @param accessors
+	 * @return
+	 */
+	private <A extends Annotation> A findJaxbAnnotation(AnnotatedElement[] accessors, Class<A> ann) {
+		A annotation = null;
+		for (AnnotatedElement ae: accessors) {
+			// TODO: throw an exception when JAXB annotation is on both getter and setter
+			if ((annotation = AnnotationUtils.getAnnotation(ae, ann)) != null)
+				return annotation;
+		}
+		return null;
 	}
 
 }

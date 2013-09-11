@@ -16,16 +16,26 @@
 
 package org.javelin.sws.ext.bind.internal.model;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
+
 import org.javelin.sws.ext.bind.SweJaxbContextFactory;
 import org.javelin.sws.ext.bind.TypedPatternRegistry;
+import org.javelin.sws.ext.bind.internal.metadata.PropertyMetadata;
 import org.javelin.sws.ext.bind.internal.model.context3.A;
 import org.javelin.sws.ext.bind.internal.model.context3.B2;
 import org.javelin.sws.ext.bind.internal.model.context3.nested.B1;
 import org.javelin.sws.ext.bind.internal.model.context3.nested.B3;
+import org.javelin.sws.ext.bind.internal.model.context4.C1;
+import org.javelin.sws.ext.bind.internal.model.context4.C2;
+import org.javelin.sws.ext.bind.internal.model.context4.C3;
+import org.javelin.sws.ext.bind.internal.model.context4.C4;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -34,10 +44,10 @@ import org.springframework.test.util.ReflectionTestUtils;
  *
  * @author Grzegorz Grzybek
  */
+@SuppressWarnings("unchecked")
 public class ClassHierarchyTest {
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void handleXmlSeeAlso() throws Exception {
 		TypedPatternRegistry context = (TypedPatternRegistry) SweJaxbContextFactory.createContext("org.javelin.sws.ext.bind.internal.model.context3", null);
 
@@ -52,6 +62,76 @@ public class ClassHierarchyTest {
 		assertNotNull(pattern2);
 		assertNotNull(pattern3);
 		assertNotNull(pattern4);
+	}
+
+	@Test
+	public void handleXmlAccessTypeNONE() throws Exception {
+		// f3, f4, p3, p4 - explicitely annotated
+		System.out.println("\nC1");
+		JAXBContext.newInstance(C1.class).createMarshaller().marshal(new JAXBElement<C1>(new QName("", "r"), C1.class, new C1()), System.out);
+		JAXBContext ctx = SweJaxbContextFactory.createContext(new Class[] { C1.class }, null);
+		Map<Class<?>, TypedPattern<?>> patterns = (Map<Class<?>, TypedPattern<?>>) ReflectionTestUtils.getField(ctx, "patterns");
+		ComplexTypePattern<C1> pattern = (ComplexTypePattern<C1>) patterns.get(C1.class);
+		Map<QName, PropertyMetadata<C1, ?>> elements = (Map<QName, PropertyMetadata<C1, ?>>) ReflectionTestUtils.getField(pattern, "elements");
+		assertThat(elements.size(), equalTo(4));
+		assertTrue(elements.containsKey(new QName("", "f3")));
+		assertTrue(elements.containsKey(new QName("", "f4")));
+		assertTrue(elements.containsKey(new QName("", "p3")));
+		assertTrue(elements.containsKey(new QName("", "p4")));
+	}
+
+	@Test
+	public void handleXmlAccessTypeField() throws Exception {
+		// f1, f2, f3, f4, p3, p4 - fields and annotated properties
+		System.out.println("\nC2");
+		JAXBContext.newInstance(C2.class).createMarshaller().marshal(new JAXBElement<C2>(new QName("", "r"), C2.class, new C2()), System.out);
+		JAXBContext ctx = SweJaxbContextFactory.createContext(new Class[] { C2.class }, null);
+		Map<Class<?>, TypedPattern<?>> patterns = (Map<Class<?>, TypedPattern<?>>) ReflectionTestUtils.getField(ctx, "patterns");
+		ComplexTypePattern<C2> pattern = (ComplexTypePattern<C2>) patterns.get(C2.class);
+		Map<QName, PropertyMetadata<C2, ?>> elements = (Map<QName, PropertyMetadata<C2, ?>>) ReflectionTestUtils.getField(pattern, "elements");
+		assertThat(elements.size(), equalTo(6));
+		assertTrue(elements.containsKey(new QName("", "f1")));
+		assertTrue(elements.containsKey(new QName("", "f2")));
+		assertTrue(elements.containsKey(new QName("", "f3")));
+		assertTrue(elements.containsKey(new QName("", "f4")));
+		assertTrue(elements.containsKey(new QName("", "p3")));
+		assertTrue(elements.containsKey(new QName("", "p4")));
+	}
+
+	@Test
+	public void handleXmlAccessTypeProperty() throws Exception {
+		// f3, f4, p1, p2, p3, p4 - properties and annotated fields
+		System.out.println("\nC3");
+		JAXBContext.newInstance(C3.class).createMarshaller().marshal(new JAXBElement<C3>(new QName("", "r"), C3.class, new C3()), System.out);
+		JAXBContext ctx = SweJaxbContextFactory.createContext(new Class[] { C3.class }, null);
+		Map<Class<?>, TypedPattern<?>> patterns = (Map<Class<?>, TypedPattern<?>>) ReflectionTestUtils.getField(ctx, "patterns");
+		ComplexTypePattern<C3> pattern = (ComplexTypePattern<C3>) patterns.get(C3.class);
+		Map<QName, PropertyMetadata<C3, ?>> elements = (Map<QName, PropertyMetadata<C3, ?>>) ReflectionTestUtils.getField(pattern, "elements");
+		assertThat(elements.size(), equalTo(6));
+		assertTrue(elements.containsKey(new QName("", "f3")));
+		assertTrue(elements.containsKey(new QName("", "f4")));
+		assertTrue(elements.containsKey(new QName("", "p1")));
+		assertTrue(elements.containsKey(new QName("", "p2")));
+		assertTrue(elements.containsKey(new QName("", "p3")));
+		assertTrue(elements.containsKey(new QName("", "p4")));
+	}
+
+	@Test
+	public void handleXmlAccessTypePublicMember() throws Exception {
+		// f1, f3, f4, p1, p3, p4 - public fields, public properties, annotated fields, annotated properties
+		System.out.println("\nC4");
+		JAXBContext.newInstance(C4.class).createMarshaller().marshal(new JAXBElement<C4>(new QName("", "r"), C4.class, new C4()), System.out);
+		JAXBContext ctx = SweJaxbContextFactory.createContext(new Class[] { C4.class }, null);
+		Map<Class<?>, TypedPattern<?>> patterns = (Map<Class<?>, TypedPattern<?>>) ReflectionTestUtils.getField(ctx, "patterns");
+		ComplexTypePattern<C4> pattern = (ComplexTypePattern<C4>) patterns.get(C4.class);
+		Map<QName, PropertyMetadata<C4, ?>> elements = (Map<QName, PropertyMetadata<C4, ?>>) ReflectionTestUtils.getField(pattern, "elements");
+		assertThat(elements.size(), equalTo(6));
+		assertTrue(elements.containsKey(new QName("", "f1")));
+		assertTrue(elements.containsKey(new QName("", "f3")));
+		assertTrue(elements.containsKey(new QName("", "f4")));
+		assertTrue(elements.containsKey(new QName("", "p1")));
+		assertTrue(elements.containsKey(new QName("", "p3")));
+		assertTrue(elements.containsKey(new QName("", "p4")));
 	}
 
 }

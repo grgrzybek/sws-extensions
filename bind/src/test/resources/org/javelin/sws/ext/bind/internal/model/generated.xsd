@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="urn:test2" xmlns:tns="urn:test2" version="1.0">
+
+	<xs:element name="TWE" type="tns:typeWithElement" />
+	<xs:element name="TWEW" type="tns:typeWithElementWrapper" />
+
+	<xs:complexType name="typeWithElement">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="elem" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="typeWithElementWrapper">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="wrapper">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="elem" type="xs:string" />
+						<xs:element ref="tns:TWE" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

@@ -16,6 +16,9 @@
 
 package org.javelin.sws.ext.bind.internal.model.context2;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
@@ -28,6 +31,6 @@ public class TypeWithElementWrapper {
 
 	@XmlElement
 	@XmlElementWrapper(name = "wrapper")
-	public String elem = "value";
+	public List<String> elem = Arrays.asList(new String[] { "a", "b" });
 
 }

@@ -39,7 +39,6 @@ public class PropertyMetadata<T, P> {
 	/** Name of field or bean property */
 	private String propertyName;
 
-	@SuppressWarnings("unused")
 	private Class<T> declaringClass;
 
 	private Class<P> propertyClass;
@@ -47,8 +46,8 @@ public class PropertyMetadata<T, P> {
 	/** {@link TypedPattern} to which a given property maps. */
 	private XmlEventsPattern pattern;
 
-	/** Is it field ({@code true}) or JavaBean ({@code false} property? */
-	private boolean directProperty;
+	/** Is it field ({@code PropertyKind#FIELD}) or JavaBean ({@code PropertyKind#BEAN} property? */
+	private PropertyKind propertyKind;
 
 	/** {@link Field} for direct access */
 	private Field field;
@@ -57,40 +56,44 @@ public class PropertyMetadata<T, P> {
 	private Method getter;
 
 	/** {@link Method} for bean property write */
-	@SuppressWarnings("unused")
 	private Method setter;
 
 	/**
+	 * @param declaringClass
+	 * @param propertyClass
 	 * @param propertyName
-	 * @param directProperty
+	 * @param propertyKind
 	 */
-	private PropertyMetadata(Class<T> declaringClass, Class<P> propertyClass, String propertyName, boolean directProperty) {
+	private PropertyMetadata(Class<T> declaringClass, Class<P> propertyClass, String propertyName, PropertyKind propertyKind) {
 		this.declaringClass = declaringClass;
 		this.propertyClass = propertyClass;
 		this.propertyName = propertyName;
-		this.directProperty = directProperty;
+		this.propertyKind = propertyKind;
 	}
 
 	/**
+	 * @param declaringClass
+	 * @param propertyClass
 	 * @param propertyName
-	 * @param directProperty
+	 * @param propertyKind
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T, P> PropertyMetadata<T, P> newPropertyMetadata(Class<T> declaringClass, Class<?> propertyClass, String propertyName, boolean directProperty) {
-		return new PropertyMetadata<T, P>(declaringClass, (Class<P>) propertyClass, propertyName, directProperty);
+	public static <T, P> PropertyMetadata<T, P> newPropertyMetadata(Class<T> declaringClass, Class<?> propertyClass, String propertyName,
+			PropertyKind propertyKind) {
+		return new PropertyMetadata<T, P>(declaringClass, (Class<P>) propertyClass, propertyName, propertyKind);
 	}
 
-	/**
-	 * @param propertyName
-	 * @param directProperty
-	 * @param pattern
-	 */
-	public PropertyMetadata(String propertyName, boolean directProperty, XmlEventsPattern pattern) {
-		this.propertyName = propertyName;
-		this.directProperty = directProperty;
-		this.pattern = pattern;
-	}
+	//	/**
+	//	 * @param propertyName
+	//	 * @param directProperty
+	//	 * @param pattern
+	//	 */
+	//	public PropertyMetadata(String propertyName, boolean directProperty, XmlEventsPattern pattern) {
+	//		this.propertyName = propertyName;
+	//		this.propertyKind = directProperty;
+	//		this.pattern = pattern;
+	//	}
 
 	/**
 	 * @return the pattern
@@ -114,10 +117,10 @@ public class PropertyMetadata<T, P> {
 	}
 
 	/**
-	 * @return the directProperty
+	 * @return the propertyKind
 	 */
-	public boolean isDirectProperty() {
-		return this.directProperty;
+	public PropertyKind getPropertyKind() {
+		return this.propertyKind;
 	}
 
 	/**
@@ -151,10 +154,32 @@ public class PropertyMetadata<T, P> {
 	@SuppressWarnings("unchecked")
 	public P getValue(T object) {
 		try {
-			if (this.isDirectProperty())
+			if (this.getPropertyKind() == PropertyKind.FIELD)
 				return this.getFieldValue(object);
-			else
+			else if (this.getPropertyKind() == PropertyKind.BEAN)
 				return (P) this.getter.invoke(object);
+			else
+				/*if (this.getPropertyKind() == PropertyKind.PASSTHROUGH)*/
+				return (P) object;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * @param object
+	 * @param value
+	 */
+	public void setValue(T object, Object value) {
+		try {
+			if (this.getPropertyKind() == PropertyKind.FIELD)
+				this.setFieldValue(object, value);
+			else if (this.getPropertyKind() == PropertyKind.BEAN)
+				this.setter.invoke(object, value);
+			else
+				/*if (this.getPropertyKind() == PropertyKind.PASSTHROUGH)*/
+				;
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
@@ -174,12 +199,33 @@ public class PropertyMetadata<T, P> {
 			throw new RuntimeException("TODO: " + e.getMessage(), e);
 		}
 	}
+	
+	/**
+	 * @param object
+	 * @param value
+	 */
+	private void setFieldValue(T object, Object value) {
+		try {
+			this.field.set(object, value);
+		} catch (Exception e) {
+			throw new RuntimeException("TODO: " + e.getMessage(), e);
+		}
+	}
 
 	/**
 	 * @return
 	 */
-	public AnnotatedElement getProperty() {
-		return this.isDirectProperty() ? this.field : this.getter;
+	public AnnotatedElement[] getAccessors() {
+		switch (this.getPropertyKind()) {
+		case FIELD:
+			return new AnnotatedElement[] { this.field };
+		case BEAN:
+			return new AnnotatedElement[] { this.getter, this.setter };
+		case PASSTHROUGH:
+			return new AnnotatedElement[] { this.declaringClass };
+		default:
+			return null;
+		}
 	}
 
 }

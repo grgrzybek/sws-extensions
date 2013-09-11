@@ -16,6 +16,7 @@
 
 package org.javelin.sws.ext.bind.internal.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,9 +43,6 @@ import org.javelin.sws.ext.bind.internal.UnmarshallingContext;
 import org.javelin.sws.ext.bind.internal.metadata.PropertyMetadata;
 import org.javelin.sws.ext.bind.internal.metadata.PropertyMetadataValue;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.PropertyAccessor;
-import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.PropertyValue;
 
 /**
@@ -76,24 +74,19 @@ public class ComplexTypePattern<T> extends TypedPattern<T> {
 	// TODO: optimize namespace prefix creation - pull namespace declarations from child elements to containing element?
 	private Map<QName, PropertyMetadata<T, ?>> elements = new HashMap<QName, PropertyMetadata<T, ?>>();
 
-	// optimization to check wether to create particular PropertyAccessor
-	private boolean hasFieldProperties = false;
-
 	/**
 	 * <p>Initializes content model with a sequence (XSD's sequence, choice or all) of properties, each related to a given bean property and
 	 * mapping to a given {@link XmlEventsPattern}.</p>
 	 * 
 	 * @param schemaType
 	 * @param javaType
-	 * @param contentModel TODO: think of better name - it's more than content model because it may contain attributes and simple content property metadata
+	 * @param contentModel
 	 */
 	private ComplexTypePattern(QName schemaType, Class<T> javaType, List<PropertyMetadata<T, ?>> contentModel) {
 		super(schemaType, javaType);
 		this.attributesAndComplexContent = contentModel;
 
 		for (PropertyMetadata<T, ?> pm : contentModel) {
-			if (pm.isDirectProperty())
-				this.hasFieldProperties = true;
 			if (pm.getPattern() instanceof AttributePattern) {
 				this.attributes.put(((AttributePattern<?>) pm.getPattern()).getAttributeName(), pm);
 			}
@@ -115,6 +108,18 @@ public class ComplexTypePattern<T> extends TypedPattern<T> {
 	 */
 	public static <T> ComplexTypePattern<T> newContentModelPattern(QName schemaType, Class<T> javaType, List<PropertyMetadata<T, ?>> contentModel) {
 		return new ComplexTypePattern<T>(schemaType, javaType, contentModel);
+	}
+	
+	/**
+	 * @param schemaType
+	 * @param javaType
+	 * @param contentModel
+	 * @return
+	 */
+	public static <T> ComplexTypePattern<T> newContentModelPattern(QName schemaType, Class<T> javaType, PropertyMetadata<T, ?> contentModel) {
+		List<PropertyMetadata<T, ?>> model = new ArrayList<PropertyMetadata<T,?>>();
+		model.add(contentModel);
+		return new ComplexTypePattern<T>(schemaType, javaType, model);
 	}
 
 	/* (non-Javadoc)
@@ -158,24 +163,10 @@ public class ComplexTypePattern<T> extends TypedPattern<T> {
 	/* (non-Javadoc)
 	 * @see org.javelin.sws.ext.bind.internal.model.TypedPattern#consumeValue(javax.xml.stream.XMLEventReader, org.javelin.sws.ext.bind.internal.UnmarshallingContext)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public T consumeValue(XMLEventReader eventReader, UnmarshallingContext context) throws XMLStreamException {
 		// first create an object to be filled (using PropertyAccessors - direct or bean) according to the content model
-		Object object = BeanUtils.instantiate(this.getJavaType());
-
-		// prepare accessor(s)
-		PropertyAccessor directFieldAccessor = null;
-		PropertyAccessor beanPropertyAccessor = null;
-		if (this.hasFieldProperties) {
-			directFieldAccessor = PropertyAccessorFactory.forDirectFieldAccess(object);
-		}
-		else {
-			// TODO: create bean accessor also when there are direct field properties - in case of get/set not related to fields
-			// if there are no JAXB mapped fields, there should be JAXB mapped properties. Otherwise this would be a very strange JAXB class...
-			beanPropertyAccessor = new BeanWrapperImpl(false);
-			((BeanWrapperImpl) beanPropertyAccessor).setWrappedInstance(object);
-		}
+		T object = BeanUtils.instantiate(this.getJavaType());
 
 		// the order is dictated by incoming events, not by the mode
 		// TODO: create a property to enable strict unmarshalling - dictated by content model
@@ -229,12 +220,8 @@ public class ComplexTypePattern<T> extends TypedPattern<T> {
 			if (end)
 				break;
 
-			if (pmv != null) {
-				boolean direct = pmv.getMetadata().isDirectProperty();
-				PropertyAccessor propertyAccessor = direct ? directFieldAccessor : beanPropertyAccessor;
-
-				propertyAccessor.setPropertyValue(pmv.getOriginalPropertyValue());
-			}
+			if (pmv != null)
+				pmv.getMetadata().setValue(object, pmv.getValue());
 		}
 
 		return (T) object;

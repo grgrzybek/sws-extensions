@@ -14,21 +14,37 @@
  * limitations under the License.
  */
 
-package org.javelin.sws.ext.bind.internal.model.context2;
+package org.javelin.sws.ext.bind.internal.model;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
 
-import javax.xml.bind.annotation.XmlElement;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import com.sun.tools.xjc.XJCFacade;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public class TypeWithElement {
+public class XjcTest {
 
-	@XmlElement
-	public List<String> elem = Arrays.asList(new String[] { "a", "b" });
+	@Test
+	@Ignore
+	public void generateClassesByRi() throws Throwable {
+		File dir = new File(System.getProperty("java.io.tmpdir") + "/sws-extensions-bind");
+		dir.mkdirs();
+		String tmpDir = dir.getCanonicalPath();
+		String schema = "src/test/resources/org/javelin/sws/ext/bind/internal/model/generated.xsd";
+		XJCFacade.main(new String[] {
+				"-d", tmpDir,
+				"-no-header",
+				"-encoding", "UTF-8",
+				"-enableIntrospection",
+				"-verbose",
+				schema
+		});
+	}
 
 }

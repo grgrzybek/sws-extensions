@@ -16,9 +16,16 @@
 
 package org.javelin.sws.ext.bind.internal.model;
 
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.namespace.QName;
+import javax.xml.transform.Result;
+import javax.xml.transform.dom.DOMResult;
 
 import org.javelin.sws.ext.bind.SweJaxbContextFactory;
 import org.javelin.sws.ext.bind.internal.model.context2.TypeWithElement;
@@ -41,6 +48,37 @@ public class ElementContentTest {
 	@Test
 	public void marshalWithWrapper() throws Exception {
 		JAXBContext context = SweJaxbContextFactory.createContext("org.javelin.sws.ext.bind.internal.model.context2", null);
+		context.createMarshaller().marshal(new JAXBElement<TypeWithElementWrapper>(new QName("xx", "root"), TypeWithElementWrapper.class, new TypeWithElementWrapper()), System.out);
+	}
+	
+	@Test
+	public void marshalWithoutWrapperRi() throws Exception {
+		JAXBContext context = JAXBContext.newInstance("org.javelin.sws.ext.bind.internal.model.context2");
+
+		final List<DOMResult> results = new LinkedList<DOMResult>();
+
+		context.generateSchema(new SchemaOutputResolver() {
+			@Override
+			public Result createOutput(String namespaceUri, String suggestedFileName) throws IOException {
+				DOMResult result = new DOMResult();
+				results.add(result);
+				result.setSystemId(suggestedFileName);
+				return result;
+			}
+		});
+
+		for (DOMResult dr : results) {
+			javax.xml.transform.TransformerFactory
+					.newInstance()
+					.newTransformer()
+					.transform(new javax.xml.transform.dom.DOMSource(dr.getNode()), new javax.xml.transform.stream.StreamResult(new java.io.PrintWriter(System.out)));
+		}
+//		context.createMarshaller().marshal(new JAXBElement<TypeWithElement>(new QName("", "root"), TypeWithElement.class, new TypeWithElement()), System.out);
+	}
+	
+	@Test
+	public void marshalWithWrapperRi() throws Exception {
+		JAXBContext context = JAXBContext.newInstance("org.javelin.sws.ext.bind.internal.model.context2");
 		context.createMarshaller().marshal(new JAXBElement<TypeWithElementWrapper>(new QName("", "root"), TypeWithElementWrapper.class, new TypeWithElementWrapper()), System.out);
 	}
 

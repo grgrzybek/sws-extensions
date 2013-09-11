@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-package org.javelin.sws.ext.bind.internal.model.context2;
-
-import java.util.Arrays;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlElement;
+package org.javelin.sws.ext.bind.internal.metadata;
 
 /**
  * <p></p>
  *
  * @author Grzegorz Grzybek
  */
-public class TypeWithElement {
+public enum PropertyKind {
 
-	@XmlElement
-	public List<String> elem = Arrays.asList(new String[] { "a", "b" });
+	FIELD, BEAN, PASSTHROUGH;
 
 }

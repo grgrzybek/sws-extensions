@@ -171,7 +171,7 @@ public class SweJaxbContext extends JAXBContext implements TypedPatternRegistry 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> TypedPattern<T> determineAndCacheXmlPattern(Class<T> cl) {
-		// DESIGNFLAW: some check are done using map, some - using TypedPatternRegistry
+		// DESIGNFLAW: some check are done using map.containsKey(), some - using TypedPatternRegistry
 		if (this.patterns.containsKey(cl)) {
 			return (TypedPattern<T>) this.patterns.get(cl);
 		}
