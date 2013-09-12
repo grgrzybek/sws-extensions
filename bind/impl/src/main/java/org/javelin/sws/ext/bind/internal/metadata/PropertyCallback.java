@@ -21,6 +21,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlTransient;
@@ -151,7 +153,7 @@ public class PropertyCallback<T> implements FieldCallback, MethodCallback {
 				if (match) {
 					Method setter = ReflectionUtils.findMethod(clazz, method.getName().replaceFirst("^get", "set"), method.getReturnType());
 					// TODO: maybe allow non-void returning setters as Spring-Framework already does? Now: yes
-					match = setter != null;
+					match = setter != null || Collection.class.isAssignableFrom(method.getReturnType());
 				}
 				
 				return match;
@@ -198,15 +200,20 @@ public class PropertyCallback<T> implements FieldCallback, MethodCallback {
 	public void doWith(Method getter) throws IllegalArgumentException, IllegalAccessException {
 		Method setter = ReflectionUtils.findMethod(clazz, getter.getName().replaceFirst("^get", "set"), getter.getReturnType());
 
-		if (log.isTraceEnabled())
-			log.trace(" - Analyzing pair of methods: {}.{}/{}.{}", getter.getDeclaringClass().getSimpleName(), getter.getName(), setter.getDeclaringClass()
-					.getSimpleName(), setter.getName());
+		if (log.isTraceEnabled()) {
+			if (setter != null) {
+				log.trace(" - Analyzing pair of methods: {}.{}/{}.{}", getter.getDeclaringClass().getSimpleName(), getter.getName(), setter.getDeclaringClass()
+						.getSimpleName(), setter.getName());
+			} else {
+				// we have java.util.Collection
+				log.trace(" - Analyzing method: {}.{}", getter.getDeclaringClass().getSimpleName(), getter.getName());
+			}
+		}
 
 		// TODO: properly handle class hierarchies
 		String propertyName = StringUtils.uncapitalize(getter.getName().substring(3));
 		// metadata for getter/setter
-		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.clazz, getter.getReturnType(), propertyName, PropertyKind.BEAN);
-		metadata.setAccessorMethods(getter, setter);
+		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.clazz, getter.getReturnType(), propertyName, getter, setter, PropertyKind.BEAN);
 		this.doWithPropertySafe(metadata);
 	}
 
@@ -218,9 +225,8 @@ public class PropertyCallback<T> implements FieldCallback, MethodCallback {
 		log.trace("- Analyzing field: {}.{}", field.getDeclaringClass().getSimpleName(), field.getName());
 		String fieldName = field.getName();
 		// metadata for a field
-		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.clazz, field.getType(), fieldName, PropertyKind.FIELD);
 		ReflectionUtils.makeAccessible(field);
-		metadata.setField(field);
+		PropertyMetadata<T, ?> metadata = PropertyMetadata.newPropertyMetadata(this.clazz, field.getType(), fieldName, field, PropertyKind.FIELD);
 		this.doWithPropertySafe(metadata);
 	}
 
@@ -239,7 +245,7 @@ public class PropertyCallback<T> implements FieldCallback, MethodCallback {
 		// a pattern for property's class - force creating
 		TypedPattern<P> pattern = null;
 		if (xmlSchemaType != null) {
-			// the schema type determines the pattern - if it is not present in the registry, it will be after determining it on the basis of Java class
+			// the schema type determines the pattern - if it is not present in the registry, it will be present after determining it on the basis of Java class
 			// of the property
 			QName typeName = new QName(xmlSchemaType.namespace(), xmlSchemaType.name());
 			pattern = this.patternRegistry.findPatternByType(typeName, metadata.getPropertyClass());
@@ -250,9 +256,10 @@ public class PropertyCallback<T> implements FieldCallback, MethodCallback {
 		if (pattern == null)
 			pattern = this.patternRegistry.determineAndCacheXmlPattern(metadata.getPropertyClass());
 
-		// is it value?
+		// is it value or list?
 		XmlValue xmlValue = this.findJaxbAnnotation(accessors, XmlValue.class);
-		if (xmlValue != null) {
+		XmlList xmlList= this.findJaxbAnnotation(accessors, XmlList.class);
+		if (xmlValue != null || xmlList != null) {
 			// the field's class must be a simpleType, i.e., a type convertible to String, which is either:
 			//  - a type registered in org.javelin.sws.ext.bind.internal.BuiltInMappings.initialize()
 			//  - a type which has only one property annotated with @XmlValue
@@ -339,7 +346,7 @@ public class PropertyCallback<T> implements FieldCallback, MethodCallback {
 				log.trace("-- @XmlElement property \"{}\" of type {} mapped to {} element with {}", metadata.getPropertyName(), pattern.getJavaType().getName(),
 						elementQName, pattern.toString());
 
-			ElementPattern<P> elementPattern = ElementPattern.newElementPattern(elementQName, pattern);
+			ElementPattern<?> elementPattern = ElementPattern.newElementPattern(elementQName, pattern);
 			XmlElementWrapper xmlElementWrapper = this.findJaxbAnnotation(accessors, XmlElementWrapper.class);
 			if (xmlElementWrapper != null) {
 				if (!"##default".equals(xmlElementWrapper.namespace()))
@@ -348,13 +355,14 @@ public class PropertyCallback<T> implements FieldCallback, MethodCallback {
 
 				// XmlElementWrapper creates (in XSD Category) a new complex, anonymous, nested (inside element declaration) type
 				// DESIGNFLAW: XmlElementWrapper works, but not as clean as it should
-				PropertyMetadata<P, ?> md = PropertyMetadata.newPropertyMetadata(pattern.getJavaType(), Object.class, "", PropertyKind.PASSTHROUGH);
+				PropertyMetadata<T, ?> md = PropertyMetadata.newPropertyMetadata(this.clazz, metadata.getCollectionClass(), "", PropertyKind.PASSTHROUGH);
 				md.setPattern(elementPattern);
-				ComplexTypePattern<P> newAnonymousType = ComplexTypePattern.newContentModelPattern(null, pattern.getJavaType(), md);
+				ComplexTypePattern<T> newAnonymousType = ComplexTypePattern.newContentModelPattern(null, this.clazz, md);
 				// TODO: Handle @XmlElementWrapper for collection properties
 				// TODO: JAXB2 doesn't allow this, but maybe it's a good idea to be able to wrap non-collection properties also?
 				// TODO: maybe it's a good idea to create @XmlElementWrappers class (aggregating multime @XmlElementWrapper annotations?)
 				elementPattern = ElementPattern.newElementPattern(new QName(namespace, name), newAnonymousType);
+				metadata.setWrappedCollection(true);
 			}
 
 			metadata.setPattern(elementPattern);
@@ -371,7 +379,7 @@ public class PropertyCallback<T> implements FieldCallback, MethodCallback {
 		A annotation = null;
 		for (AnnotatedElement ae: accessors) {
 			// TODO: throw an exception when JAXB annotation is on both getter and setter
-			if ((annotation = AnnotationUtils.getAnnotation(ae, ann)) != null)
+			if (ae != null && (annotation = AnnotationUtils.getAnnotation(ae, ann)) != null)
 				return annotation;
 		}
 		return null;

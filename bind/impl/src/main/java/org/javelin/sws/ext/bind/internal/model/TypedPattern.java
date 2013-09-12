@@ -16,6 +16,9 @@
 
 package org.javelin.sws.ext.bind.internal.model;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
@@ -117,6 +120,13 @@ public abstract class TypedPattern<T> extends XmlEventsPattern {
 	 */
 	public Class<T> getJavaType() {
 		return this.javaType;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<QName> getNamespacesToRegister() {
+		return Collections.emptyList();
 	}
 
 	/* (non-Javadoc)

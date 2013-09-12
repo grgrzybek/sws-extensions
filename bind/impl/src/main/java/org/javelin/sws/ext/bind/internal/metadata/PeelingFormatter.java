@@ -16,7 +16,9 @@
 
 package org.javelin.sws.ext.bind.internal.metadata;
 
+import java.io.StringWriter;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Locale;
 
 import org.springframework.format.Formatter;
@@ -57,7 +59,20 @@ class PeelingFormatter<T, P> implements Formatter<T> {
 		// TODO: object should not be null!
 
 		P value = this.metadata.getValue(object);
-		return this.nestedFormatter == null ? value.toString() : this.nestedFormatter.print(value, locale);
+		if (this.metadata.isCollectionProperty()) {
+			@SuppressWarnings("unchecked")
+			Collection<P> col = (Collection<P>)value;
+			if (col.size() == 0)
+				return "";
+			StringWriter sb = new StringWriter();
+			for (P el: col) {
+				if (el != null)
+					sb.append(' ').append(this.nestedFormatter == null ? el.toString() : this.nestedFormatter.print(el, locale));
+			}
+			return sb.toString().substring(1);
+		} else {
+			return this.nestedFormatter == null ? value.toString() : this.nestedFormatter.print(value, locale);
+		}
 	}
 
 	@Override

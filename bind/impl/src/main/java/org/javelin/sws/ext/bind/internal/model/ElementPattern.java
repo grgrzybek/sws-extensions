@@ -118,6 +118,10 @@ public class ElementPattern<T> extends XmlEventsPattern {
 			eventWriter.add(XML_EVENTS_FACTORY.createAttribute(prefix, SweJaxbConstants.XSI_NIL.getNamespaceURI(), SweJaxbConstants.XSI_NIL.getLocalPart(), "true"));
 		}
 		else {
+			for (QName ns: this.nestedPattern.getNamespacesToRegister()) {
+				this.safeRegisterNamespace(context, eventWriter, ns);
+			}
+
 			if (context.isMultiRefEncoding()) {
 				// choices:
 				// - marshal SimpleContentPattern.INSTANCE pattern "inline" or as @href?

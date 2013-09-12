@@ -17,6 +17,7 @@
 package org.javelin.sws.ext.bind.internal.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -123,25 +124,19 @@ public class ComplexTypePattern<T> extends TypedPattern<T> {
 	}
 
 	/* (non-Javadoc)
+	 * @see org.javelin.sws.ext.bind.internal.model.TypedPattern#getNamespacesToRegister()
+	 */
+	@Override
+	public List<QName> getNamespacesToRegister() {
+		// TODO: non-deterministic QName order
+		return new ArrayList<QName>(this.elements.keySet());
+	}
+
+	/* (non-Javadoc)
 	 * @see org.javelin.sws.ext.bind.internal.model.TypedPattern#replayValue(java.lang.Object, javax.xml.stream.XMLEventWriter, org.javelin.sws.ext.bind.internal.MarshallingContext)
 	 */
 	@Override
 	public void replayValue(T value, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException {
-		// nested patterns will extract configured property (field or getter) from this beanWrapper.
-		// in order to minimize a number of PropertyAccessor instances we will create them here and reuse for each direct/child property
-		//		FastDirectFieldAccessor directFieldAccessor = null;
-		//		PropertyAccessor beanPropertyAccessor = null;
-		//		if (this.hasFieldProperties) {
-		//			// we'll get to the wrapped instance through DirectFieldAccessor
-		//			// we create it here, because there may be more field properties to be marshalled
-		//			directFieldAccessor = new FastDirectFieldAccessor(this.contentModelDirectFieldMap, object);
-		//		}
-		//		else {
-		// if there are no JAXB mapped fields, there should be JAXB mapped properties. Otherwise this would be a very strange JAXB class...
-		//			beanPropertyAccessor = new BeanWrapperImpl(false);
-		//			((BeanWrapperImpl) beanPropertyAccessor).setWrappedInstance(object);
-		//		}
-
 		// each nested pattern is related to some property of the marshalled object
 		// this is the main responsibility of this pattern (ComplexTypePattern)
 		// the order of properties is determined by this.contentModel, not by the order of bean properties
@@ -149,14 +144,31 @@ public class ComplexTypePattern<T> extends TypedPattern<T> {
 			// here object is never JAXBElement
 			Object v = pm.getValue(value);
 
-			// for multi-ref encoding every property is an element - @XmlValue and @XmlAttribute too!
-			if (context.isMultiRefEncoding()) {
-				// TODO: not value?
-				context.getMultiRefSupport().adaptPattern(pm.getPattern(), pm.getPropertyName()).replay(v, eventWriter, context);
+			if (pm.isCollectionProperty()) {
+				Collection<?> col = (Collection<?>)v;
+				for (Object el: col) {
+					this.doReplayValue(pm, el, eventWriter, context);
+				}
+			} else {
+				this.doReplayValue(pm, v, eventWriter, context);
 			}
-			else {
-				pm.getPattern().replay(v, eventWriter, context);
-			}
+		}
+	}
+
+	/**
+	 * @param pm
+	 * @param v
+	 * @param eventWriter
+	 * @param context
+	 */
+	private void doReplayValue(PropertyMetadata<T, ?> pm, Object v, XMLEventWriter eventWriter, MarshallingContext context) throws XMLStreamException {
+		// for multi-ref encoding every property is an element - @XmlValue and @XmlAttribute too!
+		if (context.isMultiRefEncoding()) {
+			// TODO: not value?
+			context.getMultiRefSupport().adaptPattern(pm.getPattern(), pm.getPropertyName()).replay(v, eventWriter, context);
+		}
+		else {
+			pm.getPattern().replay(v, eventWriter, context);
 		}
 	}
 

@@ -19,11 +19,13 @@ package org.javelin.sws.ext.bind.internal.metadata;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 import javax.xml.bind.JAXBContext;
 
 import org.javelin.sws.ext.bind.internal.model.TypedPattern;
 import org.javelin.sws.ext.bind.internal.model.XmlEventsPattern;
+import org.springframework.core.GenericCollectionTypeResolver;
 
 /**
  * <p>Information on what {@link XmlEventsPattern} is configured for a given property (direct or getter) of marshalled/unmarshalled object</p>
@@ -41,7 +43,10 @@ public class PropertyMetadata<T, P> {
 
 	private Class<T> declaringClass;
 
+	// this may be a collection or array type!
 	private Class<P> propertyClass;
+	private Class<?> collectionClass;
+	private Class<?> collectionElementType;
 
 	/** {@link TypedPattern} to which a given property maps. */
 	private XmlEventsPattern pattern;
@@ -58,17 +63,64 @@ public class PropertyMetadata<T, P> {
 	/** {@link Method} for bean property write */
 	private Method setter;
 
+	private boolean collectionIsWrapped;
+
 	/**
 	 * @param declaringClass
 	 * @param propertyClass
 	 * @param propertyName
 	 * @param propertyKind
 	 */
-	private PropertyMetadata(Class<T> declaringClass, Class<P> propertyClass, String propertyName, PropertyKind propertyKind) {
+	@SuppressWarnings("unchecked")
+	PropertyMetadata(Class<T> declaringClass, Class<?> propertyClass, String propertyName, PropertyKind propertyKind) {
 		this.declaringClass = declaringClass;
-		this.propertyClass = propertyClass;
 		this.propertyName = propertyName;
 		this.propertyKind = propertyKind;
+		// DESIGNFLAW: to many unchecked casts
+		this.propertyClass = (Class<P>) propertyClass;
+		if (Collection.class.isAssignableFrom(propertyClass)) {
+			// we have collection field
+			this.collectionClass = propertyClass;
+		}
+	}
+
+	/**
+	 * @param declaringClass
+	 * @param propertyClass
+	 * @param propertyName
+	 * @param propertyKind
+	 */
+	@SuppressWarnings("unchecked")
+	PropertyMetadata(Class<T> declaringClass, Class<?> propertyClass, String propertyName, Field field, PropertyKind propertyKind) {
+		this(declaringClass, propertyClass, propertyName, propertyKind);
+		this.field = field;
+		if (Collection.class.isAssignableFrom(propertyClass)) {
+			// we have collection field
+			this.collectionElementType = GenericCollectionTypeResolver.getCollectionFieldType(this.field);
+			this.propertyClass = (Class<P>) this.collectionElementType;
+		}
+	}
+
+	/**
+	 * @param declaringClass
+	 * @param propertyClass
+	 * @param propertyName
+	 * @param getter
+	 * @param setter
+	 * @param propertyKind
+	 */
+	@SuppressWarnings("unchecked")
+	PropertyMetadata(Class<T> declaringClass, Class<?> propertyClass, String propertyName, Method getter, Method setter, PropertyKind propertyKind) {
+		this(declaringClass, propertyClass, propertyName, propertyKind);
+		this.getter = getter;
+		// may be null for java.util.Collection!
+		this.setter = setter;
+		if (Collection.class.isAssignableFrom(propertyClass)) {
+			// we have collection field
+			this.collectionClass = propertyClass;
+			this.collectionElementType = GenericCollectionTypeResolver.getCollectionReturnType(this.getter);
+			this.propertyClass = (Class<P>) this.collectionElementType;
+		}
 	}
 
 	/**
@@ -80,20 +132,53 @@ public class PropertyMetadata<T, P> {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T, P> PropertyMetadata<T, P> newPropertyMetadata(Class<T> declaringClass, Class<?> propertyClass, String propertyName,
+			Field field, PropertyKind propertyKind) {
+		return new PropertyMetadata<T, P>(declaringClass, (Class<P>) propertyClass, propertyName, field, propertyKind);
+	}
+	
+	/**
+	 * @param declaringClass
+	 * @param propertyClass
+	 * @param propertyName
+	 * @param getter
+	 * @param setter
+	 * @param propertyKind
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T, P> PropertyMetadata<T, P> newPropertyMetadata(Class<T> declaringClass, Class<?> propertyClass, String propertyName,
 			PropertyKind propertyKind) {
 		return new PropertyMetadata<T, P>(declaringClass, (Class<P>) propertyClass, propertyName, propertyKind);
 	}
+	
+	/**
+	 * @param declaringClass
+	 * @param propertyClass
+	 * @param propertyName
+	 * @param getter
+	 * @param setter
+	 * @param propertyKind
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T, P> PropertyMetadata<T, P> newPropertyMetadata(Class<T> declaringClass, Class<?> propertyClass, String propertyName,
+			Method getter, Method setter, PropertyKind propertyKind) {
+		return new PropertyMetadata<T, P>(declaringClass, (Class<P>) propertyClass, propertyName, getter, setter, propertyKind);
+	}
 
-	//	/**
-	//	 * @param propertyName
-	//	 * @param directProperty
-	//	 * @param pattern
-	//	 */
-	//	public PropertyMetadata(String propertyName, boolean directProperty, XmlEventsPattern pattern) {
-	//		this.propertyName = propertyName;
-	//		this.propertyKind = directProperty;
-	//		this.pattern = pattern;
-	//	}
+	/**
+	 * @return
+	 */
+	public boolean isCollectionProperty() {
+		return this.collectionClass != null && !this.collectionIsWrapped;
+	}
+	
+	/**
+	 * @return the collectionClass
+	 */
+	public Class<?> getCollectionClass() {
+		return this.collectionClass;
+	}
 
 	/**
 	 * @return the pattern
@@ -123,21 +208,21 @@ public class PropertyMetadata<T, P> {
 		return this.propertyKind;
 	}
 
-	/**
-	 * @param field
-	 */
-	public void setField(Field field) {
-		this.field = field;
-	}
+//	/**
+//	 * @param field
+//	 */
+//	public void setField(Field field) {
+//		this.field = field;
+//	}
 
-	/**
-	 * @param getter
-	 * @param setter
-	 */
-	public void setAccessorMethods(Method getter, Method setter) {
-		this.getter = getter;
-		this.setter = setter;
-	}
+//	/**
+//	 * @param getter
+//	 * @param setter
+//	 */
+//	public void setAccessorMethods(Method getter, Method setter) {
+//		this.getter = getter;
+//		this.setter = setter;
+//	}
 
 	/**
 	 * @return the propertyClass
@@ -226,6 +311,13 @@ public class PropertyMetadata<T, P> {
 		default:
 			return null;
 		}
+	}
+
+	/**
+	 * @param collectionIsWrapped
+	 */
+	public void setWrappedCollection(boolean collectionIsWrapped) {
+		this.collectionIsWrapped = collectionIsWrapped;
 	}
 
 }

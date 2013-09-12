@@ -167,7 +167,6 @@ public class ClassHierarchyTest {
 					.newTransformer()
 					.transform(new javax.xml.transform.dom.DOMSource(dr.getNode()), new javax.xml.transform.stream.StreamResult(new java.io.PrintWriter(System.out)));
 		}
-
 		
 		JAXBContext ctx = SweJaxbContextFactory.createContext(new Class[] { D2.class }, null);
 		Map<Class<?>, TypedPattern<?>> patterns = (Map<Class<?>, TypedPattern<?>>) ReflectionTestUtils.getField(ctx, "patterns");
@@ -176,6 +175,8 @@ public class ClassHierarchyTest {
 		assertThat(elements.size(), equalTo(8));
 		assertTrue(elements.containsKey(new QName("", "f3")));
 		assertTrue(elements.containsKey(new QName("", "f4")));
+		assertTrue(elements.containsKey(new QName("", "fd3")));
+		assertTrue(elements.containsKey(new QName("", "fd4")));
 		assertTrue(elements.containsKey(new QName("", "p1")));
 		assertTrue(elements.containsKey(new QName("", "p2")));
 		assertTrue(elements.containsKey(new QName("", "p3")));
