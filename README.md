@@ -31,4 +31,4 @@ We can now do this:
 * Spring-Ws-Gateway
 * Spring-Ws-VTD
 
-[1](http://grgrzybek.github.io/sws-extensions/progress.html)
+[1]: http://grgrzybek.github.io/sws-extensions/progress.html
