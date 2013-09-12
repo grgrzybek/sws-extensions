@@ -173,7 +173,7 @@ public class ClassHierarchyTest {
 		Map<Class<?>, TypedPattern<?>> patterns = (Map<Class<?>, TypedPattern<?>>) ReflectionTestUtils.getField(ctx, "patterns");
 		ComplexTypePattern<D2> pattern = (ComplexTypePattern<D2>) patterns.get(D2.class);
 		Map<QName, PropertyMetadata<D2, ?>> elements = (Map<QName, PropertyMetadata<D2, ?>>) ReflectionTestUtils.getField(pattern, "elements");
-		assertThat(elements.size(), equalTo(6));
+		assertThat(elements.size(), equalTo(8));
 		assertTrue(elements.containsKey(new QName("", "f3")));
 		assertTrue(elements.containsKey(new QName("", "f4")));
 		assertTrue(elements.containsKey(new QName("", "p1")));
