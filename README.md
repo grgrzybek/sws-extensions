@@ -4,6 +4,10 @@ This project's goal is to include JSR-181, JAX-RPC and JAX-WS2 programming
 model in Spring-WS based WebServices.
 
 
+## JAXB2 implementation ##
+
+Information on progress [here][1]
+
 ## Soap Encoding ##
 
 We can now do this:
@@ -26,3 +30,5 @@ We can now do this:
 * Spring-Ws-ReliableMessaging
 * Spring-Ws-Gateway
 * Spring-Ws-VTD
+
+[1](http://grgrzybek.github.io/sws-extensions/progress.html)
