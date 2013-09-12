@@ -19,11 +19,17 @@ package org.javelin.sws.ext.bind.internal.model;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.namespace.QName;
+import javax.xml.transform.Result;
+import javax.xml.transform.dom.DOMResult;
 
 import org.javelin.sws.ext.bind.SweJaxbContextFactory;
 import org.javelin.sws.ext.bind.TypedPatternRegistry;
@@ -36,6 +42,7 @@ import org.javelin.sws.ext.bind.internal.model.context4.C1;
 import org.javelin.sws.ext.bind.internal.model.context4.C2;
 import org.javelin.sws.ext.bind.internal.model.context4.C3;
 import org.javelin.sws.ext.bind.internal.model.context4.C4;
+import org.javelin.sws.ext.bind.internal.model.context4.D2;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -130,6 +137,47 @@ public class ClassHierarchyTest {
 		assertTrue(elements.containsKey(new QName("", "f3")));
 		assertTrue(elements.containsKey(new QName("", "f4")));
 		assertTrue(elements.containsKey(new QName("", "p1")));
+		assertTrue(elements.containsKey(new QName("", "p3")));
+		assertTrue(elements.containsKey(new QName("", "p4")));
+	}
+
+	@Test
+	public void handleXmlAccessTypePropertyWithBase() throws Exception {
+		// f3, f4, p1, p2, p3, p4 - properties and annotated fields
+		System.out.println("\nD2");
+		JAXBContext context = JAXBContext.newInstance(D2.class);
+		context.createMarshaller().marshal(new JAXBElement<D2>(new QName("", "r"), D2.class, new D2()), System.out);
+		System.out.println();
+
+		final List<DOMResult> results = new LinkedList<DOMResult>();
+
+		context.generateSchema(new SchemaOutputResolver() {
+			@Override
+			public Result createOutput(String namespaceUri, String suggestedFileName) throws IOException {
+				DOMResult result = new DOMResult();
+				results.add(result);
+				result.setSystemId(suggestedFileName);
+				return result;
+			}
+		});
+
+		for (DOMResult dr : results) {
+			javax.xml.transform.TransformerFactory
+					.newInstance()
+					.newTransformer()
+					.transform(new javax.xml.transform.dom.DOMSource(dr.getNode()), new javax.xml.transform.stream.StreamResult(new java.io.PrintWriter(System.out)));
+		}
+
+		
+		JAXBContext ctx = SweJaxbContextFactory.createContext(new Class[] { D2.class }, null);
+		Map<Class<?>, TypedPattern<?>> patterns = (Map<Class<?>, TypedPattern<?>>) ReflectionTestUtils.getField(ctx, "patterns");
+		ComplexTypePattern<D2> pattern = (ComplexTypePattern<D2>) patterns.get(D2.class);
+		Map<QName, PropertyMetadata<D2, ?>> elements = (Map<QName, PropertyMetadata<D2, ?>>) ReflectionTestUtils.getField(pattern, "elements");
+		assertThat(elements.size(), equalTo(6));
+		assertTrue(elements.containsKey(new QName("", "f3")));
+		assertTrue(elements.containsKey(new QName("", "f4")));
+		assertTrue(elements.containsKey(new QName("", "p1")));
+		assertTrue(elements.containsKey(new QName("", "p2")));
 		assertTrue(elements.containsKey(new QName("", "p3")));
 		assertTrue(elements.containsKey(new QName("", "p4")));
 	}

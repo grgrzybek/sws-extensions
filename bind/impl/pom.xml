@@ -6,12 +6,12 @@
 		<groupId>org.javelin.sws.extensions</groupId>
 		<artifactId>sws-extensions-parent</artifactId>
 		<version>0.1.0.BUILD-SNAPSHOT</version>
-		<relativePath>../parent/pom.xml</relativePath>
+		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>sws-extensions-bind</artifactId>
+	<artifactId>sws-extensions-bind-impl</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
