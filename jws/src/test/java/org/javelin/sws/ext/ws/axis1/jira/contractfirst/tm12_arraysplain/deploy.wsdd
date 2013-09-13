@@ -1,0 +1,1297 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from JiraSoapServiceService WSDL service -->
+
+  <service name="jirasoapservice-v2" provider="java:RPC" style="rpc" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+      <parameter name="wsdlServiceElement" value="JiraSoapServiceService"/>
+      <parameter name="schemaUnqualified" value="http://exception.rpc.jira.atlassian.com,https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2,http://beans.soap.rpc.jira.atlassian.com"/>
+      <parameter name="wsdlServicePort" value="jirasoapservice-v2"/>
+      <parameter name="className" value="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.JirasoapserviceV2SoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="JiraSoapService"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="getProjectWithSchemesById" qname="operNS:getProjectWithSchemesById" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getProjectWithSchemesByIdReturn" returnType="rtns:RemoteProject" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getSecurityLevels" qname="operNS:getSecurityLevels" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getSecurityLevelsReturn" returnType="rtns:ArrayOf_tns1_RemoteSecurityLevel" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteSecurityLevel" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getProjectAvatars" qname="operNS:getProjectAvatars" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getProjectAvatarsReturn" returnType="rtns:ArrayOf_tns1_RemoteAvatar" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteAvatar" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="setProjectAvatar" qname="operNS:setProjectAvatar" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getProjectAvatar" qname="operNS:getProjectAvatar" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getProjectAvatarReturn" returnType="rtns:RemoteAvatar" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deleteProjectAvatar" qname="operNS:deleteProjectAvatar" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssueById" qname="operNS:getIssueById" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssueByIdReturn" returnType="rtns:RemoteIssue" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addAttachmentsToIssue" qname="operNS:addAttachmentsToIssue" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="addAttachmentsToIssueReturn" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:ArrayOf_xsd_string" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <parameter qname="in3" type="tns:ArrayOf_xsd_base64Binary" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getAttachmentsFromIssue" qname="operNS:getAttachmentsFromIssue" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getAttachmentsFromIssueReturn" returnType="rtns:ArrayOf_tns1_RemoteAttachment" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteAttachment" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addWorklogWithNewRemainingEstimate" qname="operNS:addWorklogWithNewRemainingEstimate" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="addWorklogWithNewRemainingEstimateReturn" returnType="rtns:RemoteWorklog" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:RemoteWorklog" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in3" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addWorklogAndAutoAdjustRemainingEstimate" qname="operNS:addWorklogAndAutoAdjustRemainingEstimate" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="addWorklogAndAutoAdjustRemainingEstimateReturn" returnType="rtns:RemoteWorklog" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:RemoteWorklog" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addWorklogAndRetainRemainingEstimate" qname="operNS:addWorklogAndRetainRemainingEstimate" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="addWorklogAndRetainRemainingEstimateReturn" returnType="rtns:RemoteWorklog" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:RemoteWorklog" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deleteWorklogAndAutoAdjustRemainingEstimate" qname="operNS:deleteWorklogAndAutoAdjustRemainingEstimate" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deleteWorklogAndRetainRemainingEstimate" qname="operNS:deleteWorklogAndRetainRemainingEstimate" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deleteWorklogWithNewRemainingEstimate" qname="operNS:deleteWorklogWithNewRemainingEstimate" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="updateWorklogAndAutoAdjustRemainingEstimate" qname="operNS:updateWorklogAndAutoAdjustRemainingEstimate" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteWorklog" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="updateWorklogAndRetainRemainingEstimate" qname="operNS:updateWorklogAndRetainRemainingEstimate" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteWorklog" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="updateWorklogWithNewRemainingEstimate" qname="operNS:updateWorklogWithNewRemainingEstimate" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteWorklog" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getWorklogs" qname="operNS:getWorklogs" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getWorklogsReturn" returnType="rtns:ArrayOf_tns1_RemoteWorklog" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteWorklog" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="hasPermissionToCreateWorklog" qname="operNS:hasPermissionToCreateWorklog" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="hasPermissionToCreateWorklogReturn" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="hasPermissionToDeleteWorklog" qname="operNS:hasPermissionToDeleteWorklog" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="hasPermissionToDeleteWorklogReturn" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="hasPermissionToUpdateWorklog" qname="operNS:hasPermissionToUpdateWorklog" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="hasPermissionToUpdateWorklogReturn" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getResolutionDateByKey" qname="operNS:getResolutionDateByKey" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getResolutionDateByKeyReturn" returnType="rtns:dateTime" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getResolutionDateById" qname="operNS:getResolutionDateById" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getResolutionDateByIdReturn" returnType="rtns:dateTime" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getAllPermissions" qname="operNS:getAllPermissions" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getAllPermissionsReturn" returnType="rtns:ArrayOf_tns1_RemotePermission" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemotePermission" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="createIssueWithSecurityLevel" qname="operNS:createIssueWithSecurityLevel" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="createIssueWithSecurityLevelReturn" returnType="rtns:RemoteIssue" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteIssue" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="hasPermissionToEditComment" qname="operNS:hasPermissionToEditComment" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="hasPermissionToEditCommentReturn" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteComment" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getFieldsForAction" qname="operNS:getFieldsForAction" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getFieldsForActionReturn" returnType="rtns:ArrayOf_tns1_RemoteField" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteField" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="progressWorkflowAction" qname="operNS:progressWorkflowAction" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="progressWorkflowActionReturn" returnType="rtns:RemoteIssue" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in3" type="tns:ArrayOf_tns1_RemoteFieldValue" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getNotificationSchemes" qname="operNS:getNotificationSchemes" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getNotificationSchemesReturn" returnType="rtns:ArrayOf_tns1_RemoteScheme" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteScheme" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getPermissionSchemes" qname="operNS:getPermissionSchemes" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getPermissionSchemesReturn" returnType="rtns:ArrayOf_tns1_RemotePermissionScheme" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemotePermissionScheme" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="createPermissionScheme" qname="operNS:createPermissionScheme" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="createPermissionSchemeReturn" returnType="rtns:RemotePermissionScheme" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deletePermissionScheme" qname="operNS:deletePermissionScheme" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addPermissionTo" qname="operNS:addPermissionTo" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="addPermissionToReturn" returnType="rtns:RemotePermissionScheme" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemotePermissionScheme" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:RemotePermission" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in3" type="tns:RemoteEntity" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deletePermissionFrom" qname="operNS:deletePermissionFrom" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="deletePermissionFromReturn" returnType="rtns:RemotePermissionScheme" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemotePermissionScheme" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:RemotePermission" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in3" type="tns:RemoteEntity" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssueCountForFilter" qname="operNS:getIssueCountForFilter" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssueCountForFilterReturn" returnType="rtns:long" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssuesFromTextSearch" qname="operNS:getIssuesFromTextSearch" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssuesFromTextSearchReturn" returnType="rtns:ArrayOf_tns1_RemoteIssue" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteIssue" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssuesFromTextSearchWithProject" qname="operNS:getIssuesFromTextSearchWithProject" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssuesFromTextSearchWithProjectReturn" returnType="rtns:ArrayOf_tns1_RemoteIssue" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteIssue" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:ArrayOf_xsd_string" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in3" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssuesFromJqlSearch" qname="operNS:getIssuesFromJqlSearch" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssuesFromJqlSearchReturn" returnType="rtns:ArrayOf_tns1_RemoteIssue" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteIssue" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="setUserPassword" qname="operNS:setUserPassword" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteUser" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deleteUser" qname="operNS:deleteUser" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getSavedFilters" qname="operNS:getSavedFilters" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getSavedFiltersReturn" returnType="rtns:ArrayOf_tns1_RemoteFilter" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteFilter" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="createIssueWithParent" qname="operNS:createIssueWithParent" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="createIssueWithParentReturn" returnType="rtns:RemoteIssue" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteIssue" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addBase64EncodedAttachmentsToIssue" qname="operNS:addBase64EncodedAttachmentsToIssue" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="addBase64EncodedAttachmentsToIssueReturn" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:ArrayOf_xsd_string" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <parameter qname="in3" type="tns:ArrayOf_xsd_string" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="createProjectFromObject" qname="operNS:createProjectFromObject" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="createProjectFromObjectReturn" returnType="rtns:RemoteProject" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteProject" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getSecuritySchemes" qname="operNS:getSecuritySchemes" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getSecuritySchemesReturn" returnType="rtns:ArrayOf_tns1_RemoteScheme" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteScheme" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssuesFromFilter" qname="operNS:getIssuesFromFilter" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssuesFromFilterReturn" returnType="rtns:ArrayOf_tns1_RemoteIssue" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteIssue" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssuesFromFilterWithLimit" qname="operNS:getIssuesFromFilterWithLimit" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssuesFromFilterWithLimitReturn" returnType="rtns:ArrayOf_tns1_RemoteIssue" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteIssue" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in3" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssuesFromTextSearchWithLimit" qname="operNS:getIssuesFromTextSearchWithLimit" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssuesFromTextSearchWithLimitReturn" returnType="rtns:ArrayOf_tns1_RemoteIssue" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteIssue" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in3" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="setNewProjectAvatar" qname="operNS:setNewProjectAvatar" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in3" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deleteGroup" qname="operNS:deleteGroup" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getProjectsNoSchemes" qname="operNS:getProjectsNoSchemes" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getProjectsNoSchemesReturn" returnType="rtns:ArrayOf_tns1_RemoteProject" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteProject" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addVersion" qname="operNS:addVersion" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="addVersionReturn" returnType="rtns:RemoteVersion" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:RemoteVersion" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="refreshCustomFields" qname="operNS:refreshCustomFields" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="createIssueWithParentWithSecurityLevel" qname="operNS:createIssueWithParentWithSecurityLevel" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="createIssueWithParentWithSecurityLevelReturn" returnType="rtns:RemoteIssue" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteIssue" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in3" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getVersions" qname="operNS:getVersions" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getVersionsReturn" returnType="rtns:ArrayOf_tns1_RemoteVersion" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteVersion" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deleteProject" qname="operNS:deleteProject" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getProjectById" qname="operNS:getProjectById" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getProjectByIdReturn" returnType="rtns:RemoteProject" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getUser" qname="operNS:getUser" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getUserReturn" returnType="rtns:RemoteUser" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="updateUser" qname="operNS:updateUser" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="updateUserReturn" returnType="rtns:RemoteUser" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteUser" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getAvailableActions" qname="operNS:getAvailableActions" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getAvailableActionsReturn" returnType="rtns:ArrayOf_tns1_RemoteNamedObject" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteNamedObject" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getFieldsForCreate" qname="operNS:getFieldsForCreate" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getFieldsForCreateReturn" returnType="rtns:ArrayOf_tns1_RemoteField" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteField" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getFieldsForEdit" qname="operNS:getFieldsForEdit" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getFieldsForEditReturn" returnType="rtns:ArrayOf_tns1_RemoteField" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteField" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssue" qname="operNS:getIssue" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssueReturn" returnType="rtns:RemoteIssue" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addUserToGroup" qname="operNS:addUserToGroup" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteGroup" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:RemoteUser" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="removeUserFromGroup" qname="operNS:removeUserFromGroup" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteGroup" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:RemoteUser" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getCustomFields" qname="operNS:getCustomFields" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getCustomFieldsReturn" returnType="rtns:ArrayOf_tns1_RemoteField" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteField" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="createProject" qname="operNS:createProject" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="createProjectReturn" returnType="rtns:RemoteProject" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in3" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in4" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in5" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in6" type="tns:RemotePermissionScheme" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in7" type="tns:RemoteScheme" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in8" type="tns:RemoteScheme" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getComponents" qname="operNS:getComponents" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getComponentsReturn" returnType="rtns:ArrayOf_tns1_RemoteComponent" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteComponent" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getSecurityLevel" qname="operNS:getSecurityLevel" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getSecurityLevelReturn" returnType="rtns:RemoteSecurityLevel" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addComment" qname="operNS:addComment" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:RemoteComment" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="updateProject" qname="operNS:updateProject" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="updateProjectReturn" returnType="rtns:RemoteProject" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteProject" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getProjectByKey" qname="operNS:getProjectByKey" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getProjectByKeyReturn" returnType="rtns:RemoteProject" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="createIssue" qname="operNS:createIssue" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="createIssueReturn" returnType="rtns:RemoteIssue" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteIssue" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="updateIssue" qname="operNS:updateIssue" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="updateIssueReturn" returnType="rtns:RemoteIssue" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:ArrayOf_tns1_RemoteFieldValue" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deleteIssue" qname="operNS:deleteIssue" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getProjectRoles" qname="operNS:getProjectRoles" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getProjectRolesReturn" returnType="rtns:ArrayOf_tns1_RemoteProjectRole" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteProjectRole" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="createProjectRole" qname="operNS:createProjectRole" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="createProjectRoleReturn" returnType="rtns:RemoteProjectRole" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="deleteProjectRole" qname="operNS:deleteProjectRole" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="updateProjectRole" qname="operNS:updateProjectRole" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="isProjectRoleNameUnique" qname="operNS:isProjectRoleNameUnique" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="isProjectRoleNameUniqueReturn" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addActorsToProjectRole" qname="operNS:addActorsToProjectRole" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:ArrayOf_xsd_string" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <parameter qname="in2" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in3" type="tns:RemoteProject" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in4" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getProjectRole" qname="operNS:getProjectRole" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getProjectRoleReturn" returnType="rtns:RemoteProjectRole" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getProjectRoleActors" qname="operNS:getProjectRoleActors" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getProjectRoleActorsReturn" returnType="rtns:RemoteProjectRoleActors" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in2" type="tns:RemoteProject" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getDefaultRoleActors" qname="operNS:getDefaultRoleActors" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getDefaultRoleActorsReturn" returnType="rtns:RemoteRoleActors" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="removeAllRoleActorsByNameAndType" qname="operNS:removeAllRoleActorsByNameAndType" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="removeActorsFromProjectRole" qname="operNS:removeActorsFromProjectRole" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:ArrayOf_xsd_string" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <parameter qname="in2" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in3" type="tns:RemoteProject" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in4" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="addDefaultActorsToProjectRole" qname="operNS:addDefaultActorsToProjectRole" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:ArrayOf_xsd_string" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <parameter qname="in2" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in3" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="removeDefaultActorsFromProjectRole" qname="operNS:removeDefaultActorsFromProjectRole" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:ArrayOf_xsd_string" xmlns:tns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"/>
+        <parameter qname="in2" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <parameter qname="in3" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getAssociatedNotificationSchemes" qname="operNS:getAssociatedNotificationSchemes" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getAssociatedNotificationSchemesReturn" returnType="rtns:ArrayOf_tns1_RemoteScheme" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteScheme" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getAssociatedPermissionSchemes" qname="operNS:getAssociatedPermissionSchemes" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getAssociatedPermissionSchemesReturn" returnType="rtns:ArrayOf_tns1_RemoteScheme" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteScheme" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteProjectRole" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="updateGroup" qname="operNS:updateGroup" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="updateGroupReturn" returnType="rtns:RemoteGroup" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteGroup" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getSubTaskIssueTypesForProject" qname="operNS:getSubTaskIssueTypesForProject" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getSubTaskIssueTypesForProjectReturn" returnType="rtns:ArrayOf_tns1_RemoteIssueType" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteIssueType" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getPriorities" qname="operNS:getPriorities" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getPrioritiesReturn" returnType="rtns:ArrayOf_tns1_RemotePriority" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemotePriority" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getResolutions" qname="operNS:getResolutions" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getResolutionsReturn" returnType="rtns:ArrayOf_tns1_RemoteResolution" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteResolution" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getStatuses" qname="operNS:getStatuses" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getStatusesReturn" returnType="rtns:ArrayOf_tns1_RemoteStatus" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteStatus" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssueTypes" qname="operNS:getIssueTypes" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssueTypesReturn" returnType="rtns:ArrayOf_tns1_RemoteIssueType" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteIssueType" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getSubTaskIssueTypes" qname="operNS:getSubTaskIssueTypes" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getSubTaskIssueTypesReturn" returnType="rtns:ArrayOf_tns1_RemoteIssueType" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteIssueType" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getIssueTypesForProject" qname="operNS:getIssueTypesForProject" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getIssueTypesForProjectReturn" returnType="rtns:ArrayOf_tns1_RemoteIssueType" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteIssueType" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getComments" qname="operNS:getComments" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getCommentsReturn" returnType="rtns:ArrayOf_tns1_RemoteComment" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteComment" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getFavouriteFilters" qname="operNS:getFavouriteFilters" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getFavouriteFiltersReturn" returnType="rtns:ArrayOf_tns1_RemoteFilter" xmlns:rtns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" returnItemType="tns2:RemoteFilter" xmlns:tns2="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="removeAllRoleActorsByProject" qname="operNS:removeAllRoleActorsByProject" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteProject" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="archiveVersion" qname="operNS:archiveVersion" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in3" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="releaseVersion" qname="operNS:releaseVersion" xmlns:operNS="http://soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:RemoteVersion" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="editComment" qname="operNS:editComment" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="editCommentReturn" returnType="rtns:RemoteComment" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:RemoteComment" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getComment" qname="operNS:getComment" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getCommentReturn" returnType="rtns:RemoteComment" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getServerInfo" qname="operNS:getServerInfo" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getServerInfoReturn" returnType="rtns:RemoteServerInfo" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getGroup" qname="operNS:getGroup" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getGroupReturn" returnType="rtns:RemoteGroup" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="login" qname="operNS:login" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="loginReturn" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="logout" qname="operNS:logout" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="logoutReturn" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="createGroup" qname="operNS:createGroup" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="createGroupReturn" returnType="rtns:RemoteGroup" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:RemoteUser" xmlns:tns="http://beans.soap.rpc.jira.atlassian.com"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="getConfiguration" qname="operNS:getConfiguration" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="getConfigurationReturn" returnType="rtns:RemoteConfiguration" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <operation name="createUser" qname="operNS:createUser" xmlns:operNS="http://soap.rpc.jira.atlassian.com" returnQName="createUserReturn" returnType="rtns:RemoteUser" xmlns:rtns="http://beans.soap.rpc.jira.atlassian.com" soapAction="" >
+        <parameter qname="in0" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in1" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in2" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in3" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="in4" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <fault name="RemotePermissionException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException" type="tns:RemotePermissionException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteValidationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException" type="tns:RemoteValidationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteAuthenticationException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException" type="tns:RemoteAuthenticationException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+        <fault name="RemoteException" qname="fns:fault" xmlns:fns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2" class="org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException" type="tns:RemoteException" xmlns:tns="http://exception.rpc.jira.atlassian.com"/>
+      </operation>
+      <parameter name="allowedMethods" value="getSubTaskIssueTypes getProjectRole addBase64EncodedAttachmentsToIssue createIssueWithParentWithSecurityLevel getIssuesFromTextSearchWithProject getSecurityLevels createIssueWithParent archiveVersion getIssueCountForFilter getProjectById createGroup getSavedFilters getGroup progressWorkflowAction getProjectAvatar addUserToGroup getIssueTypesForProject getResolutionDateByKey getNotificationSchemes getProjectRoles deletePermissionFrom getFieldsForAction getFieldsForCreate getProjectRoleActors createPermissionScheme getVersions hasPermissionToDeleteWorklog getComment getAssociatedPermissionSchemes addWorklogAndAutoAdjustRemainingEstimate addWorklogWithNewRemainingEstimate getAttachmentsFromIssue deleteGroup createIssueWithSecurityLevel updateIssue getIssueById getUser setUserPassword createProject removeUserFromGroup deleteProjectAvatar updateWorklogAndRetainRemainingEstimate createProjectRole getSecuritySchemes getCustomFields addDefaultActorsToProjectRole logout getAvailableActions getStatuses getResolutionDateById getIssuesFromTextSearchWithLimit setNewProjectAvatar isProjectRoleNameUnique deleteWorklogWithNewRemainingEstimate getAllPermissions getServerInfo getComponents deleteWorklogAndAutoAdjustRemainingEstimate removeDefaultActorsFromProjectRole addComment getAssociatedNotificationSchemes getDefaultRoleActors login getFieldsForEdit getProjectWithSchemesById removeAllRoleActorsByProject hasPermissionToEditComment createProjectFromObject createUser addWorklogAndRetainRemainingEstimate addActorsToProjectRole editComment getProjectByKey getConfiguration deleteUser deletePermissionScheme createIssue updateUser deleteProjectRole getIssuesFromJqlSearch getIssue updateProjectRole hasPermissionToUpdateWorklog getIssuesFromFilter updateWorklogWithNewRemainingEstimate getIssuesFromTextSearch updateProject getPriorities getProjectAvatars deleteProject addAttachmentsToIssue deleteWorklogAndRetainRemainingEstimate refreshCustomFields removeAllRoleActorsByNameAndType addPermissionTo hasPermissionToCreateWorklog updateWorklogAndAutoAdjustRemainingEstimate releaseVersion updateGroup getSecurityLevel getComments getSubTaskIssueTypesForProject getIssuesFromFilterWithLimit getProjectsNoSchemes addVersion setProjectAvatar deleteIssue getWorklogs getPermissionSchemes removeActorsFromProjectRole getResolutions getIssueTypes getFavouriteFilters"/>
+
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteGroup"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteGroup"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteRoleActors"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteRoleActors"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteConfiguration"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteConfiguration"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteUser"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteUser[]"
+        innerType="cmp-ns:RemoteUser" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteResolution"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteResolution"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemotePriority"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePriority[]"
+        innerType="cmp-ns:RemotePriority" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteProjectRole"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteProjectRole"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteStatus"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteStatus[]"
+        innerType="cmp-ns:RemoteStatus" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_xsd_string"
+        type="java:java.lang.String[]"
+        innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteProjectRole"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteProjectRole[]"
+        innerType="cmp-ns:RemoteProjectRole" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteSecurityLevel"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteSecurityLevel[]"
+        innerType="cmp-ns:RemoteSecurityLevel" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemotePermission"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermission[]"
+        innerType="cmp-ns:RemotePermission" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteCustomFieldValue"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteCustomFieldValue[]"
+        innerType="cmp-ns:RemoteCustomFieldValue" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteNamedObject"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteNamedObject"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteNamedObject"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteNamedObject[]"
+        innerType="cmp-ns:RemoteNamedObject" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteFieldValue"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteFieldValue[]"
+        innerType="cmp-ns:RemoteFieldValue" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteIssue"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteIssue"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteRoleActor"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteRoleActor"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:AbstractRemoteEntity"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.AbstractRemoteEntity"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteVersion"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteVersion"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteComment"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteComment[]"
+        innerType="cmp-ns:RemoteComment" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteProject"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteProject[]"
+        innerType="cmp-ns:RemoteProject" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemotePermissionScheme"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionScheme[]"
+        innerType="cmp-ns:RemotePermissionScheme" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteSecurityLevel"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteSecurityLevel"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteRoleActor"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteRoleActor[]"
+        innerType="cmp-ns:RemoteRoleActor" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://exception.rpc.jira.atlassian.com"
+        qname="ns:RemoteAuthenticationException"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAuthenticationException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteScheme"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteScheme[]"
+        innerType="cmp-ns:RemoteScheme" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteTimeInfo"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteTimeInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteAvatar"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAvatar[]"
+        innerType="cmp-ns:RemoteAvatar" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:AbstractNamedRemoteEntity"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.AbstractNamedRemoteEntity"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemotePermission"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermission"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteWorklog"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteWorklog"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemotePriority"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePriority"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteUser"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteUser"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteIssueType"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteIssueType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemotePermissionScheme"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionScheme"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteResolution"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteResolution[]"
+        innerType="cmp-ns:RemoteResolution" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteIssue"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteIssue[]"
+        innerType="cmp-ns:RemoteIssue" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://exception.rpc.jira.atlassian.com"
+        qname="ns:RemoteException"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteFilter"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteFilter"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteIssueType"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteIssueType[]"
+        innerType="cmp-ns:RemoteIssueType" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteField"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteField"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://exception.rpc.jira.atlassian.com"
+        qname="ns:RemotePermissionException"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteProjectRoleActors"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteProjectRoleActors"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteStatus"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteStatus"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteAvatar"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAvatar"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteFieldValue"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteFieldValue"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:AbstractRemoteConstant"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.AbstractRemoteConstant"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemotePermissionMapping"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionMapping[]"
+        innerType="cmp-ns:RemotePermissionMapping" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteServerInfo"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteServerInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemotePermissionMapping"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemotePermissionMapping"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteAttachment"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAttachment[]"
+        innerType="cmp-ns:RemoteAttachment" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteScheme"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteScheme"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteEntity"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteEntity"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteProject"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteProject"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteFilter"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteFilter[]"
+        innerType="cmp-ns:RemoteFilter" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteWorklog"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteWorklog[]"
+        innerType="cmp-ns:RemoteWorklog" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteComponent"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteComponent"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteCustomFieldValue"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteCustomFieldValue"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_xsd_base64Binary"
+        type="java:byte[][]"
+        innerType="cmp-ns:byte" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://exception.rpc.jira.atlassian.com"
+        qname="ns:RemoteValidationException"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteValidationException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteField"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteField[]"
+        innerType="cmp-ns:RemoteField" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteEntity"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteEntity[]"
+        innerType="cmp-ns:RemoteEntity" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteComponent"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteComponent[]"
+        innerType="cmp-ns:RemoteComponent" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteComment"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteComment"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://beans.soap.rpc.jira.atlassian.com"
+        qname="ns:RemoteAttachment"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteAttachment"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="https://issues.apache.org/jira/rpc/soap/jirasoapservice-v2"
+        qname="ns:ArrayOf_tns1_RemoteVersion"
+        type="java:org.javelin.sws.ext.ws.axis1.jira.contractfirst.tm12_arraysplain.RemoteVersion[]"
+        innerType="cmp-ns:RemoteVersion" xmlns:cmp-ns="http://beans.soap.rpc.jira.atlassian.com"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+  </service>
+</deployment>

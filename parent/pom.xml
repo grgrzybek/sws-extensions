@@ -185,7 +185,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.javelin.sws.extensions</groupId>
-				<artifactId>sws-extensions-bind</artifactId>
+				<artifactId>sws-extensions-bind-impl</artifactId>
 				<version>0.1.0.BUILD-SNAPSHOT</version>
 			</dependency>
 

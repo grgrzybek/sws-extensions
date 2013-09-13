@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<ns1:getIssueTypesResponse soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://soap.rpc.jira.atlassian.com">
+			<getIssueTypesReturn soapenc:arrayType="ns2:RemoteIssueType[2]" xsi:type="soapenc:Array" xmlns:ns2="http://beans.soap.rpc.jira.atlassian.com" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+				<getIssueTypesReturn href="#id0" />
+				<getIssueTypesReturn href="#id1" />
+			</getIssueTypesReturn>
+		</ns1:getIssueTypesResponse>
+		<multiRef id="id1" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns3:RemoteIssueType" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+			xmlns:ns3="http://beans.soap.rpc.jira.atlassian.com">
+			<id xsi:type="xsd:string">id2</id>
+			<name xsi:type="xsd:string">name2</name>
+			<description xsi:type="xsd:string">description2</description>
+			<icon xsi:type="xsd:string">icon2</icon>
+			<subTask href="#id2" />
+		</multiRef>
+		<multiRef id="id0" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns4:RemoteIssueType" xmlns:ns4="http://beans.soap.rpc.jira.atlassian.com"
+			xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+			<id xsi:type="xsd:string">id1</id>
+			<name xsi:type="xsd:string">name1</name>
+			<description xsi:type="xsd:string">description1</description>
+			<icon xsi:type="xsd:string">icon1</icon>
+			<subTask href="#id3" />
+		</multiRef>
+		<multiRef id="id2" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="xsd:boolean" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">false</multiRef>
+		<multiRef id="id3" soapenc:root="0" soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="xsd:boolean" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">true</multiRef>
+	</soapenv:Body>
+</soapenv:Envelope>
